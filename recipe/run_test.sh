@@ -8,7 +8,10 @@ test -f $PREFIX/include/cutensornet/types.h
 test -f $PREFIX/lib/libcustatevec.so
 test -f $PREFIX/lib/libcutensornet.so
 
-# TODO: add dlopen test
+# dlopen test
+${GCC} test_load_elf.c -std=c99 -Werror -ldl -o test_load_elf
+./test_load_elf $PREFIX/lib/libcustatevec.so
+./test_load_elf $PREFIX/lib/libcutensornet.so
 
 # compilation test
 git clone https://github.com/NVIDIA/cuQuantum.git sample_linux/

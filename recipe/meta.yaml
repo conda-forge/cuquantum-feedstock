@@ -24,7 +24,7 @@ build:
     - mkdir -p $PREFIX/include                                            # [linux]
     - cp -r include/* $PREFIX/include/                                    # [linux]
     - mkdir -p $PREFIX/lib                                                # [linux]
-    - cp lib64/*.so* $PREFIX/lib/                                         # [linux]
+    - cp lib/*.so* $PREFIX/lib/                                           # [linux]
   ignore_run_exports_from:
     - {{ compiler('c') }}
     - {{ compiler('cuda') }}
@@ -52,6 +52,7 @@ requirements:
 
 test:
   requires:
+    - git
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('cuda') }}
@@ -59,14 +60,14 @@ test:
     # make sure we pick up the version matching the docker,
     # or the linker would complain 
     - cudatoolkit {{ cuda_compiler_version }}
-#  files:
-#    - test_load_elf.c        # [linux]
+  files:
+    - test_load_elf.c        # [linux]
 
 about:
   home: https://developer.nvidia.com/cuquantum-sdk
   license: LicenseRef-cuQuantum-Software-License-Agreement
   license_url: https://docs.nvidia.com/cuda/cuquantum/license.html
-  license_file: cuQuantum_license.txt
+  license_file: docs/cuQuantum_license.pdf
   summary: "cuQuantum SDK: A High-Performance Library for Accelerating Quantum Information Science"
   description: |
     NVIDIA cuQuantum SDK is a high-performance library for quantum information science and beyond.
