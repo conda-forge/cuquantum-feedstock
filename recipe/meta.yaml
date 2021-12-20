@@ -1,16 +1,22 @@
 {% set version = "0.1.0" %}
+{% set patch_version = "30" %}
 
 package:
   name: cuquantum
-  version: {{ version }}
+  version: {{ version }}.{{ patch_version }}
 
-#source:
-#  url: TBD
+source:
+  url: https://developer.download.nvidia.com/compute/cuquantum/{{ version }}/local_installers/cuquantum-linux-x86_64-{{ version }}.{{ patch_version }}-archive.tar.xz   # [linux64]
+  url: https://developer.download.nvidia.com/compute/cuquantum/{{ version }}/local_installers/cuquantum-linux-sbsa-{{ version }}.{{ patch_version }}-archive.tar.xz     # [aarch64]
+  url: https://developer.download.nvidia.com/compute/cuquantum/{{ version }}/local_installers/cuquantum-linux-ppc64le-{{ version }}.{{ patch_version }}-archive.tar.xz  # [ppc64le]
+
+  sha256: 8ad8e98f14275ffe0de02574be5c86224af1c657c41baf02c16440301ffe0aae  # [linux64]
+  sha256: 3dd04cf08f1323318e0e63a7e28bc904c426ced3367aca809fba7e7beef94063  # [aarch64]
+  sha256: 0eb84eef619a1cfab5870fb585200a9869a197866685252e4ca8187322809554  # [ppc64le]
 
 build:
   number: 0
-  skip: True
-  #skip: True  # [win or aarch64 or ppc64le or cuda_compiler_version != "11.2"]
+  skip: True  # [win or ppc64le or cuda_compiler_version != "11.2"]
   script_env:
     # for some reason /usr/local/cuda is not added to $PATH in ppc64le's docker image
     - CUDA_HOME  # [ppc64le or aarch64]
@@ -44,15 +50,15 @@ requirements:
     # Only GLIBC_2.17 or older symbols present
     - __glibc >=2.17      # [linux]
 
-#test:
-#  requires:
-#    - {{ compiler('c') }}
-#    - {{ compiler('cxx') }}
-#    - {{ compiler('cuda') }}
-#    - sysroot_linux-64 2.17  # [linux]
-#    # make sure we pick up the version matching the docker,
-#    # or the linker would complain 
-#    - cudatoolkit {{ cuda_compiler_version }}
+test:
+  requires:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('cuda') }}
+    - sysroot_linux-64 2.17  # [linux]
+    # make sure we pick up the version matching the docker,
+    # or the linker would complain 
+    - cudatoolkit {{ cuda_compiler_version }}
 #  files:
 #    - test_load_elf.c        # [linux]
 
