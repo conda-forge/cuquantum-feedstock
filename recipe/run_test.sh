@@ -25,7 +25,7 @@ pushd .
 cd custatevec
 for f in ./*.cu; do
     echo $f
-    error_log=$(nvcc $NVCC_FLAGS --std=c++11 -I$PREFIX/include -L$PREFIX/lib -lm -ldl -lcustatevec $f -o $f.out 2>&1)
+    error_log=$(nvcc $NVCC_FLAGS --std=c++11 -I$PREFIX/include -L$PREFIX/lib -lcustatevec $f -o $f.out 2>&1)
     echo $error_log
 done
 popd

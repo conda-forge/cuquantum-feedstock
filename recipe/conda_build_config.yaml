@@ -11,17 +11,17 @@ docker_image:                                           # [os.environ.get("BUILD
    - quay.io/condaforge/linux-anvil-aarch64-cuda:11.2   # [aarch64 and os.environ.get("BUILD_PLATFORM") == "linux-aarch64"]
 
 c_compiler_version:        # [linux]
-  - 8                      # [aarch64]
-  - 8                      # [aarch64]
-  - 8                      # [aarch64]
+  - 9                      # [aarch64]
+  - 9                      # [aarch64]
+  - 9                      # [aarch64]
 cxx_compiler_version:      # [linux]
-  - 8                      # [aarch64]
-  - 8                      # [aarch64]
-  - 8                      # [aarch64]
+  - 9                      # [aarch64]
+  - 9                      # [aarch64]
+  - 9                      # [aarch64]
 fortran_compiler_version:  # [linux]
-  - 8                      # [aarch64]
-  - 8                      # [aarch64]
-  - 8                      # [aarch64]
+  - 9                      # [aarch64]
+  - 9                      # [aarch64]
+  - 9                      # [aarch64]
 
 cuda_compiler:
   - nvcc
