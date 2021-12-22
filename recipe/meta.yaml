@@ -15,8 +15,8 @@ source:
   sha256: 0eb84eef619a1cfab5870fb585200a9869a197866685252e4ca8187322809554  # [ppc64le]
 
 build:
-  number: 0
-  skip: True  # [win or aarch64 or ppc64le or cuda_compiler_version != "11.2"]
+  number: 1
+  skip: True  # [win or ppc64le or cuda_compiler_version != "11.2"]
   script_env:
     # for some reason /usr/local/cuda is not added to $PATH in ppc64le's docker image
     - CUDA_HOME  # [ppc64le or aarch64]
@@ -25,6 +25,13 @@ build:
     - cp -r include/* $PREFIX/include/                                    # [linux]
     - mkdir -p $PREFIX/lib                                                # [linux]
     - cp lib/*.so* $PREFIX/lib/                                           # [linux]
+
+    # Patch for conda-forge:
+    # According to the CUDA support matrix, we require glibc 2.27+ on aarch64-sbsa,
+    # while conda-forge is still on 2.17. However, given that powf is the only
+    # offending symbol that needs a newer glibc, it is the easist if we just patch
+    # it.
+    - patchelf --clear-symbol-version powf $PREFIX/lib/libcustatevec.so   # [aarch64]
   ignore_run_exports_from:
     - {{ compiler('c') }}
     - {{ compiler('cuda') }}
@@ -39,6 +46,8 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cuda') }}
     - sysroot_linux-64 2.17  # [linux]
+  host:
+    - patchelf >=0.12  # [aarch64]
   run:
     # Only GCC_3.0 or older symbols present
     - libgcc-ng >=3.0     # [linux]
