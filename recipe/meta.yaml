@@ -27,11 +27,14 @@ build:
     - mv lib/*.so* $PREFIX/lib/                                           # [linux]
 
     # Patch for conda-forge:
-    # According to the CUDA support matrix, we require glibc 2.27+ on aarch64-sbsa,
-    # while conda-forge is still on 2.17. However, given that powf is the only
-    # offending symbol that needs a newer glibc, it is the easist if we just patch
-    # it.
-    - patchelf --clear-symbol-version powf $PREFIX/lib/libcustatevec.so   # [aarch64]
+    # According to the CUDA support matrix, we require glibc 2.27+ on aarch64-sbsa
+    # and ppc64le, while conda-forge is still on 2.17. However, given that powf is
+    # the only offending symbol that needs a newer glibc, it is the easiest if we
+    # just patch it.
+    - patchelf --clear-symbol-version powf $PREFIX/lib/libcustatevec.so   # [aarch64 or ppc64le]
+    # Fix undefined references, see
+    # https://github.com/conda-forge/cuquantum-feedstock/pull/5#issuecomment-1024625275
+    - patchelf --add-needed libcublas.so.11 $PREFIX/lib/libcustatevec.so  # [ppc64le]
   run_exports:
     - {{ pin_subpackage('cuquantum', max_pin='x.x') }}
 
@@ -39,7 +42,9 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cuda') }}
-    - sysroot_linux-64 2.17  # [linux]
+    - sysroot_linux-64 2.17       # [linux64]
+    - sysroot_linux-aarch64 2.17  # [aarch64]
+    - sysroot_linux-ppc64le 2.17  # [ppc64le]
   host:
     - patchelf >=0.12                          # [aarch64]
     # to suppress ".so not found" errors
