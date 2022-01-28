@@ -32,6 +32,7 @@ build:
     # the only offending symbol that needs a newer glibc, it is the easiest if we
     # just patch it.
     - patchelf --clear-symbol-version powf $PREFIX/lib/libcustatevec.so   # [aarch64 or ppc64le]
+    - patchelf --clear-symbol-version __tls_get_addr_opt $PREFIX/lib/libcustatevec.so  # [ppc64le]
     # Fix undefined references, see
     # https://github.com/conda-forge/cuquantum-feedstock/pull/5#issuecomment-1024625275
     - patchelf --add-needed libcublas.so.11 $PREFIX/lib/libcustatevec.so  # [ppc64le]
