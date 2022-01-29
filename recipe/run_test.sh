@@ -14,13 +14,15 @@ ${GCC} test_load_elf.c -std=c99 -Werror -ldl -o test_load_elf
 ./test_load_elf $PREFIX/lib/libcutensornet.so
 
 # compilation test
-git clone https://github.com/NVIDIA/cuQuantum.git sample_linux/
+git clone -b v0.1.0.0 https://github.com/NVIDIA/cuQuantum.git sample_linux/
 cd sample_linux/samples/
 pushd .
-#NVCC_FLAGS=""
-#if [[ $target_platform == linux-aarch64 ]]; then
-#    NVCC_FLAGS+=" -Xlinker -lm"  # work around undefined reference to `powf@GLIBC_2.27`
-#fi
+
+NVCC_FLAGS=""
+# Workaround __ieee128 error; see https://github.com/LLNL/blt/issues/341
+if [[ $target_platform == linux-ppc64le && $cuda_compiler_version == 10.* ]]; then
+    NVCC_FLAGS+=" -Xcompiler -mno-float128"
+fi
 
 cd custatevec
 for f in ./*.cu; do
