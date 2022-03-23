@@ -26,13 +26,13 @@ build:
     - mkdir -p $PREFIX/lib                                                # [linux]
     - mv lib/*.so* $PREFIX/lib/                                           # [linux]
 
-#    # Patch for conda-forge:
-#    # According to the CUDA support matrix, we require glibc 2.27+ on aarch64-sbsa
-#    # and ppc64le, while conda-forge is still on 2.17. However, given that powf is
-#    # the only offending symbol that needs a newer glibc, it is the easiest if we
-#    # just patch it.
-#    - patchelf --clear-symbol-version powf $PREFIX/lib/libcustatevec.so   # [aarch64 or ppc64le]
-#    #- patchelf --clear-symbol-version __tls_get_addr_opt $PREFIX/lib/libcustatevec.so  # [ppc64le]
+    # Patch for conda-forge:
+    # According to the CUDA support matrix, we require glibc 2.27+ on aarch64-sbsa
+    # and ppc64le, while conda-forge is still on 2.17. However, given that powf is
+    # the only offending symbol that needs a newer glibc, it is the easiest if we
+    # just patch it.
+    - patchelf --clear-symbol-version powf $PREFIX/lib/libcustatevec.so   # [aarch64 or ppc64le]
+    #- patchelf --clear-symbol-version __tls_get_addr_opt $PREFIX/lib/libcustatevec.so  # [ppc64le]
 #    # Fix undefined references, see
 #    # https://github.com/conda-forge/cuquantum-feedstock/pull/5#issuecomment-1024625275
 #    - patchelf --add-needed libcublas.so.11 $PREFIX/lib/libcustatevec.so  # [ppc64le]
@@ -42,6 +42,8 @@ build:
     - {{ compiler('cuda') }}
   missing_dso_whitelist:
     - '*/libcutensor.so*'
+    - '*/libcublas.so*'
+    - '*/libcublasLt.so*'
 
 requirements:
   build:
@@ -50,7 +52,8 @@ requirements:
     - sysroot_linux-64 2.17  # [linux64]
   host:
   run:
-    - libgomp  # [linux]
+    - _openmp_mutex  # [linux]
+    - libgomp        # [linux]
     - cudatoolkit >=11.0,<12
     - cutensor >=1.5,<2
 
