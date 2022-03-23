@@ -47,9 +47,7 @@ requirements:
   host:
     - patchelf >=0.12                          # [aarch64]
     # to suppress ".so not found" errors
-    # hard-coded the build number here as a workaround, see
-    # https://github.com/conda-forge/admin-requests/pull/411#issuecomment-1075821069
-    - cutensor 1.5.* *_1                       # [linux]
+    - cutensor 1.5.*                           # [linux]
   run:
     - libgomp  # [linux]
     - {{ pin_compatible('cutensor', max_pin='x.x') }}
