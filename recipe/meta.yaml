@@ -6,9 +6,9 @@ package:
   version: {{ version }}.{{ patch_version }}
 
 source:
-  url: https://developer.download.nvidia.com/compute/cuquantum/{{ version }}/local_installers/cuquantum-linux-x86_64-{{ version }}.{{ patch_version }}-archive.tar.xz   # [linux64]
-  url: https://developer.download.nvidia.com/compute/cuquantum/{{ version }}/local_installers/cuquantum-linux-sbsa-{{ version }}.{{ patch_version }}-archive.tar.xz     # [aarch64]
-  url: https://developer.download.nvidia.com/compute/cuquantum/{{ version }}/local_installers/cuquantum-linux-ppc64le-{{ version }}.{{ patch_version }}-archive.tar.xz  # [ppc64le]
+  url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-x86_64/cuquantum-linux-x86_64-{{ version }}.{{ patch_version }}-archive.tar.xz    # [linux64]
+  url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-sbsa/cuquantum-linux-sbsa-{{ version }}.{{ patch_version }}-archive.tar.xz        # [aarch64]
+  url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-ppc64le/cuquantum-linux-ppc64le-{{ version }}.{{ patch_version }}-archive.tar.xz  # [ppc64le]
 
   sha256: 740d28198443481ce3fbc738bea3223a3e758a62b165884fbafd5c0fdd5528fc  # [linux64]
   sha256: ebf3f9ad01732492e970d61a90d504858a61be8f0cf84e0695fec3090af17b25  # [aarch64]
