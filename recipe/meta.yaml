@@ -40,7 +40,7 @@ build:
     - {{ pin_subpackage('cuquantum', max_pin='x.x') }}
   ignore_run_exports_from:
     - {{ compiler('cuda') }}
-  missing_dso_list:
+  missing_dso_whitelist:
     - '*/libcutensor.so*'
 
 requirements:
