@@ -38,8 +38,10 @@ build:
 #    - patchelf --add-needed libcublas.so.11 $PREFIX/lib/libcustatevec.so  # [ppc64le]
   run_exports:
     - {{ pin_subpackage('cuquantum', max_pin='x.x') }}
-  ignore_run_exports:
-    - cudatoolkit
+  ignore_run_exports_from:
+    - {{ compiler('cuda') }}
+  missing_dso_list:
+    - '*/libcutensor.so*'
 
 requirements:
   build:
@@ -47,13 +49,10 @@ requirements:
     - {{ compiler('cuda') }}
     - sysroot_linux-64 2.17  # [linux64]
   host:
-    - patchelf >=0.12                          # [aarch64]
-    # to suppress ".so not found" errors
-    - cutensor 1.5.*                           # [linux]
   run:
     - libgomp  # [linux]
     - cudatoolkit >=11.0,<12
-    - {{ pin_compatible('cutensor', max_pin='x.x') }}
+    - cutensor >=1.5,<2
 
 test:
   requires:
