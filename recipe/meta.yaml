@@ -1,5 +1,5 @@
-{% set version = "0.1.0" %}
-{% set patch_version = "30" %}
+{% set version = "22.03.0" %}
+{% set patch_version = "40" %}
 
 package:
   name: cuquantum
@@ -10,12 +10,12 @@ source:
   url: https://developer.download.nvidia.com/compute/cuquantum/{{ version }}/local_installers/cuquantum-linux-sbsa-{{ version }}.{{ patch_version }}-archive.tar.xz     # [aarch64]
   url: https://developer.download.nvidia.com/compute/cuquantum/{{ version }}/local_installers/cuquantum-linux-ppc64le-{{ version }}.{{ patch_version }}-archive.tar.xz  # [ppc64le]
 
-  sha256: 8ad8e98f14275ffe0de02574be5c86224af1c657c41baf02c16440301ffe0aae  # [linux64]
-  sha256: 3dd04cf08f1323318e0e63a7e28bc904c426ced3367aca809fba7e7beef94063  # [aarch64]
-  sha256: 0eb84eef619a1cfab5870fb585200a9869a197866685252e4ca8187322809554  # [ppc64le]
+  sha256: 740d28198443481ce3fbc738bea3223a3e758a62b165884fbafd5c0fdd5528fc  # [linux64]
+  sha256: ebf3f9ad01732492e970d61a90d504858a61be8f0cf84e0695fec3090af17b25  # [aarch64]
+  sha256: 110fabf0171752232da0bf5a989fed34c50db4422360173b39ca931488fd5a32  # [ppc64le]
 
 build:
-  number: 2
+  number: 0
   skip: True  # [win or ppc64le or cuda_compiler_version != "11.2"]
   script_env:
     # for some reason /usr/local/cuda is not added to $PATH in ppc64le's docker image
@@ -26,16 +26,16 @@ build:
     - mkdir -p $PREFIX/lib                                                # [linux]
     - mv lib/*.so* $PREFIX/lib/                                           # [linux]
 
-    # Patch for conda-forge:
-    # According to the CUDA support matrix, we require glibc 2.27+ on aarch64-sbsa
-    # and ppc64le, while conda-forge is still on 2.17. However, given that powf is
-    # the only offending symbol that needs a newer glibc, it is the easiest if we
-    # just patch it.
-    - patchelf --clear-symbol-version powf $PREFIX/lib/libcustatevec.so   # [aarch64 or ppc64le]
-    #- patchelf --clear-symbol-version __tls_get_addr_opt $PREFIX/lib/libcustatevec.so  # [ppc64le]
-    # Fix undefined references, see
-    # https://github.com/conda-forge/cuquantum-feedstock/pull/5#issuecomment-1024625275
-    - patchelf --add-needed libcublas.so.11 $PREFIX/lib/libcustatevec.so  # [ppc64le]
+#    # Patch for conda-forge:
+#    # According to the CUDA support matrix, we require glibc 2.27+ on aarch64-sbsa
+#    # and ppc64le, while conda-forge is still on 2.17. However, given that powf is
+#    # the only offending symbol that needs a newer glibc, it is the easiest if we
+#    # just patch it.
+#    - patchelf --clear-symbol-version powf $PREFIX/lib/libcustatevec.so   # [aarch64 or ppc64le]
+#    #- patchelf --clear-symbol-version __tls_get_addr_opt $PREFIX/lib/libcustatevec.so  # [ppc64le]
+#    # Fix undefined references, see
+#    # https://github.com/conda-forge/cuquantum-feedstock/pull/5#issuecomment-1024625275
+#    - patchelf --add-needed libcublas.so.11 $PREFIX/lib/libcustatevec.so  # [ppc64le]
   run_exports:
     - {{ pin_subpackage('cuquantum', max_pin='x.x') }}
 
@@ -47,8 +47,9 @@ requirements:
   host:
     - patchelf >=0.12                          # [aarch64]
     # to suppress ".so not found" errors
-    - cutensor 1.4.*                           # [linux]
+    - cutensor 1.5.*                           # [linux]
   run:
+    - libgomp  # [linux]
     - {{ pin_compatible('cutensor', max_pin='x.x') }}
 
 test:
@@ -71,8 +72,10 @@ about:
   license_file: docs/cuQuantum_license.pdf
   summary: "cuQuantum SDK: A High-Performance Library for Accelerating Quantum Information Science"
   description: |
-    NVIDIA cuQuantum SDK is a high-performance library for quantum information science and beyond.
-    Currently its primary target is quantum circuit simulations and it contains the major component:
+    NVIDIA cuQuantum is an SDK of optimized libraries and tools for accelerating quantum computing workflows.
+    Using NVIDIA GPU Tensor Core GPUs, developers can use cuQuantum to speed up quantum circuit simulations
+    based on state vector and tensor network methods by orders of magnitude. Two major components of the
+    SDK are
 
       - cuStateVec: a high-performance library for state vector computations
       - cuTensorNet: a high-performance library for tensor network computations
@@ -87,3 +90,4 @@ about:
 extra:
   recipe-maintainers:
     - leofang
+    - mtjrider
