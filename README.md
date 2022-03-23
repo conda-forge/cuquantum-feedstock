@@ -5,7 +5,7 @@ Home: https://developer.nvidia.com/cuquantum-sdk
 
 Package license: [LicenseRef-cuQuantum-Software-License-Agreement](https://docs.nvidia.com/cuda/cuquantum/license.html)
 
-Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/cuquantum-feedstock/blob/master/LICENSE.txt)
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/cuquantum-feedstock/blob/main/LICENSE.txt)
 
 Summary: cuQuantum SDK: A High-Performance Library for Accelerating Quantum Information Science
 
@@ -13,8 +13,10 @@ Development: https://developer.nvidia.com/cuquantum-downloads
 
 Documentation: https://docs.nvidia.com/cuda/cuquantum/index.html
 
-NVIDIA cuQuantum SDK is a high-performance library for quantum information science and beyond.
-Currently its primary target is quantum circuit simulations and it contains the major component:
+NVIDIA cuQuantum is an SDK of optimized libraries and tools for accelerating quantum computing workflows.
+Using NVIDIA GPU Tensor Core GPUs, developers can use cuQuantum to speed up quantum circuit simulations
+based on state vector and tensor network methods by orders of magnitude. Two major components of the
+SDK are
 
   - cuStateVec: a high-performance library for state vector computations
   - cuTensorNet: a high-performance library for tensor network computations
@@ -36,24 +38,24 @@ Current build status
     <td>
       <details>
         <summary>
-          <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=master">
-            <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=master">
+          <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
+            <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main">
           </a>
         </summary>
         <table>
           <thead><tr><th>Variant</th><th>Status</th></tr></thead>
           <tbody><tr>
-              <td>linux_64_c_compiler_version9cuda_compiler_version11.2cxx_compiler_version9</td>
+              <td>linux_64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10</td>
               <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=master&jobName=linux&configuration=linux_64_c_compiler_version9cuda_compiler_version11.2cxx_compiler_version9" alt="variant">
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux_64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10" alt="variant">
                 </a>
               </td>
             </tr><tr>
               <td>linux_aarch64_cuda_compiler_version11.2</td>
               <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=master&jobName=linux&configuration=linux_aarch64_cuda_compiler_version11.2" alt="variant">
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux_aarch64_cuda_compiler_version11.2" alt="variant">
                 </a>
               </td>
             </tr>
@@ -159,4 +161,5 @@ Feedstock Maintainers
 =====================
 
 * [@leofang](https://github.com/leofang/)
+* [@mtjrider](https://github.com/mtjrider/)
 
