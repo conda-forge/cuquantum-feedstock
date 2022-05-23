@@ -1,5 +1,5 @@
-{% set version = "22.03.0" %}
-{% set patch_version = "40" %}
+{% set version = "22.05.0" %}
+{% set patch_version = "41" %}
 
 package:
   name: cuquantum
@@ -10,9 +10,9 @@ source:
   url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-sbsa/cuquantum-linux-sbsa-{{ version }}.{{ patch_version }}-archive.tar.xz        # [aarch64]
   url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-ppc64le/cuquantum-linux-ppc64le-{{ version }}.{{ patch_version }}-archive.tar.xz  # [ppc64le]
 
-  sha256: 740d28198443481ce3fbc738bea3223a3e758a62b165884fbafd5c0fdd5528fc  # [linux64]
-  sha256: ebf3f9ad01732492e970d61a90d504858a61be8f0cf84e0695fec3090af17b25  # [aarch64]
-  sha256: 110fabf0171752232da0bf5a989fed34c50db4422360173b39ca931488fd5a32  # [ppc64le]
+  sha256: 3804ee39c96610ca1f1a644adde568344530f9377444b5309e20bc7d7e12ce57  # [linux64]
+  sha256: 4aefee0523ada81939a5376061532293dd34ac55e5efe7a3ab76bf7c87800aed  # [aarch64]
+  sha256: 641cbace1da172eb7bfca8c063a5b1194056c8a1d8d80b0bfa84bfcaa60d3a68  # [ppc64le]
 
 build:
   number: 0
@@ -95,4 +95,5 @@ about:
 extra:
   recipe-maintainers:
     - leofang
+    - JeremyWangNVDA
     - mtjrider
