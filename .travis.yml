@@ -12,7 +12,7 @@ matrix:
       arch: arm64
       dist: focal
 
-    - env: CONFIG=linux_ppc64le_ UPLOAD_PACKAGES=True PLATFORM=linux-ppc64le DOCKER_IMAGE=quay.io/condaforge/linux-anvil-ppc64le-cuda:11.2
+    - env: CONFIG=linux_ppc64le_cuda_compiler_version11.2 UPLOAD_PACKAGES=True PLATFORM=linux-ppc64le DOCKER_IMAGE=quay.io/condaforge/linux-anvil-ppc64le-cuda:11.2
       os: linux
       arch: ppc64le
       dist: focal
