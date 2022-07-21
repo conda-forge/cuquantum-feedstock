@@ -1,14 +1,13 @@
-{% set version = "22.05.0" %}
-{% set patch_version = "41" %}
+{% set version = "22.05.0.41" %}
 
 package:
   name: cuquantum
-  version: {{ version }}.{{ patch_version }}
+  version: {{ version }}
 
 source:
-  url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-x86_64/cuquantum-linux-x86_64-{{ version }}.{{ patch_version }}-archive.tar.xz    # [linux64]
-  url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-sbsa/cuquantum-linux-sbsa-{{ version }}.{{ patch_version }}-archive.tar.xz        # [aarch64]
-  url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-ppc64le/cuquantum-linux-ppc64le-{{ version }}.{{ patch_version }}-archive.tar.xz  # [ppc64le]
+  url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-x86_64/cuquantum-linux-x86_64-{{ version }}-archive.tar.xz    # [linux64]
+  url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-sbsa/cuquantum-linux-sbsa-{{ version }}-archive.tar.xz        # [aarch64]
+  url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-ppc64le/cuquantum-linux-ppc64le-{{ version }}-archive.tar.xz  # [ppc64le]
 
   sha256: 3804ee39c96610ca1f1a644adde568344530f9377444b5309e20bc7d7e12ce57  # [linux64]
   sha256: 4aefee0523ada81939a5376061532293dd34ac55e5efe7a3ab76bf7c87800aed  # [aarch64]
@@ -17,9 +16,6 @@ source:
 build:
   number: 0
   skip: True  # [win or ppc64le or cuda_compiler_version != "11.2"]
-  script_env:
-    # for some reason /usr/local/cuda is not added to $PATH in ppc64le's docker image
-    - CUDA_HOME  # [ppc64le or aarch64]
   script:
     - mkdir -p $PREFIX/include                                            # [linux]
     - cp -r include/* $PREFIX/include/                                    # [linux]
