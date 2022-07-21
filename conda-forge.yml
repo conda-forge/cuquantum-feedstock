@@ -8,5 +8,5 @@ os_version:
   linux_ppc64le: cos7
 provider:
   linux_aarch64: default
-  linux_ppc64le: default
+  linux_ppc64le: azure
 idle_timeout_minutes: 60
