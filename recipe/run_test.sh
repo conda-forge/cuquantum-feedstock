@@ -43,4 +43,3 @@ for f in ./*.cu; do
     error_log=$(nvcc $NVCC_FLAGS --std=c++11 -I$PREFIX/include -L$PREFIX/lib -lcutensornet -lcutensor $f -o $f.out 2>&1)
     echo $error_log
 done
-popd
