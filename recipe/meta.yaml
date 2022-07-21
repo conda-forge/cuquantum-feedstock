@@ -1,21 +1,21 @@
-{% set version = "22.05.0.41" %}
+{% set version = "22.07.0.11" %}
 
 package:
   name: cuquantum
   version: {{ version }}
 
 source:
-  url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-x86_64/cuquantum-linux-x86_64-{{ version }}-archive.tar.xz    # [linux64]
-  url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-sbsa/cuquantum-linux-sbsa-{{ version }}-archive.tar.xz        # [aarch64]
+  url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-x86_64/cuquantum-linux-x86_64-{{ version }}-archive.tar.xz  # [linux64]
+  url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-sbsa/cuquantum-linux-sbsa-{{ version }}-archive.tar.xz  # [aarch64]
   url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-ppc64le/cuquantum-linux-ppc64le-{{ version }}-archive.tar.xz  # [ppc64le]
 
-  sha256: 3804ee39c96610ca1f1a644adde568344530f9377444b5309e20bc7d7e12ce57  # [linux64]
-  sha256: 4aefee0523ada81939a5376061532293dd34ac55e5efe7a3ab76bf7c87800aed  # [aarch64]
-  sha256: 641cbace1da172eb7bfca8c063a5b1194056c8a1d8d80b0bfa84bfcaa60d3a68  # [ppc64le]
+  sha256: bb67c2ddc9822cd0b3c50d6d269c051eab4971c4d75a02ac24de03b48e30f639  # [linux64]
+  sha256: d1d386ed4c7876bd7dcdef9f0dddcfdd2c0ccbeece49937017688469dadef123  # [aarch64]
+  sha256: 60541d5cc4999ee2e514bc20cdab42e8737b5969ab0816d93a0c324d5d318864  # [ppc64le]
 
 build:
   number: 0
-  skip: True  # [win or ppc64le or cuda_compiler_version != "11.2"]
+  skip: true  # [win or ppc64le or cuda_compiler_version != "11.2"]
   script:
     - mkdir -p $PREFIX/include                                            # [linux]
     - cp -r include/* $PREFIX/include/                                    # [linux]
@@ -71,7 +71,7 @@ about:
   license: LicenseRef-cuQuantum-Software-License-Agreement
   license_url: https://docs.nvidia.com/cuda/cuquantum/license.html
   license_file: docs/cuQuantum_license.pdf
-  summary: "cuQuantum SDK: A High-Performance Library for Accelerating Quantum Information Science"
+  summary: 'cuQuantum SDK: A High-Performance Library for Accelerating Quantum Information Science'
   description: |
     NVIDIA cuQuantum is an SDK of optimized libraries and tools for accelerating quantum computing workflows.
     Using NVIDIA GPU Tensor Core GPUs, developers can use cuQuantum to speed up quantum circuit simulations
