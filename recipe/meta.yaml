@@ -15,7 +15,7 @@ source:
 
 build:
   number: 0
-  skip: true  # [win or ppc64le or cuda_compiler_version != "11.2"]
+  skip: true  # [win or cuda_compiler_version != "11.2"]
   script:
     - mkdir -p $PREFIX/include                                            # [linux]
     - cp -r include/* $PREFIX/include/                                    # [linux]
