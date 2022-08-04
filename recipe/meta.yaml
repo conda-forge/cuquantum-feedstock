@@ -1,17 +1,17 @@
-{% set version = "22.07.0.11" %}
+{% set version = "22.07.1.14" %}
 
 package:
   name: cuquantum
   version: {{ version }}
 
 source:
-  url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-x86_64/cuquantum-linux-x86_64-{{ version }}-archive.tar.xz    # [linux64]
-  url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-sbsa/cuquantum-linux-sbsa-{{ version }}-archive.tar.xz        # [aarch64]
+  url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-x86_64/cuquantum-linux-x86_64-{{ version }}-archive.tar.xz  # [linux64]
+  url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-sbsa/cuquantum-linux-sbsa-{{ version }}-archive.tar.xz  # [aarch64]
   url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-ppc64le/cuquantum-linux-ppc64le-{{ version }}-archive.tar.xz  # [ppc64le]
 
-  sha256: bb67c2ddc9822cd0b3c50d6d269c051eab4971c4d75a02ac24de03b48e30f639  # [linux64]
-  sha256: d1d386ed4c7876bd7dcdef9f0dddcfdd2c0ccbeece49937017688469dadef123  # [aarch64]
-  sha256: 60541d5cc4999ee2e514bc20cdab42e8737b5969ab0816d93a0c324d5d318864  # [ppc64le]
+  sha256: 4c4931096498451593ad553b6cb7a107bb6d6cedea65c80d5376d0cfbb647f8e  # [linux64]
+  sha256: 0c8fb14bf8916170e15a2ae7cfa950e23af13c9cb0915bad88d754221ad60116  # [aarch64]
+  sha256: 2d35dba3c739e8de51591bcd2d7edf1a3c9995850af6525ae08e9b5c3798cf9a  # [ppc64le]
 
 build:
   number: 0
