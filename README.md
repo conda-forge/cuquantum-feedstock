@@ -85,6 +85,7 @@ Current release info
 
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-cuquantum-green.svg)](https://anaconda.org/conda-forge/cuquantum) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/cuquantum.svg)](https://anaconda.org/conda-forge/cuquantum) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/cuquantum.svg)](https://anaconda.org/conda-forge/cuquantum) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/cuquantum.svg)](https://anaconda.org/conda-forge/cuquantum) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-custatevec-green.svg)](https://anaconda.org/conda-forge/custatevec) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/custatevec.svg)](https://anaconda.org/conda-forge/custatevec) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/custatevec.svg)](https://anaconda.org/conda-forge/custatevec) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/custatevec.svg)](https://anaconda.org/conda-forge/custatevec) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-cutensornet-green.svg)](https://anaconda.org/conda-forge/cutensornet) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/cutensornet.svg)](https://anaconda.org/conda-forge/cutensornet) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/cutensornet.svg)](https://anaconda.org/conda-forge/cutensornet) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/cutensornet.svg)](https://anaconda.org/conda-forge/cutensornet) |
 
@@ -98,41 +99,41 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `custatevec, cutensornet` can be installed with `conda`:
+Once the `conda-forge` channel has been enabled, `cuquantum, custatevec, cutensornet` can be installed with `conda`:
 
 ```
-conda install custatevec cutensornet
-```
-
-or with `mamba`:
-
-```
-mamba install custatevec cutensornet
-```
-
-It is possible to list all of the versions of `custatevec` available on your platform with `conda`:
-
-```
-conda search custatevec --channel conda-forge
+conda install cuquantum custatevec cutensornet
 ```
 
 or with `mamba`:
 
 ```
-mamba search custatevec --channel conda-forge
+mamba install cuquantum custatevec cutensornet
+```
+
+It is possible to list all of the versions of `cuquantum` available on your platform with `conda`:
+
+```
+conda search cuquantum --channel conda-forge
+```
+
+or with `mamba`:
+
+```
+mamba search cuquantum --channel conda-forge
 ```
 
 Alternatively, `mamba repoquery` may provide more information:
 
 ```
 # Search all versions available on your platform:
-mamba repoquery search custatevec --channel conda-forge
+mamba repoquery search cuquantum --channel conda-forge
 
-# List packages depending on `custatevec`:
-mamba repoquery whoneeds custatevec --channel conda-forge
+# List packages depending on `cuquantum`:
+mamba repoquery whoneeds cuquantum --channel conda-forge
 
-# List dependencies of `custatevec`:
-mamba repoquery depends custatevec --channel conda-forge
+# List dependencies of `cuquantum`:
+mamba repoquery depends cuquantum --channel conda-forge
 ```
 
 
