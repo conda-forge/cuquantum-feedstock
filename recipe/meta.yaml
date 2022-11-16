@@ -26,6 +26,19 @@ requirements:
     - {{ pin_subpackage('custatevec', exact=True) }}
     - {{ pin_subpackage('cutensornet', exact=True) }}
 
+test:
+  requires:
+    - git
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('cuda') }}
+    - sysroot_linux-64 2.17  # [linux64]
+    # make sure we pick up the version matching the docker,
+    # or the linker would complain
+    - cudatoolkit {{ cuda_compiler_version }}
+  files:
+    - test_load_elf.c        # [linux]
+
 outputs:
 
   - name: custatevec
@@ -89,19 +102,6 @@ outputs:
         - libgomp        # [linux]
         - cudatoolkit >=11.0,<12
         - cutensor >=1.5,<2
-
-test:
-  requires:
-    - git
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - {{ compiler('cuda') }}
-    - sysroot_linux-64 2.17  # [linux64]
-    # make sure we pick up the version matching the docker,
-    # or the linker would complain 
-    - cudatoolkit {{ cuda_compiler_version }}
-  files:
-    - test_load_elf.c        # [linux]
 
 about:
   home: https://developer.nvidia.com/cuquantum-sdk
