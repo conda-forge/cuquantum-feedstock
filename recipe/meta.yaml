@@ -14,39 +14,81 @@ source:
   sha256: 2d35dba3c739e8de51591bcd2d7edf1a3c9995850af6525ae08e9b5c3798cf9a  # [ppc64le]
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win or cuda_compiler_version != "11.2"]
-  script:
-    - mkdir -p $PREFIX/include                                            # [linux]
-    - cp -r include/* $PREFIX/include/                                    # [linux]
-    - mkdir -p $PREFIX/lib                                                # [linux]
-    - mv lib/*.so* $PREFIX/lib/                                           # [linux]
 
-    # Patch for conda-forge:
-    # According to the CUDA support matrix, we require glibc 2.27+ on aarch64-sbsa
-    # and ppc64le, while conda-forge is still on 2.17. However, given that powf is
-    # the only offending symbol that needs a newer glibc, it is the easiest if we
-    # just patch it.
-    - patchelf --clear-symbol-version powf $PREFIX/lib/libcustatevec.so   # [aarch64 or ppc64le]
-  run_exports:
-    - {{ pin_subpackage('cuquantum', max_pin='x.x') }}
-  ignore_run_exports_from:
-    - {{ compiler('cuda') }}
-  missing_dso_whitelist:
-    - '*/libcutensor.so*'
-    - '*/libcublas.so*'
-    - '*/libcublasLt.so*'
-
+# remember, if no output has the same name as the top-level package, conda-build
+# synthesizes a meta package for us, so the requirements below are for "cuquantum".
 requirements:
   build:
-    - {{ compiler('c') }}
-    - {{ compiler('cuda') }}
-    - sysroot_linux-64 2.17  # [linux64]
   host:
   run:
-    - libgomp        # [linux]
-    - cudatoolkit >=11.0,<12
-    - cutensor >=1.5,<2
+    - {{ pin_subpackage('custatevec', exact=True) }}
+    - {{ pin_subpackage('cutensornet', exact=True) }}
+
+outputs:
+
+  - name: custatevec
+    version: 1.1.0
+    build:
+      number: 0
+      script:
+        - mkdir -p $PREFIX/include                                            # [linux]
+        - mv include/custatevec.h $PREFIX/include/                            # [linux]
+        - mkdir -p $PREFIX/lib                                                # [linux]
+        - mv lib/libcustatevec.so* $PREFIX/lib/                               # [linux]
+
+        # Patch for conda-forge:
+        # According to the CUDA support matrix, we require glibc 2.27+ on aarch64-sbsa
+        # and ppc64le, while conda-forge is still on 2.17. However, given that powf is
+        # the only offending symbol that needs a newer glibc, it is the easiest if we
+        # just patch it.
+        - patchelf --clear-symbol-version powf $PREFIX/lib/libcustatevec.so   # [aarch64 or ppc64le]
+      run_exports:
+        - {{ pin_subpackage('custatevec', max_pin='x') }}
+      ignore_run_exports_from:
+        - {{ compiler('cuda') }}
+      missing_dso_whitelist:
+        - '*/libcublas.so*'
+        - '*/libcublasLt.so*'
+      post-link: post-link  # this is supported by conda-build, but undocumented
+    requirements:
+      build:
+        - {{ compiler('c') }}
+        - {{ compiler('cuda') }}
+        - sysroot_linux-64 2.17  # [linux64]
+      host:
+      run:
+        - cudatoolkit >=11.0,<12
+
+  - name: cutensornet
+    version: 1.1.1
+    build:
+      number: 0
+      script:
+        - mkdir -p $PREFIX/include                                            # [linux]
+        - mv include/cutensornet* $PREFIX/include/                            # [linux]
+        - mkdir -p $PREFIX/lib                                                # [linux]
+        - mv lib/libcutensornet.so* $PREFIX/lib/                              # [linux]
+      run_exports:
+        - {{ pin_subpackage('cutensornet', max_pin='x') }}
+      ignore_run_exports_from:
+        - {{ compiler('cuda') }}
+      missing_dso_whitelist:
+        - '*/libcutensor.so*'
+        - '*/libcublas.so*'
+        - '*/libcublasLt.so*'
+      post-link: post-link  # this is supported by conda-build, but undocumented
+    requirements:
+      build:
+        - {{ compiler('c') }}
+        - {{ compiler('cuda') }}
+        - sysroot_linux-64 2.17  # [linux64]
+      host:
+      run:
+        - libgomp        # [linux]
+        - cudatoolkit >=11.0,<12
+        - cutensor >=1.5,<2
 
 test:
   requires:
