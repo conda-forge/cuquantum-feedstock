@@ -3,18 +3,14 @@ set -ex
 
 # integraty test
 test -f $PREFIX/include/custatevec.h
-test -f $PREFIX/include/cutensornet.h
-test -f $PREFIX/include/cutensornet/types.h
 test -f $PREFIX/lib/libcustatevec.so
-test -f $PREFIX/lib/libcutensornet.so
 
 # dlopen test
 ${GCC} test_load_elf.c -std=c99 -Werror -ldl -o test_load_elf
 ./test_load_elf $PREFIX/lib/libcustatevec.so
-./test_load_elf $PREFIX/lib/libcutensornet.so
 
-# get the package version (major.minor.patch)
-IFS="." read -a CUQUANTUM_VER <<< $PKG_VERSION 
+# get the package version (major.minor.patch) from cmdline
+IFS="." read -a CUQUANTUM_VER <<< $1
 CUQUANTUM_VER=v${CUQUANTUM_VER[0]}.${CUQUANTUM_VER[1]}.${CUQUANTUM_VER[2]}
 
 # compilation test
@@ -35,11 +31,3 @@ for f in ./*.cu; do
     echo $error_log
 done
 popd
-
-cd cutensornet
-for f in ./*.cu; do
-    if [[ "$f" == *"mpi"* ]]; then continue; fi  # skip MPI files for simplicity
-    echo $f
-    error_log=$(nvcc $NVCC_FLAGS --std=c++11 -I$PREFIX/include -L$PREFIX/lib -lcutensornet -lcutensor $f -o $f.out 2>&1)
-    echo $error_log
-done

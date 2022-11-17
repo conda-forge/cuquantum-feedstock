@@ -23,19 +23,6 @@ source:
 build:
   number: 1
 
-test:
-  requires:
-    - git
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - {{ compiler('cuda') }}
-    - sysroot_linux-64 2.17  # [linux64]
-    # make sure we pick up the version matching the docker,
-    # or the linker would complain
-    - cudatoolkit {{ cuda_compiler_version }}
-  files:
-    - test_load_elf.c        # [linux]
-
 outputs:
 
   - name: cuquantum
@@ -83,6 +70,22 @@ outputs:
       host:
       run:
         - cudatoolkit >=11.0,<12
+    # apparently conda-build supports full test section spec, the document is super outdated
+    test:
+      requires:
+        - git
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+        - {{ compiler('cuda') }}
+        - sysroot_linux-64 2.17  # [linux64]
+        # make sure we pick up the version matching the docker,
+        # or the linker would complain
+        - cudatoolkit {{ cuda_compiler_version }}
+      files:
+        - test_load_elf.c
+        - cusv_run_test.sh
+      commands:
+        - ./cusv_run_test.sh {{ version }}
     about:
       summary: 'cuStateVec: A High-Performance Library for State Vector Quantum Simulators'
       description: |
@@ -124,6 +127,22 @@ outputs:
         - libgomp        # [linux]
         - cudatoolkit >=11.0,<12
         - cutensor >=1.5,<2
+    # apparently conda-build supports full test section spec, the document is super outdated
+    test:
+      requires:
+        - git
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+        - {{ compiler('cuda') }}
+        - sysroot_linux-64 2.17  # [linux64]
+        # make sure we pick up the version matching the docker,
+        # or the linker would complain
+        - cudatoolkit {{ cuda_compiler_version }}
+      files:
+        - test_load_elf.c
+        - cutn_run_test.sh
+      commands:
+        - ./cutn_run_test.sh {{ version }}
     about:
       summary: 'cuTensorNet: A High-Performance Library for Tensor Network Computations'
       description: |
