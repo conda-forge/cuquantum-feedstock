@@ -36,6 +36,9 @@ outputs:
       run:
         - {{ pin_subpackage('custatevec', exact=True) }}
         - {{ pin_subpackage('cutensornet', exact=True) }}
+    test:
+      commands:
+        - echo "ok!"
 
   - name: custatevec
     version: {{ cusv_version }}
