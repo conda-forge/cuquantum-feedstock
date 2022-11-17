@@ -1,11 +1,55 @@
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/cuquantum-feedstock/blob/main/LICENSE.txt)
+
+About custatevec
+================
+
+Home: https://developer.nvidia.com/cuquantum-sdk
+
+Package license: [LicenseRef-cuQuantum-Software-License-Agreement](https://docs.nvidia.com/cuda/cuquantum/license.html)
+
+Summary: cuStateVec: A High-Performance Library for State Vector Quantum Simulators
+
+Development: https://github.com/NVIDIA/cuQuantum
+
+Documentation: https://docs.nvidia.com/cuda/custatevec/index.html
+
+NVIDIA cuStateVec is a high-performance GPU library dedicated to operations with state vectors
+for expressing quantum algorithms. cuStateVec is a component of the NVIDIA cuQuantum SDK.
+
+The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+Software License Agreement (EULA). By downloading and using the packages,
+you accept the terms and conditions of the NVIDIA cuQuantum EULA -
+https://docs.nvidia.com/cuda/cuquantum/license.html
+
+
+About cutensornet
+=================
+
+Home: https://developer.nvidia.com/cuquantum-sdk
+
+Package license: [LicenseRef-cuQuantum-Software-License-Agreement](https://docs.nvidia.com/cuda/cuquantum/license.html)
+
+Summary: cuTensorNet: A High-Performance Library for Tensor Network Computations
+
+Development: https://github.com/NVIDIA/cuQuantum
+
+Documentation: https://docs.nvidia.com/cuda/cutensornet/index.html
+
+NVIDIA cuTensorNet is a high-performance GPU library for tensor network computations,
+a component of the NVIDIA cuQuantum SDK.
+
+The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+Software License Agreement (EULA). By downloading and using the packages,
+you accept the terms and conditions of the NVIDIA cuQuantum EULA -
+https://docs.nvidia.com/cuda/cuquantum/license.html
+
+
 About cuquantum
 ===============
 
 Home: https://developer.nvidia.com/cuquantum-sdk
 
 Package license: [LicenseRef-cuQuantum-Software-License-Agreement](https://docs.nvidia.com/cuda/cuquantum/license.html)
-
-Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/cuquantum-feedstock/blob/main/LICENSE.txt)
 
 Summary: cuQuantum SDK: A High-Performance Library for Accelerating Quantum Information Science
 
@@ -21,13 +65,29 @@ SDK are
   - cuStateVec: a high-performance library for state vector computations
   - cuTensorNet: a high-performance library for tensor network computations
 
-Additionally, NVIDIA cuQuantum Python provides Python bindings and high-level object-oriented
-models for accessing the full functionalities of NVIDIA cuQuantum SDK from Python.
-
 The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
 Software License Agreement (EULA). By downloading and using the packages,
 you accept the terms and conditions of the NVIDIA cuQuantum EULA -
 https://docs.nvidia.com/cuda/cuquantum/license.html
+
+
+About cuquantum-python
+======================
+
+Home: https://developer.nvidia.com/cuquantum-sdk
+
+Package license: [BSD-3-Clause](https://docs.nvidia.com/cuda/cuquantum/license.html#nvidia-cuquantum-python)
+
+Summary: cuQuantum Python: Python APIs for NVIDIA cuQuantum SDK
+
+Development: https://github.com/NVIDIA/cuQuantum
+
+Documentation: https://docs.nvidia.com/cuda/cuquantum/python/index.html
+
+NVIDIA cuQuantum Python provides Python bindings and high-level object-oriented
+models for accessing the full functionalities of NVIDIA cuQuantum SDK from Python.
+
+
 
 
 Current build status

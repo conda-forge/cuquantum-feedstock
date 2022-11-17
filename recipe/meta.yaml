@@ -38,6 +38,18 @@ test:
 
 outputs:
 
+  - name: cuquantum
+    version: {{ version }}
+    build:
+      number: 1
+      skip: true  # [win or cuda_compiler_version != "11.2"]
+    requirements:
+      build:
+      host:
+      run:
+        - {{ pin_subpackage('custatevec', exact=True) }}
+        - {{ pin_subpackage('cutensornet', exact=True) }}
+
   - name: custatevec
     version: {{ cusv_version }}
     build:
@@ -71,6 +83,17 @@ outputs:
       host:
       run:
         - cudatoolkit >=11.0,<12
+    about:
+      summary: 'cuStateVec: A High-Performance Library for State Vector Quantum Simulators'
+      description: |
+        NVIDIA cuStateVec is a high-performance GPU library dedicated to operations with state vectors
+        for expressing quantum algorithms. cuStateVec is a component of the NVIDIA cuQuantum SDK.
+
+        The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+        Software License Agreement (EULA). By downloading and using the packages,
+        you accept the terms and conditions of the NVIDIA cuQuantum EULA -
+        https://docs.nvidia.com/cuda/cuquantum/license.html
+      doc_url: https://docs.nvidia.com/cuda/custatevec/index.html
 
   - name: cutensornet
     version: {{ cutn_version }}
@@ -101,18 +124,17 @@ outputs:
         - libgomp        # [linux]
         - cudatoolkit >=11.0,<12
         - cutensor >=1.5,<2
+    about:
+      summary: 'cuTensorNet: A High-Performance Library for Tensor Network Computations'
+      description: |
+        NVIDIA cuTensorNet is a high-performance GPU library for tensor network computations,
+        a component of the NVIDIA cuQuantum SDK.
 
-  - name: cuquantum
-    version: {{ version }}
-    build:
-      number: 1
-      skip: true  # [win or cuda_compiler_version != "11.2"]
-    requirements:
-      build:
-      host:
-      run:
-        - {{ pin_subpackage('custatevec', exact=True) }}
-        - {{ pin_subpackage('cutensornet', exact=True) }}
+        The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+        Software License Agreement (EULA). By downloading and using the packages,
+        you accept the terms and conditions of the NVIDIA cuQuantum EULA -
+        https://docs.nvidia.com/cuda/cuquantum/license.html
+      doc_url: https://docs.nvidia.com/cuda/cutensornet/index.html
 
   - name: cuquantum-python
     version: {{ ".".join(version.split(".")[:3]) }}
@@ -162,6 +184,10 @@ outputs:
       license_url: https://docs.nvidia.com/cuda/cuquantum/license.html#nvidia-cuquantum-python
       license_file: LICENSE
       summary: "cuQuantum Python: Python APIs for NVIDIA cuQuantum SDK"
+      description: |
+        NVIDIA cuQuantum Python provides Python bindings and high-level object-oriented
+        models for accessing the full functionalities of NVIDIA cuQuantum SDK from Python.
+      doc_url: https://docs.nvidia.com/cuda/cuquantum/python/index.html
 
 about:
   home: https://developer.nvidia.com/cuquantum-sdk
@@ -177,9 +203,6 @@ about:
 
       - cuStateVec: a high-performance library for state vector computations
       - cuTensorNet: a high-performance library for tensor network computations
-
-    Additionally, NVIDIA cuQuantum Python provides Python bindings and high-level object-oriented
-    models for accessing the full functionalities of NVIDIA cuQuantum SDK from Python.
 
     The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
     Software License Agreement (EULA). By downloading and using the packages,
