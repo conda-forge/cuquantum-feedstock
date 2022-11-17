@@ -9,7 +9,7 @@ Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/cuquantum-feeds
 
 Summary: cuQuantum SDK: A High-Performance Library for Accelerating Quantum Information Science
 
-Development: https://developer.nvidia.com/cuquantum-downloads
+Development: https://github.com/NVIDIA/cuQuantum
 
 Documentation: https://docs.nvidia.com/cuda/cuquantum/index.html
 
@@ -21,7 +21,10 @@ SDK are
   - cuStateVec: a high-performance library for state vector computations
   - cuTensorNet: a high-performance library for tensor network computations
 
-License Agreements:- The packages are governed by the NVIDIA cuQuantum
+Additionally, NVIDIA cuQuantum Python provides Python bindings and high-level object-oriented
+models for accessing the full functionalities of NVIDIA cuQuantum SDK from Python.
+
+The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
 Software License Agreement (EULA). By downloading and using the packages,
 you accept the terms and conditions of the NVIDIA cuQuantum EULA -
 https://docs.nvidia.com/cuda/cuquantum/license.html
@@ -86,6 +89,7 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-cuquantum-green.svg)](https://anaconda.org/conda-forge/cuquantum) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/cuquantum.svg)](https://anaconda.org/conda-forge/cuquantum) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/cuquantum.svg)](https://anaconda.org/conda-forge/cuquantum) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/cuquantum.svg)](https://anaconda.org/conda-forge/cuquantum) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-cuquantum--python-green.svg)](https://anaconda.org/conda-forge/cuquantum-python) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/cuquantum-python.svg)](https://anaconda.org/conda-forge/cuquantum-python) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/cuquantum-python.svg)](https://anaconda.org/conda-forge/cuquantum-python) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/cuquantum-python.svg)](https://anaconda.org/conda-forge/cuquantum-python) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-custatevec-green.svg)](https://anaconda.org/conda-forge/custatevec) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/custatevec.svg)](https://anaconda.org/conda-forge/custatevec) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/custatevec.svg)](https://anaconda.org/conda-forge/custatevec) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/custatevec.svg)](https://anaconda.org/conda-forge/custatevec) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-cutensornet-green.svg)](https://anaconda.org/conda-forge/cutensornet) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/cutensornet.svg)](https://anaconda.org/conda-forge/cutensornet) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/cutensornet.svg)](https://anaconda.org/conda-forge/cutensornet) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/cutensornet.svg)](https://anaconda.org/conda-forge/cutensornet) |
 
@@ -99,16 +103,16 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `cuquantum, custatevec, cutensornet` can be installed with `conda`:
+Once the `conda-forge` channel has been enabled, `cuquantum, cuquantum-python, custatevec, cutensornet` can be installed with `conda`:
 
 ```
-conda install cuquantum custatevec cutensornet
+conda install cuquantum cuquantum-python custatevec cutensornet
 ```
 
 or with `mamba`:
 
 ```
-mamba install cuquantum custatevec cutensornet
+mamba install cuquantum cuquantum-python custatevec cutensornet
 ```
 
 It is possible to list all of the versions of `cuquantum` available on your platform with `conda`:
