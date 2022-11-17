@@ -1,65 +1,215 @@
+# Make sure the component versions are consistent with the SDK version!
 {% set version = "22.07.1.14" %}
+{% set cusv_version = "1.1.0" %}
+{% set cutn_version = "1.1.1" %}
 
 package:
   name: cuquantum
   version: {{ version }}
 
 source:
-  url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-x86_64/cuquantum-linux-x86_64-{{ version }}-archive.tar.xz  # [linux64]
-  url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-sbsa/cuquantum-linux-sbsa-{{ version }}-archive.tar.xz  # [aarch64]
-  url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-ppc64le/cuquantum-linux-ppc64le-{{ version }}-archive.tar.xz  # [ppc64le]
+  - url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-x86_64/cuquantum-linux-x86_64-{{ version }}-archive.tar.xz  # [linux64]
+    sha256: 4c4931096498451593ad553b6cb7a107bb6d6cedea65c80d5376d0cfbb647f8e  # [linux64]
 
-  sha256: 4c4931096498451593ad553b6cb7a107bb6d6cedea65c80d5376d0cfbb647f8e  # [linux64]
-  sha256: 0c8fb14bf8916170e15a2ae7cfa950e23af13c9cb0915bad88d754221ad60116  # [aarch64]
-  sha256: 2d35dba3c739e8de51591bcd2d7edf1a3c9995850af6525ae08e9b5c3798cf9a  # [ppc64le]
+  - url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-sbsa/cuquantum-linux-sbsa-{{ version }}-archive.tar.xz  # [aarch64]
+    sha256: 0c8fb14bf8916170e15a2ae7cfa950e23af13c9cb0915bad88d754221ad60116  # [aarch64]
+
+  - url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-ppc64le/cuquantum-linux-ppc64le-{{ version }}-archive.tar.xz  # [ppc64le]
+    sha256: 2d35dba3c739e8de51591bcd2d7edf1a3c9995850af6525ae08e9b5c3798cf9a  # [ppc64le]
+
+  - url: https://github.com/NVIDIA/cuQuantum/archive/refs/tags/v{{ ".".join(version.split(".")[:3]) }}.tar.gz
+    sha256: 0e33a518bd0ed902f0218e5eafbacb5bf1fcf7949bc923308658e35d0dc9f1fe
 
 build:
-  number: 0
-  skip: true  # [win or cuda_compiler_version != "11.2"]
-  script:
-    - mkdir -p $PREFIX/include                                            # [linux]
-    - cp -r include/* $PREFIX/include/                                    # [linux]
-    - mkdir -p $PREFIX/lib                                                # [linux]
-    - mv lib/*.so* $PREFIX/lib/                                           # [linux]
+  number: 1
 
-    # Patch for conda-forge:
-    # According to the CUDA support matrix, we require glibc 2.27+ on aarch64-sbsa
-    # and ppc64le, while conda-forge is still on 2.17. However, given that powf is
-    # the only offending symbol that needs a newer glibc, it is the easiest if we
-    # just patch it.
-    - patchelf --clear-symbol-version powf $PREFIX/lib/libcustatevec.so   # [aarch64 or ppc64le]
-  run_exports:
-    - {{ pin_subpackage('cuquantum', max_pin='x.x') }}
-  ignore_run_exports_from:
-    - {{ compiler('cuda') }}
-  missing_dso_whitelist:
-    - '*/libcutensor.so*'
-    - '*/libcublas.so*'
-    - '*/libcublasLt.so*'
+outputs:
 
-requirements:
-  build:
-    - {{ compiler('c') }}
-    - {{ compiler('cuda') }}
-    - sysroot_linux-64 2.17  # [linux64]
-  host:
-  run:
-    - libgomp        # [linux]
-    - cudatoolkit >=11.0,<12
-    - cutensor >=1.5,<2
+  - name: cuquantum
+    version: {{ version }}
+    build:
+      number: 1
+      skip: true  # [win or cuda_compiler_version != "11.2"]
+    requirements:
+      build:
+      host:
+      run:
+        - {{ pin_subpackage('custatevec', exact=True) }}
+        - {{ pin_subpackage('cutensornet', exact=True) }}
+    test:
+      commands:
+        - echo "ok!"
 
-test:
-  requires:
-    - git
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - {{ compiler('cuda') }}
-    - sysroot_linux-64 2.17  # [linux64]
-    # make sure we pick up the version matching the docker,
-    # or the linker would complain 
-    - cudatoolkit {{ cuda_compiler_version }}
-  files:
-    - test_load_elf.c        # [linux]
+  - name: custatevec
+    version: {{ cusv_version }}
+    build:
+      number: 0
+      skip: true  # [win or cuda_compiler_version != "11.2"]
+      script:
+        - mkdir -p $PREFIX/include                                            # [linux]
+        - mv include/custatevec.h $PREFIX/include/                            # [linux]
+        - mkdir -p $PREFIX/lib                                                # [linux]
+        - mv lib/libcustatevec.so* $PREFIX/lib/                               # [linux]
+
+        # Patch for conda-forge:
+        # According to the CUDA support matrix, we require glibc 2.27+ on aarch64-sbsa
+        # and ppc64le, while conda-forge is still on 2.17. However, given that powf is
+        # the only offending symbol that needs a newer glibc, it is the easiest if we
+        # just patch it.
+        - patchelf --clear-symbol-version powf $PREFIX/lib/libcustatevec.so   # [aarch64 or ppc64le]
+      run_exports:
+        - {{ pin_subpackage('custatevec', max_pin='x') }}
+      ignore_run_exports_from:
+        - {{ compiler('cuda') }}
+      missing_dso_whitelist:
+        - '*/libcublas.so*'
+        - '*/libcublasLt.so*'
+      post-link: post-link  # this is supported by conda-build, but undocumented
+    requirements:
+      build:
+        - {{ compiler('c') }}
+        - {{ compiler('cuda') }}
+        - sysroot_linux-64 2.17  # [linux64]
+      host:
+      run:
+        - cudatoolkit >=11.0,<12
+    # apparently conda-build supports full test section spec, the document is super outdated
+    test:
+      requires:
+        - git
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+        - {{ compiler('cuda') }}
+        - sysroot_linux-64 2.17  # [linux64]
+        # make sure we pick up the version matching the docker,
+        # or the linker would complain
+        - cudatoolkit {{ cuda_compiler_version }}
+      files:
+        - test_load_elf.c
+        - cusv_run_test.sh
+      commands:
+        - ./cusv_run_test.sh {{ version }}
+    about:
+      summary: 'cuStateVec: A High-Performance Library for State Vector Quantum Simulators'
+      description: |
+        NVIDIA cuStateVec is a high-performance GPU library dedicated to operations with state vectors
+        for expressing quantum algorithms. cuStateVec is a component of the NVIDIA cuQuantum SDK.
+
+        The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+        Software License Agreement (EULA). By downloading and using the packages,
+        you accept the terms and conditions of the NVIDIA cuQuantum EULA -
+        https://docs.nvidia.com/cuda/cuquantum/license.html
+      doc_url: https://docs.nvidia.com/cuda/custatevec/index.html
+
+  - name: cutensornet
+    version: {{ cutn_version }}
+    build:
+      number: 0
+      skip: true  # [win or cuda_compiler_version != "11.2"]
+      script:
+        - mkdir -p $PREFIX/include                                            # [linux]
+        - mv include/cutensornet* $PREFIX/include/                            # [linux]
+        - mkdir -p $PREFIX/lib                                                # [linux]
+        - mv lib/libcutensornet.so* $PREFIX/lib/                              # [linux]
+      run_exports:
+        - {{ pin_subpackage('cutensornet', max_pin='x') }}
+      ignore_run_exports_from:
+        - {{ compiler('cuda') }}
+      missing_dso_whitelist:
+        - '*/libcutensor.so*'
+        - '*/libcublas.so*'
+        - '*/libcublasLt.so*'
+      post-link: post-link  # this is supported by conda-build, but undocumented
+    requirements:
+      build:
+        - {{ compiler('c') }}
+        - {{ compiler('cuda') }}
+        - sysroot_linux-64 2.17  # [linux64]
+      host:
+      run:
+        - libgomp        # [linux]
+        - cudatoolkit >=11.0,<12
+        - cutensor >=1.5,<2
+    # apparently conda-build supports full test section spec, the document is super outdated
+    test:
+      requires:
+        - git
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+        - {{ compiler('cuda') }}
+        - sysroot_linux-64 2.17  # [linux64]
+        # make sure we pick up the version matching the docker,
+        # or the linker would complain
+        - cudatoolkit {{ cuda_compiler_version }}
+      files:
+        - test_load_elf.c
+        - cutn_run_test.sh
+      commands:
+        - ./cutn_run_test.sh {{ version }}
+    about:
+      summary: 'cuTensorNet: A High-Performance Library for Tensor Network Computations'
+      description: |
+        NVIDIA cuTensorNet is a high-performance GPU library for tensor network computations,
+        a component of the NVIDIA cuQuantum SDK.
+
+        The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+        Software License Agreement (EULA). By downloading and using the packages,
+        you accept the terms and conditions of the NVIDIA cuQuantum EULA -
+        https://docs.nvidia.com/cuda/cuquantum/license.html
+      doc_url: https://docs.nvidia.com/cuda/cutensornet/index.html
+
+  - name: cuquantum-python
+    version: {{ ".".join(version.split(".")[:3]) }}
+    build:
+      number: 1
+      skip: True  # [win or cuda_compiler_version != "11.2" or py < 38]
+      script_env:
+        - CUQUANTUM_ROOT=$PREFIX
+        - CUTENSOR_ROOT=$PREFIX
+        - CUQUANTUM_IGNORE_SOLVER=1
+      script:
+        - cd python
+        #- {{ PYTHON }} -m pip install . --no-deps -vv
+        - $PREFIX/bin/python -m pip install . --no-deps -vv
+      ignore_run_exports_from:
+        # let cuquantum handle the CUDA deps
+        - {{ compiler('cuda') }}
+    requirements:
+      build:
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+        - {{ compiler('cuda') }}
+        - sysroot_linux-64 2.17  # [linux64]
+      host:
+        - python
+        - pip
+        - cython
+        - custatevec ={{ cusv_version }}
+        - cutensornet ={{ cutn_version }}
+        - packaging
+      run:
+        - python
+        - numpy >=1.19
+        - cupy >=9.5
+        - {{ pin_subpackage('custatevec', max_pin='x') }}
+        - {{ pin_subpackage('cutensornet', max_pin='x') }}
+      run_constrained:
+        - pytorch >=1.10
+        # we don't have to pin Qiskit or Cirq here because their versions are fairly recent on conda-forge
+    test:
+      imports:
+        - cuquantum
+        - cuquantum.custatevec
+        - cuquantum.cutensornet
+    about:
+      license: BSD-3-Clause
+      license_url: https://docs.nvidia.com/cuda/cuquantum/license.html#nvidia-cuquantum-python
+      license_file: LICENSE
+      summary: "cuQuantum Python: Python APIs for NVIDIA cuQuantum SDK"
+      description: |
+        NVIDIA cuQuantum Python provides Python bindings and high-level object-oriented
+        models for accessing the full functionalities of NVIDIA cuQuantum SDK from Python.
+      doc_url: https://docs.nvidia.com/cuda/cuquantum/python/index.html
 
 about:
   home: https://developer.nvidia.com/cuquantum-sdk
@@ -76,15 +226,17 @@ about:
       - cuStateVec: a high-performance library for state vector computations
       - cuTensorNet: a high-performance library for tensor network computations
 
-    License Agreements:- The packages are governed by the NVIDIA cuQuantum
+    The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
     Software License Agreement (EULA). By downloading and using the packages,
     you accept the terms and conditions of the NVIDIA cuQuantum EULA -
     https://docs.nvidia.com/cuda/cuquantum/license.html
   doc_url: https://docs.nvidia.com/cuda/cuquantum/index.html
-  dev_url: https://developer.nvidia.com/cuquantum-downloads
+  dev_url: https://github.com/NVIDIA/cuQuantum
 
 extra:
   recipe-maintainers:
     - leofang
     - JeremyWangNVDA
     - mtjrider
+    - yangcal
+    - DmitryLyakh

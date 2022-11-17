@@ -1,3 +1,49 @@
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/cuquantum-feedstock/blob/main/LICENSE.txt)
+
+About custatevec
+================
+
+Home: https://developer.nvidia.com/cuquantum-sdk
+
+Package license: [LicenseRef-cuQuantum-Software-License-Agreement](https://docs.nvidia.com/cuda/cuquantum/license.html)
+
+Summary: cuStateVec: A High-Performance Library for State Vector Quantum Simulators
+
+Development: https://github.com/NVIDIA/cuQuantum
+
+Documentation: https://docs.nvidia.com/cuda/custatevec/index.html
+
+NVIDIA cuStateVec is a high-performance GPU library dedicated to operations with state vectors
+for expressing quantum algorithms. cuStateVec is a component of the NVIDIA cuQuantum SDK.
+
+The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+Software License Agreement (EULA). By downloading and using the packages,
+you accept the terms and conditions of the NVIDIA cuQuantum EULA -
+https://docs.nvidia.com/cuda/cuquantum/license.html
+
+
+About cutensornet
+=================
+
+Home: https://developer.nvidia.com/cuquantum-sdk
+
+Package license: [LicenseRef-cuQuantum-Software-License-Agreement](https://docs.nvidia.com/cuda/cuquantum/license.html)
+
+Summary: cuTensorNet: A High-Performance Library for Tensor Network Computations
+
+Development: https://github.com/NVIDIA/cuQuantum
+
+Documentation: https://docs.nvidia.com/cuda/cutensornet/index.html
+
+NVIDIA cuTensorNet is a high-performance GPU library for tensor network computations,
+a component of the NVIDIA cuQuantum SDK.
+
+The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+Software License Agreement (EULA). By downloading and using the packages,
+you accept the terms and conditions of the NVIDIA cuQuantum EULA -
+https://docs.nvidia.com/cuda/cuquantum/license.html
+
+
 About cuquantum
 ===============
 
@@ -5,11 +51,9 @@ Home: https://developer.nvidia.com/cuquantum-sdk
 
 Package license: [LicenseRef-cuQuantum-Software-License-Agreement](https://docs.nvidia.com/cuda/cuquantum/license.html)
 
-Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/cuquantum-feedstock/blob/main/LICENSE.txt)
-
 Summary: cuQuantum SDK: A High-Performance Library for Accelerating Quantum Information Science
 
-Development: https://developer.nvidia.com/cuquantum-downloads
+Development: https://github.com/NVIDIA/cuQuantum
 
 Documentation: https://docs.nvidia.com/cuda/cuquantum/index.html
 
@@ -21,10 +65,29 @@ SDK are
   - cuStateVec: a high-performance library for state vector computations
   - cuTensorNet: a high-performance library for tensor network computations
 
-License Agreements:- The packages are governed by the NVIDIA cuQuantum
+The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
 Software License Agreement (EULA). By downloading and using the packages,
 you accept the terms and conditions of the NVIDIA cuQuantum EULA -
 https://docs.nvidia.com/cuda/cuquantum/license.html
+
+
+About cuquantum-python
+======================
+
+Home: https://developer.nvidia.com/cuquantum-sdk
+
+Package license: [BSD-3-Clause](https://docs.nvidia.com/cuda/cuquantum/license.html#nvidia-cuquantum-python)
+
+Summary: cuQuantum Python: Python APIs for NVIDIA cuQuantum SDK
+
+Development: https://github.com/NVIDIA/cuQuantum
+
+Documentation: https://docs.nvidia.com/cuda/cuquantum/python/index.html
+
+NVIDIA cuQuantum Python provides Python bindings and high-level object-oriented
+models for accessing the full functionalities of NVIDIA cuQuantum SDK from Python.
+
+
 
 
 Current build status
@@ -55,21 +118,21 @@ Current build status
               <td>linux_64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux_64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10" alt="variant">
                 </a>
               </td>
             </tr><tr>
               <td>linux_aarch64_cuda_compiler_version11.2</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux_aarch64_cuda_compiler_version11.2" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compiler_version11.2" alt="variant">
                 </a>
               </td>
             </tr><tr>
               <td>linux_ppc64le_cuda_compiler_version11.2</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux_ppc64le_cuda_compiler_version11.2" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_cuda_compiler_version11.2" alt="variant">
                 </a>
               </td>
             </tr>
@@ -86,6 +149,9 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-cuquantum-green.svg)](https://anaconda.org/conda-forge/cuquantum) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/cuquantum.svg)](https://anaconda.org/conda-forge/cuquantum) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/cuquantum.svg)](https://anaconda.org/conda-forge/cuquantum) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/cuquantum.svg)](https://anaconda.org/conda-forge/cuquantum) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-cuquantum--python-green.svg)](https://anaconda.org/conda-forge/cuquantum-python) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/cuquantum-python.svg)](https://anaconda.org/conda-forge/cuquantum-python) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/cuquantum-python.svg)](https://anaconda.org/conda-forge/cuquantum-python) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/cuquantum-python.svg)](https://anaconda.org/conda-forge/cuquantum-python) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-custatevec-green.svg)](https://anaconda.org/conda-forge/custatevec) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/custatevec.svg)](https://anaconda.org/conda-forge/custatevec) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/custatevec.svg)](https://anaconda.org/conda-forge/custatevec) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/custatevec.svg)](https://anaconda.org/conda-forge/custatevec) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-cutensornet-green.svg)](https://anaconda.org/conda-forge/cutensornet) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/cutensornet.svg)](https://anaconda.org/conda-forge/cutensornet) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/cutensornet.svg)](https://anaconda.org/conda-forge/cutensornet) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/cutensornet.svg)](https://anaconda.org/conda-forge/cutensornet) |
 
 Installing cuquantum
 ====================
@@ -97,16 +163,16 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `cuquantum` can be installed with `conda`:
+Once the `conda-forge` channel has been enabled, `cuquantum, cuquantum-python, custatevec, cutensornet` can be installed with `conda`:
 
 ```
-conda install cuquantum
+conda install cuquantum cuquantum-python custatevec cutensornet
 ```
 
 or with `mamba`:
 
 ```
-mamba install cuquantum
+mamba install cuquantum cuquantum-python custatevec cutensornet
 ```
 
 It is possible to list all of the versions of `cuquantum` available on your platform with `conda`:
@@ -201,7 +267,9 @@ In order to produce a uniquely identifiable distribution:
 Feedstock Maintainers
 =====================
 
+* [@DmitryLyakh](https://github.com/DmitryLyakh/)
 * [@JeremyWangNVDA](https://github.com/JeremyWangNVDA/)
 * [@leofang](https://github.com/leofang/)
 * [@mtjrider](https://github.com/mtjrider/)
+* [@yangcal](https://github.com/yangcal/)
 
