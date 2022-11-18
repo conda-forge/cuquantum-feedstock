@@ -90,6 +90,10 @@ outputs:
       commands:
         - ./cusv_run_test.sh {{ version }}
     about:
+      home: https://developer.nvidia.com/cuquantum-sdk
+      license: LicenseRef-cuQuantum-Software-License-Agreement
+      license_url: https://docs.nvidia.com/cuda/cuquantum/license.html
+      license_file: docs/cuQuantum_license.pdf
       summary: 'cuStateVec: A High-Performance Library for State Vector Quantum Simulators'
       description: |
         NVIDIA cuStateVec is a high-performance GPU library dedicated to operations with state vectors
@@ -100,6 +104,7 @@ outputs:
         you accept the terms and conditions of the NVIDIA cuQuantum EULA -
         https://docs.nvidia.com/cuda/cuquantum/license.html
       doc_url: https://docs.nvidia.com/cuda/custatevec/index.html
+      dev_url: https://github.com/NVIDIA/cuQuantum
 
   - name: cutensornet
     version: {{ cutn_version }}
@@ -147,6 +152,10 @@ outputs:
       commands:
         - ./cutn_run_test.sh {{ version }}
     about:
+      home: https://developer.nvidia.com/cuquantum-sdk
+      license: LicenseRef-cuQuantum-Software-License-Agreement
+      license_url: https://docs.nvidia.com/cuda/cuquantum/license.html
+      license_file: docs/cuQuantum_license.pdf
       summary: 'cuTensorNet: A High-Performance Library for Tensor Network Computations'
       description: |
         NVIDIA cuTensorNet is a high-performance GPU library for tensor network computations,
@@ -157,6 +166,7 @@ outputs:
         you accept the terms and conditions of the NVIDIA cuQuantum EULA -
         https://docs.nvidia.com/cuda/cuquantum/license.html
       doc_url: https://docs.nvidia.com/cuda/cutensornet/index.html
+      dev_url: https://github.com/NVIDIA/cuQuantum
 
   - name: cuquantum-python
     version: {{ ".".join(version.split(".")[:3]) }}
@@ -202,6 +212,7 @@ outputs:
         - cuquantum.custatevec
         - cuquantum.cutensornet
     about:
+      home: https://developer.nvidia.com/cuquantum-sdk
       license: BSD-3-Clause
       license_url: https://docs.nvidia.com/cuda/cuquantum/license.html#nvidia-cuquantum-python
       license_file: LICENSE
@@ -210,6 +221,7 @@ outputs:
         NVIDIA cuQuantum Python provides Python bindings and high-level object-oriented
         models for accessing the full functionalities of NVIDIA cuQuantum SDK from Python.
       doc_url: https://docs.nvidia.com/cuda/cuquantum/python/index.html
+      dev_url: https://github.com/NVIDIA/cuQuantum
 
 about:
   home: https://developer.nvidia.com/cuquantum-sdk
