@@ -34,8 +34,8 @@ outputs:
       build:
       host:
       run:
-        - {{ pin_subpackage('custatevec', exact=True) }}
-        - {{ pin_subpackage('cutensornet', exact=True) }}
+        - {{ pin_subpackage('custatevec', max_pin='x.x.x') }}
+        - {{ pin_subpackage('cutensornet', max_pin='x.x.x') }}
     test:
       commands:
         - echo "ok!"
