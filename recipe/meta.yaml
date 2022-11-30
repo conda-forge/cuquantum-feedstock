@@ -3,6 +3,19 @@
 {% set cusv_version = "1.2.0" %}
 {% set cutn_version = "2.0.0" %}
 
+# prioritize nompi variant via build number
+{% set cutn_build = 0 %}
+{% if mpi == 'nompi' %}
+{% set cutn_build = cutn_build + 100 %}
+{% endif %}
+
+# encode mpi dependency in the build string
+{% if mpi != "nompi" %}
+{% set mpi_prefix = "mpi_" + mpi %}
+{% else %}
+{% set mpi_prefix = "nompi" %}
+{% endif %}
+
 package:
   name: cuquantum
   version: {{ version }}
@@ -109,15 +122,24 @@ outputs:
   - name: cutensornet
     version: {{ cutn_version }}
     build:
-      number: 1
+      number: {{ cutn_build }}
+      string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ cutn_build }}"
       skip: true  # [win or cuda_compiler_version != "11.2"]
       script:
         - mkdir -p $PREFIX/include                                            # [linux]
         - mv include/cutensornet* $PREFIX/include/                            # [linux]
         - mkdir -p $PREFIX/lib                                                # [linux]
         - mv lib/libcutensornet.so* $PREFIX/lib/                              # [linux]
+
+        # build the wrapper lib
+        - $GCC -shared -std=c11 -fPIC -I$CUDA_PATH/include -I$PREFIX/include distributed_interfaces/cutensornet_distributed_interface_mpi.c -o $PREFIX/lib/libcutensornet_distributed_interface_mpi.so  # [mpi != 'nompi']
+        # copy activate/deactivate scripts
+        - mkdir -p "${PREFIX}/etc/conda/activate.d"  # [mpi != 'nompi']
+        - cp "${RECIPE_DIR}/cutn-activate.sh" "${PREFIX}/etc/conda/activate.d/cutn-activate.sh"  # [mpi != 'nompi']
+        - mkdir -p "${PREFIX}/etc/conda/deactivate.d"  # [mpi != 'nompi']
+        - cp "${RECIPE_DIR}/cutn-deactivate.sh" "${PREFIX}/etc/conda/deactivate.d/cutn-deactivate.sh"  # [mpi != 'nompi']
       run_exports:
-        - {{ pin_subpackage('cutensornet', max_pin='x') }}
+        - {{ pin_subpackage('cutensornet', max_pin='x') }} {{ mpi_prefix }}_*
       ignore_run_exports_from:
         - {{ compiler('cuda') }}
       missing_dso_whitelist:
@@ -133,10 +155,13 @@ outputs:
         - {{ compiler('cuda') }}
         - sysroot_linux-64 2.17  # [linux64]
       host:
+        - {{ mpi }}  # [mpi != 'nompi']
       run:
-        - libgomp        # [linux]
         - cudatoolkit >=11.0,<12
-        - cutensor >=1.5,<2
+        - cutensor >=1.6.1,<2
+        # conda-forge mpich does not support CUDA...
+        - {{ mpi }} * external*  # [mpi == 'mpich']
+        - {{ mpi }}              # [mpi == 'openmpi']
     # apparently conda-build supports full test section spec, the document is super outdated
     test:
       requires:
@@ -153,6 +178,8 @@ outputs:
         - cutn_run_test.sh
       commands:
         - ./cutn_run_test.sh {{ version }}
+        - echo $CUTENSORNET_COMM_LIB  # [mpi != 'nompi']
+        - test -f $PREFIX/lib/libcutensornet_distributed_interface_mpi.so  # [mpi != 'nompi']
     about:
       home: https://developer.nvidia.com/cuquantum-sdk
       license: LicenseRef-cuQuantum-Software-License-Agreement
