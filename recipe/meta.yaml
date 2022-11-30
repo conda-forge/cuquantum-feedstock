@@ -1,7 +1,7 @@
 # Make sure the component versions are consistent with the SDK version!
-{% set version = "22.07.1.14" %}
-{% set cusv_version = "1.1.0" %}
-{% set cutn_version = "1.1.1" %}
+{% set version = "22.11.0.13" %}
+{% set cusv_version = "1.2.0" %}
+{% set cutn_version = "2.0.0" %}
 
 package:
   name: cuquantum
@@ -9,26 +9,26 @@ package:
 
 source:
   - url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-x86_64/cuquantum-linux-x86_64-{{ version }}-archive.tar.xz  # [linux64]
-    sha256: 4c4931096498451593ad553b6cb7a107bb6d6cedea65c80d5376d0cfbb647f8e  # [linux64]
+    sha256: c02f20d4ece8f94c5e29f26613c520664cb888788366b0e2ddbba366e08ceba9  # [linux64]
 
   - url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-sbsa/cuquantum-linux-sbsa-{{ version }}-archive.tar.xz  # [aarch64]
-    sha256: 0c8fb14bf8916170e15a2ae7cfa950e23af13c9cb0915bad88d754221ad60116  # [aarch64]
+    sha256: 85d8df2e2fd6cb55311ac69e792dfaae87931d399898fefdcbb4773d606ff7e9  # [aarch64]
 
   - url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-ppc64le/cuquantum-linux-ppc64le-{{ version }}-archive.tar.xz  # [ppc64le]
-    sha256: 2d35dba3c739e8de51591bcd2d7edf1a3c9995850af6525ae08e9b5c3798cf9a  # [ppc64le]
+    sha256: 6432abc24269b750e2049b32f0ad9d9f573c90af6fd3505434999d0217445d46  # [ppc64le]
 
   - url: https://github.com/NVIDIA/cuQuantum/archive/refs/tags/v{{ ".".join(version.split(".")[:3]) }}.tar.gz
-    sha256: 0e33a518bd0ed902f0218e5eafbacb5bf1fcf7949bc923308658e35d0dc9f1fe
+    sha256: cfc249a71a8a6aab9f76f90c61ce7cd26cde69e335878134c17122143acbfbb1
 
 build:
-  number: 2
+  number: 0
 
 outputs:
 
   - name: cuquantum
     version: {{ version }}
     build:
-      number: 2
+      number: 0
       skip: true  # [win or cuda_compiler_version != "11.2"]
     requirements:
       build:
@@ -124,6 +124,8 @@ outputs:
         - '*/libcutensor.so*'
         - '*/libcublas.so*'
         - '*/libcublasLt.so*'
+        - '*/libcusolver.so*'
+        - '*/libcusparse.so*'
       post-link: post-link  # this is supported by conda-build, but undocumented
     requirements:
       build:
@@ -171,16 +173,15 @@ outputs:
   - name: cuquantum-python
     version: {{ ".".join(version.split(".")[:3]) }}
     build:
-      number: 2
+      number: 0
       skip: True  # [win or cuda_compiler_version != "11.2" or py < 38]
       script_env:
         - CUQUANTUM_ROOT=$PREFIX
         - CUTENSOR_ROOT=$PREFIX
-        - CUQUANTUM_IGNORE_SOLVER=1
       script:
         - cd python
-        #- {{ PYTHON }} -m pip install . --no-deps -vv
-        - $PREFIX/bin/python -m pip install . --no-deps -vv
+        # {{ PYTHON }} is not resolved properly in multi-output recipes...
+        - $PREFIX/bin/python -m pip install --no-deps --no-build-isolation -vv .
       ignore_run_exports_from:
         # let cuquantum handle the CUDA deps
         - {{ compiler('cuda') }}
