@@ -4,6 +4,7 @@ set -ex
 # integraty test
 test -f $PREFIX/include/cutensornet.h
 test -f $PREFIX/include/cutensornet/types.h
+test -f $PREFIX/include/cutensornet/typesDistributed.h
 test -f $PREFIX/lib/libcutensornet.so
 
 # dlopen test
