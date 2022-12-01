@@ -10,6 +10,10 @@ test -f $PREFIX/lib/libcutensornet.so
 ${GCC} test_load_elf.c -std=c99 -Werror -ldl -o test_load_elf
 ./test_load_elf $PREFIX/lib/libcutensornet.so
 
+if [[ -n ${CUTENSORNET_COMM_LIB:+x} ]]; then
+    LD_PRELOAD=$PREFIX/lib/libmpi.so ./test_load_elf $CUTENSORNET_COMM_LIB cutensornetCommInterface
+fi
+
 # get the package version (major.minor.patch) from cmdline
 IFS="." read -a CUQUANTUM_VER <<< $1
 CUQUANTUM_VER=v${CUQUANTUM_VER[0]}.${CUQUANTUM_VER[1]}.${CUQUANTUM_VER[2]}
@@ -26,7 +30,7 @@ if [[ $target_platform == linux-ppc64le && $cuda_compiler_version == 10.* ]]; th
 fi
 
 cd cutensornet
-for f in ./*.cu; do
+for f in $(find . -type f -name "*.cu"); do
     if [[ "$f" == *"mpi"* ]]; then continue; fi  # skip MPI files for simplicity
     echo $f
     error_log=$(nvcc $NVCC_FLAGS --std=c++11 -I$PREFIX/include -L$PREFIX/lib -lcutensornet -lcutensor $f -o $f.out 2>&1)
