@@ -59,6 +59,8 @@ outputs:
       number: 0
       skip: true  # [win or cuda_compiler_version != "11.2"]
       script:
+        # keep Travis alive...
+        - while ! test -f done.txt ; do echo "Alive"; sleep 60; done &        # [not linux64]
         - mkdir -p $PREFIX/include                                            # [linux]
         - mv include/custatevec.h $PREFIX/include/                            # [linux]
         - mkdir -p $PREFIX/lib                                                # [linux]
@@ -70,6 +72,7 @@ outputs:
         # the only offending symbol that needs a newer glibc, it is the easiest if we
         # just patch it.
         - patchelf --clear-symbol-version powf $PREFIX/lib/libcustatevec.so   # [aarch64 or ppc64le]
+        - touch done.txt                                                      # [not linux64]
       run_exports:
         - {{ pin_subpackage('custatevec', max_pin='x') }}
       ignore_run_exports_from:
@@ -126,6 +129,8 @@ outputs:
       string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ cutn_build }}"
       skip: true  # [win or cuda_compiler_version != "11.2"]
       script:
+        # keep Travis alive...
+        - while ! test -f done.txt ; do echo "Alive"; sleep 60; done &        # [not linux64]
         - mkdir -p $PREFIX/include                                            # [linux]
         - mv include/cutensornet* $PREFIX/include/                            # [linux]
         - mkdir -p $PREFIX/lib                                                # [linux]
@@ -138,6 +143,8 @@ outputs:
         - cp "${RECIPE_DIR}/cutn-activate.sh" "${PREFIX}/etc/conda/activate.d/cutn-activate.sh"  # [mpi != 'nompi']
         - mkdir -p "${PREFIX}/etc/conda/deactivate.d"  # [mpi != 'nompi']
         - cp "${RECIPE_DIR}/cutn-deactivate.sh" "${PREFIX}/etc/conda/deactivate.d/cutn-deactivate.sh"  # [mpi != 'nompi']
+
+        - touch done.txt                                                      # [not linux64]
       run_exports:
         - {{ pin_subpackage('cutensornet', max_pin='x') }} {{ mpi_prefix }}_*
       ignore_run_exports_from:
@@ -206,9 +213,12 @@ outputs:
         - CUQUANTUM_ROOT=$PREFIX
         - CUTENSOR_ROOT=$PREFIX
       script:
+        # keep Travis alive...
+        - while ! test -f done.txt ; do echo "Alive"; sleep 60; done &        # [not linux64]
         - cd python
         # {{ PYTHON }} is not resolved properly in multi-output recipes...
         - $PREFIX/bin/python -m pip install --no-deps --no-build-isolation -vv .
+        - touch done.txt                                                      # [not linux64]
       ignore_run_exports_from:
         # let cuquantum handle the CUDA deps
         - {{ compiler('cuda') }}
