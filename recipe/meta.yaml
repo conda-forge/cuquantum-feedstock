@@ -183,8 +183,10 @@ outputs:
         - cutn_run_test.sh
       commands:
         - ./cutn_run_test.sh {{ version }}
-        - echo $CUTENSORNET_COMM_LIB  # [mpi != 'nompi']
-        - test -f $PREFIX/lib/libcutensornet_distributed_interface_mpi.so  # [mpi != 'nompi']
+        - echo $CUTENSORNET_COMM_LIB
+        - test -n $CUTENSORNET_COMM_LIB  # [mpi != 'nompi']
+        - test -f $CUTENSORNET_COMM_LIB  # [mpi != 'nompi']
+        - test -z $CUTENSORNET_COMM_LIB  # [mpi == 'nompi']
     about:
       home: https://developer.nvidia.com/cuquantum-sdk
       license: LicenseRef-cuQuantum-Software-License-Agreement
@@ -234,16 +236,19 @@ outputs:
         - python
         - numpy >=1.19
         - cupy >=9.5
-        - {{ pin_subpackage('custatevec', max_pin='x') }}
-        - {{ pin_subpackage('cutensornet', max_pin='x') }}
+        - custatevec >=1.1.0,<2
+        - cutensornet >= 2.0.0,<3
       run_constrained:
         - pytorch >=1.10
+        - mpi4py >=3.1.0
         # we don't have to pin Qiskit or Cirq here because their versions are fairly recent on conda-forge
     test:
       imports:
         - cuquantum
         - cuquantum.custatevec
         - cuquantum.cutensornet
+      commands:
+        - python -m cuquantum --includes --libs --target custatevec --target cutensornet
     about:
       home: https://developer.nvidia.com/cuquantum-sdk
       license: BSD-3-Clause
