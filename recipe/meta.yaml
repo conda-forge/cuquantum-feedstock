@@ -6,7 +6,7 @@
 # prioritize nompi variant via build number
 {% set cutn_build = 0 %}
 {% if mpi == 'nompi' %}
-{% set cutn_build = cutn_build + 100 %}
+{% set cutn_build = cutn_build + 101 %}
 {% endif %}
 
 # encode mpi dependency in the build string
@@ -169,6 +169,11 @@ outputs:
         # conda-forge mpich does not support CUDA...
         - {{ mpi }} * external*  # [mpi == 'mpich']
         - {{ mpi }}              # [mpi == 'openmpi']
+      run_constrained:
+        # if users also wanna install mpi, we need to ensure the nompi version is not
+        # picked by the solver, we do so by createing a conflict
+        - openmpi <0.a0          # [mpi == 'nompi']
+        - mpich <0.a0            # [mpi == 'nompi']
     # apparently conda-build supports full test section spec, the document is super outdated
     test:
       requires:
