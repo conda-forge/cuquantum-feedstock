@@ -236,8 +236,8 @@ outputs:
         - python
         - numpy >=1.19
         - cupy >=9.5
-        - custatevec >=1.1.0,<2
-        - cutensornet >= 2.0.0,<3
+        - {{ pin_subpackage('custatevec', max_pin='x') }}
+        - {{ pin_subpackage('cutensornet', max_pin='x') }}
       run_constrained:
         - pytorch >=1.10
         - mpi4py >=3.1.0
