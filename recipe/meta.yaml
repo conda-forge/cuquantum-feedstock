@@ -4,7 +4,7 @@
 {% set cutn_version = "2.0.0" %}
 
 # prioritize nompi variant via build number
-{% set build_num = 1 %}
+{% set build_num = 2 %}
 {% if mpi == 'nompi' %}
 {% set cutn_build = build_num + 101 %}
 {% else %}
@@ -19,7 +19,7 @@
 {% endif %}
 
 package:
-  name: cuquantum
+  name: cuquantum-sdk  # dummy
   version: {{ version }}
 
 source:
@@ -37,19 +37,15 @@ source:
 
 build:
   number: {{ build_num }}
+  skip: true  # [not linux or cuda_compiler_version != "11.2"]
 
 outputs:
 
-  # Note: the value of "mpi" would be used to compute the package hash, so despite this
-  # metapackage does not care about MPI, it would still have 3 flavors built and uploaded
-  # due to non-colliding hashes. Ideally, this could be avoided by using jinja (or
-  # selector) to do conditional build (or skip), but either conda-build or conda-smithy
-  # has a bug that makes it not working.
   - name: cuquantum
     version: {{ version }}
     build:
       number: {{ build_num }}
-      skip: true  # [win or cuda_compiler_version != "11.2"]
+      skip: true  # [not linux or cuda_compiler_version != "11.2"]
     requirements:
       build:
       host:
@@ -64,7 +60,7 @@ outputs:
     version: {{ cusv_version }}
     build:
       number: {{ build_num }}
-      skip: true  # [win or cuda_compiler_version != "11.2"]
+      skip: true  # [not linux or cuda_compiler_version != "11.2"]
       script:
         - mkdir -p $PREFIX/include                                            # [linux]
         - mv include/custatevec.h $PREFIX/include/                            # [linux]
@@ -131,7 +127,7 @@ outputs:
     build:
       number: {{ cutn_build }}
       string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ cutn_build }}"
-      skip: true  # [win or cuda_compiler_version != "11.2"]
+      skip: true  # [not linux or cuda_compiler_version != "11.2"]
       script:
         - mkdir -p $PREFIX/include                                            # [linux]
         - mv include/cutensornet* $PREFIX/include/                            # [linux]
@@ -217,7 +213,7 @@ outputs:
     build:
       #number: {{ build_num }}
       number: 0  # TODO: revert me
-      skip: True  # [win or cuda_compiler_version != "11.2" or py < 38]
+      skip: true  # [not linux or cuda_compiler_version != "11.2"]
       script_env:
         - CUQUANTUM_ROOT=$PREFIX
         - CUTENSOR_ROOT=$PREFIX
