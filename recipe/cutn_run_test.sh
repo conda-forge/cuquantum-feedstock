@@ -11,13 +11,13 @@ test -f $PREFIX/lib/libcutensornet.so
 ${GCC} test_load_elf.c -std=c99 -Werror -ldl -o test_load_elf
 ./test_load_elf $PREFIX/lib/libcutensornet.so
 
-if [[ $mpi != "mpich" ]]; then
-    EXTRA_FLAGS="LD_PRELOAD=$PREFIX/lib/libmpi.so"
+if [[ $mpi == "openmpi" ]]; then
+    EXTRA_LIBS="$PREFIX/lib/libmpi.so"
 else
-    EXTRA_FLAGS=""
+    EXTRA_LIBS=""
 fi
 if [[ -n ${CUTENSORNET_COMM_LIB:+x} ]]; then
-    $EXTRA_FLAGS ./test_load_elf $CUTENSORNET_COMM_LIB cutensornetCommInterface
+    LD_PRELOAD=$EXTRA_LIBS ./test_load_elf $CUTENSORNET_COMM_LIB cutensornetCommInterface
 fi
 
 # get the package version (major.minor.patch) from cmdline
