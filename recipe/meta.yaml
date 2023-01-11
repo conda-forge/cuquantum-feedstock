@@ -4,9 +4,11 @@
 {% set cutn_version = "2.0.0" %}
 
 # prioritize nompi variant via build number
-{% set cutn_build = 0 %}
+{% set build_num = 1 %}
 {% if mpi == 'nompi' %}
-{% set cutn_build = cutn_build + 101 %}
+{% set cutn_build = build_num + 101 %}
+{% else %}
+{% set cutn_build = build_num %}
 {% endif %}
 
 # encode mpi dependency in the build string
@@ -34,14 +36,19 @@ source:
     sha256: cfc249a71a8a6aab9f76f90c61ce7cd26cde69e335878134c17122143acbfbb1
 
 build:
-  number: 0
+  number: {{ build_num }}
 
 outputs:
 
+  # Note: the value of "mpi" would be used to compute the package hash, so despite this
+  # metapackage does not care about MPI, it would still have 3 flavors built and uploaded
+  # due to non-colliding hashes. Ideally, this could be avoided by using jinja (or
+  # selector) to do conditional build (or skip), but either conda-build or conda-smithy
+  # has a bug that makes it not working.
   - name: cuquantum
     version: {{ version }}
     build:
-      number: 0
+      number: {{ build_num }}
       skip: true  # [win or cuda_compiler_version != "11.2"]
     requirements:
       build:
@@ -56,7 +63,7 @@ outputs:
   - name: custatevec
     version: {{ cusv_version }}
     build:
-      number: 0
+      number: {{ build_num }}
       skip: true  # [win or cuda_compiler_version != "11.2"]
       script:
         - mkdir -p $PREFIX/include                                            # [linux]
@@ -205,9 +212,11 @@ outputs:
       dev_url: https://github.com/NVIDIA/cuQuantum
 
   - name: cuquantum-python
-    version: {{ ".".join(version.split(".")[:3]) }}
+    #version: {{ ".".join(version.split(".")[:3]) }}
+    version: "22.11.0.1"  # TODO: revert me
     build:
-      number: 0
+      #number: {{ build_num }}
+      number: 0  # TODO: revert me
       skip: True  # [win or cuda_compiler_version != "11.2" or py < 38]
       script_env:
         - CUQUANTUM_ROOT=$PREFIX
