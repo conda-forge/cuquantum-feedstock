@@ -11,7 +11,7 @@ test -f $PREFIX/lib/libcutensornet.so
 ${GCC} test_load_elf.c -std=c99 -Werror -ldl -o test_load_elf
 ./test_load_elf $PREFIX/lib/libcutensornet.so
 
-if [[ $mpi == "openmpi" ]]; then
+if [[ -f "$PREFIX/lib/libmpi.so" ]]; then
     EXTRA_LIBS="$PREFIX/lib/libmpi.so"
 else
     EXTRA_LIBS=""
