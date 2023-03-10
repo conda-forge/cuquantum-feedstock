@@ -135,7 +135,7 @@ outputs:
         - mv lib/libcutensornet.so* $PREFIX/lib/                              # [linux]
 
         # build the wrapper lib
-        - $GCC -shared -std=c11 -fPIC -I$CUDA_PATH/include -I$PREFIX/include distributed_interfaces/cutensornet_distributed_interface_mpi.c -o $PREFIX/lib/libcutensornet_distributed_interface_mpi.so  # [mpi != 'nompi']
+        - $GCC -shared -std=c99 -fPIC -I$CUDA_PATH/include -I$PREFIX/include distributed_interfaces/cutensornet_distributed_interface_mpi.c -L$PREFIX/lib -lmpi -o $PREFIX/lib/libcutensornet_distributed_interface_mpi.so  # [mpi != 'nompi']
         # copy activate/deactivate scripts
         - mkdir -p "${PREFIX}/etc/conda/activate.d"  # [mpi != 'nompi']
         - cp "${RECIPE_DIR}/cutn-activate.sh" "${PREFIX}/etc/conda/activate.d/cutn-activate.sh"  # [mpi != 'nompi']
