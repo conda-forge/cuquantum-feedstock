@@ -7,6 +7,8 @@ test -f $PREFIX/include/cutensornet/types.h
 test -f $PREFIX/include/cutensornet/typesDistributed.h
 test -f $PREFIX/lib/libcutensornet.so
 
+ldd $PREFIX/lib/libcutensornet.so
+
 # dlopen test
 ${GCC} test_load_elf.c -std=c99 -Werror -ldl -o test_load_elf
 ./test_load_elf $PREFIX/lib/libcutensornet.so
