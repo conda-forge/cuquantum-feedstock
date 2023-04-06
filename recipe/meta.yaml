@@ -71,7 +71,7 @@ outputs:
         - mkdir -p $PREFIX/include                                            # [linux]
         - mv include/custatevec.h $PREFIX/include/                            # [linux]
         - mkdir -p $PREFIX/lib                                                # [linux]
-        - mv lib/{{ cuda_major}}/libcustatevec.so* $PREFIX/lib/               # [linux]
+        - mv lib/{{ cuda_major }}/libcustatevec.so* $PREFIX/lib/              # [linux]
 
         # Patch for conda-forge:
         # According to the CUDA support matrix, we require glibc 2.27+ on aarch64-sbsa
