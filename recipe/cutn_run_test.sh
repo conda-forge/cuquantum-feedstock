@@ -11,12 +11,15 @@ test -f $PREFIX/lib/libcutensornet.so
 ${GCC} test_load_elf.c -std=c99 -Werror -ldl -o test_load_elf
 ./test_load_elf $PREFIX/lib/libcutensornet.so
 
+# if MPI is present (as in the case of openmpi), do the dlopen test
+#   - for nompi, $CUTENSORNET_COMM_LIB does not exist
+#   - for mpich, we rely on externally provided libmpi.so, so can't test it either
 if [[ -f "$PREFIX/lib/libmpi.so" ]]; then
     EXTRA_LIBS="$PREFIX/lib/libmpi.so"
 else
     EXTRA_LIBS=""
 fi
-if [[ -n ${CUTENSORNET_COMM_LIB:+x} ]]; then
+if [[ -n ${EXTRA_LIBS:+x} ]]; then
     LD_PRELOAD=$EXTRA_LIBS ./test_load_elf $CUTENSORNET_COMM_LIB cutensornetCommInterface
 fi
 

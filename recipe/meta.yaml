@@ -1,12 +1,14 @@
 # Make sure the component versions are consistent with the SDK version!
-{% set version = "22.11.0.13" %}
-{% set cusv_version = "1.2.0" %}
-{% set cutn_version = "2.0.0" %}
+{% set version = "23.03.0.20" %}
+{% set cusv_version = "1.3.0" %}
+{% set cutn_version = "2.1.0" %}
+
+{% set cuda_major = "11" %}
 
 # prioritize nompi variant via build number
-{% set build_num = 2 %}
+{% set build_num = 0 %}
 {% if mpi == 'nompi' %}
-{% set cutn_build = build_num + 101 %}
+{% set cutn_build = build_num + 100 %}
 {% else %}
 {% set cutn_build = build_num %}
 {% endif %}
@@ -24,16 +26,16 @@ package:
 
 source:
   - url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-x86_64/cuquantum-linux-x86_64-{{ version }}-archive.tar.xz  # [linux64]
-    sha256: c02f20d4ece8f94c5e29f26613c520664cb888788366b0e2ddbba366e08ceba9  # [linux64]
+    sha256: 08b31e47adcfbdecad935589e3245a35ee7ee0886f1e8c745aca570213598790  # [linux64]
 
   - url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-sbsa/cuquantum-linux-sbsa-{{ version }}-archive.tar.xz  # [aarch64]
-    sha256: 85d8df2e2fd6cb55311ac69e792dfaae87931d399898fefdcbb4773d606ff7e9  # [aarch64]
+    sha256: 11475c96d1b5713ce6646474796ace676c00f1259ba16c2130c7e74a6fb75ea2  # [aarch64]
 
   - url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-ppc64le/cuquantum-linux-ppc64le-{{ version }}-archive.tar.xz  # [ppc64le]
-    sha256: 6432abc24269b750e2049b32f0ad9d9f573c90af6fd3505434999d0217445d46  # [ppc64le]
+    sha256: 5b4dc4d8d86332f4e988bcb46214a291f2c4058f9a46e36bfa617dc4026a28e7  # [ppc64le]
 
   - url: https://github.com/NVIDIA/cuQuantum/archive/refs/tags/v{{ ".".join(version.split(".")[:3]) }}.tar.gz
-    sha256: cfc249a71a8a6aab9f76f90c61ce7cd26cde69e335878134c17122143acbfbb1
+    sha256: 9ec936b7a730c9ee1651f8df3f5d720c7ab1a951e91aef65f7c81b027e52ec9f
 
 build:
   number: {{ build_num }}
@@ -52,6 +54,10 @@ outputs:
       run:
         - {{ pin_subpackage('custatevec', max_pin='x.x.x') }}
         - {{ pin_subpackage('cutensornet', max_pin='x.x.x') }}
+      # https://github.com/conda-forge/cuda-version-feedstock/pull/3 is not merged yet,
+      # otherwise we should add cuda-version to run, not run_constrained
+      run_constrained:
+        - cuda-version >=11.0,<12
     test:
       commands:
         - echo "ok!"
@@ -65,7 +71,7 @@ outputs:
         - mkdir -p $PREFIX/include                                            # [linux]
         - mv include/custatevec.h $PREFIX/include/                            # [linux]
         - mkdir -p $PREFIX/lib                                                # [linux]
-        - mv lib/libcustatevec.so* $PREFIX/lib/                               # [linux]
+        - mv lib/{{ cuda_major }}/libcustatevec.so* $PREFIX/lib/              # [linux]
 
         # Patch for conda-forge:
         # According to the CUDA support matrix, we require glibc 2.27+ on aarch64-sbsa
@@ -89,6 +95,10 @@ outputs:
       host:
       run:
         - cudatoolkit >=11.0,<12
+      # https://github.com/conda-forge/cuda-version-feedstock/pull/3 is not merged yet,
+      # otherwise we should add cuda-version to run, not run_constrained
+      run_constrained:
+        - cuda-version >=11.0,<12
     # apparently conda-build supports full test section spec, the document is super outdated
     test:
       requires:
@@ -109,7 +119,7 @@ outputs:
       home: https://developer.nvidia.com/cuquantum-sdk
       license: LicenseRef-cuQuantum-Software-License-Agreement
       license_url: https://docs.nvidia.com/cuda/cuquantum/license.html
-      license_file: docs/cuQuantum_license.pdf
+      license_file: LICENSE
       summary: 'cuStateVec: A High-Performance Library for State Vector Quantum Simulators'
       description: |
         NVIDIA cuStateVec is a high-performance GPU library dedicated to operations with state vectors
@@ -132,10 +142,10 @@ outputs:
         - mkdir -p $PREFIX/include                                            # [linux]
         - mv include/cutensornet* $PREFIX/include/                            # [linux]
         - mkdir -p $PREFIX/lib                                                # [linux]
-        - mv lib/libcutensornet.so* $PREFIX/lib/                              # [linux]
+        - mv lib/{{ cuda_major }}/libcutensornet.so* $PREFIX/lib/             # [linux]
 
         # build the wrapper lib
-        - $GCC -shared -std=c11 -fPIC -I$CUDA_PATH/include -I$PREFIX/include distributed_interfaces/cutensornet_distributed_interface_mpi.c -o $PREFIX/lib/libcutensornet_distributed_interface_mpi.so  # [mpi != 'nompi']
+        - $GCC -shared -std=c11 -fPIC -I$CUDA_PATH/include -I$PREFIX/include distributed_interfaces/cutensornet_distributed_interface_mpi.c -L$PREFIX/lib -lmpi -o $PREFIX/lib/libcutensornet_distributed_interface_mpi.so  # [mpi != 'nompi']
         # copy activate/deactivate scripts
         - mkdir -p "${PREFIX}/etc/conda/activate.d"  # [mpi != 'nompi']
         - cp "${RECIPE_DIR}/cutn-activate.sh" "${PREFIX}/etc/conda/activate.d/cutn-activate.sh"  # [mpi != 'nompi']
@@ -170,6 +180,9 @@ outputs:
         # picked by the solver, we do so by createing a conflict
         - openmpi <0.a0          # [mpi == 'nompi']
         - mpich <0.a0            # [mpi == 'nompi']
+        # https://github.com/conda-forge/cuda-version-feedstock/pull/3 is not merged yet,
+        # otherwise we should add cuda-version to run, not run_constrained
+        - cuda-version >=11.0,<12
     # apparently conda-build supports full test section spec, the document is super outdated
     test:
       requires:
@@ -194,7 +207,7 @@ outputs:
       home: https://developer.nvidia.com/cuquantum-sdk
       license: LicenseRef-cuQuantum-Software-License-Agreement
       license_url: https://docs.nvidia.com/cuda/cuquantum/license.html
-      license_file: docs/cuQuantum_license.pdf
+      license_file: LICENSE
       summary: 'cuTensorNet: A High-Performance Library for Tensor Network Computations'
       description: |
         NVIDIA cuTensorNet is a high-performance GPU library for tensor network computations,
@@ -208,11 +221,9 @@ outputs:
       dev_url: https://github.com/NVIDIA/cuQuantum
 
   - name: cuquantum-python
-    #version: {{ ".".join(version.split(".")[:3]) }}
-    version: "22.11.0.1"  # TODO: revert me
+    version: {{ ".".join(version.split(".")[:3]) }}
     build:
-      #number: {{ build_num }}
-      number: 0  # TODO: revert me
+      number: {{ build_num }}
       skip: true  # [not linux or cuda_compiler_version != "11.2"]
       script_env:
         - CUQUANTUM_ROOT=$PREFIX
@@ -270,7 +281,7 @@ about:
   home: https://developer.nvidia.com/cuquantum-sdk
   license: LicenseRef-cuQuantum-Software-License-Agreement
   license_url: https://docs.nvidia.com/cuda/cuquantum/license.html
-  license_file: docs/cuQuantum_license.pdf
+  license_file: LICENSE
   summary: 'cuQuantum SDK: A High-Performance Library for Accelerating Quantum Information Science'
   description: |
     NVIDIA cuQuantum is an SDK of optimized libraries and tools for accelerating quantum computing workflows.

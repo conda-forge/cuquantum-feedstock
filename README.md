@@ -1,11 +1,10 @@
-About cuquantum-feedstock
-=========================
+About cuquantum-sdk-feedstock
+=============================
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/cuquantum-feedstock/blob/main/LICENSE.txt)
 
-
-About cuquantum
----------------
+About cuquantum-sdk
+-------------------
 
 Home: https://developer.nvidia.com/cuquantum-sdk
 
@@ -30,8 +29,6 @@ Software License Agreement (EULA). By downloading and using the packages,
 you accept the terms and conditions of the NVIDIA cuQuantum EULA -
 https://docs.nvidia.com/cuda/cuquantum/license.html
 
-
-
 About custatevec
 ----------------
 
@@ -52,8 +49,6 @@ The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA c
 Software License Agreement (EULA). By downloading and using the packages,
 you accept the terms and conditions of the NVIDIA cuQuantum EULA -
 https://docs.nvidia.com/cuda/cuquantum/license.html
-
-
 
 About cutensornet
 -----------------
@@ -76,8 +71,6 @@ Software License Agreement (EULA). By downloading and using the packages,
 you accept the terms and conditions of the NVIDIA cuQuantum EULA -
 https://docs.nvidia.com/cuda/cuquantum/license.html
 
-
-
 About cuquantum-python
 ----------------------
 
@@ -93,8 +86,6 @@ Documentation: https://docs.nvidia.com/cuda/cuquantum/python/index.html
 
 NVIDIA cuQuantum Python provides Python bindings and high-level object-oriented
 models for accessing the full functionalities of NVIDIA cuQuantum SDK from Python.
-
-
 
 
 Current build status
@@ -136,45 +127,45 @@ Current build status
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_cuda_compiler_version11.2mpimpich</td>
+              <td>linux_aarch64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpimpich</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compiler_version11.2mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpimpich" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_cuda_compiler_version11.2mpinompi</td>
+              <td>linux_aarch64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpinompi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compiler_version11.2mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpinompi" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_cuda_compiler_version11.2mpiopenmpi</td>
+              <td>linux_aarch64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpiopenmpi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compiler_version11.2mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpiopenmpi" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_cuda_compiler_version11.2mpimpich</td>
+              <td>linux_ppc64le_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpimpich</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_cuda_compiler_version11.2mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpimpich" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_cuda_compiler_version11.2mpinompi</td>
+              <td>linux_ppc64le_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpinompi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_cuda_compiler_version11.2mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpinompi" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_cuda_compiler_version11.2mpiopenmpi</td>
+              <td>linux_ppc64le_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpiopenmpi</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_cuda_compiler_version11.2mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpiopenmpi" alt="variant">
                 </a>
               </td>
             </tr>
@@ -195,10 +186,10 @@ Current release info
 | [![Conda Recipe](https://img.shields.io/badge/recipe-custatevec-green.svg)](https://anaconda.org/conda-forge/custatevec) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/custatevec.svg)](https://anaconda.org/conda-forge/custatevec) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/custatevec.svg)](https://anaconda.org/conda-forge/custatevec) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/custatevec.svg)](https://anaconda.org/conda-forge/custatevec) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-cutensornet-green.svg)](https://anaconda.org/conda-forge/cutensornet) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/cutensornet.svg)](https://anaconda.org/conda-forge/cutensornet) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/cutensornet.svg)](https://anaconda.org/conda-forge/cutensornet) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/cutensornet.svg)](https://anaconda.org/conda-forge/cutensornet) |
 
-Installing cuquantum
-====================
+Installing cuquantum-sdk
+========================
 
-Installing `cuquantum` from the `conda-forge` channel can be achieved by adding `conda-forge` to your channels with:
+Installing `cuquantum-sdk` from the `conda-forge` channel can be achieved by adding `conda-forge` to your channels with:
 
 ```
 conda config --add channels conda-forge
@@ -284,17 +275,17 @@ Terminology
                   produce the finished article (built conda distributions)
 
 
-Updating cuquantum-feedstock
-============================
+Updating cuquantum-sdk-feedstock
+================================
 
-If you would like to improve the cuquantum recipe or build a new
+If you would like to improve the cuquantum-sdk recipe or build a new
 package version, please fork this repository and submit a PR. Upon submission,
 your changes will be run on the appropriate platforms to give the reviewer an
 opportunity to confirm that the changes result in a successful build. Once
 merged, the recipe will be re-built and uploaded automatically to the
 `conda-forge` channel, whereupon the built conda packages will be available for
 everybody to install and use from the `conda-forge` channel.
-Note that all branches in the conda-forge/cuquantum-feedstock are
+Note that all branches in the conda-forge/cuquantum-sdk-feedstock are
 immediately built and any created packages are uploaded, so PRs should be based
 on branches in forks and branches in the main repository should only be used to
 build distinct package versions.
