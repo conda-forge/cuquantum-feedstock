@@ -3,6 +3,8 @@
 {% set cusv_version = "1.3.0" %}
 {% set cutn_version = "2.1.0" %}
 
+{% set cuda_major = "11" %}
+
 # prioritize nompi variant via build number
 {% set build_num = 0 %}
 {% if mpi == 'nompi' %}
@@ -69,7 +71,7 @@ outputs:
         - mkdir -p $PREFIX/include                                            # [linux]
         - mv include/custatevec.h $PREFIX/include/                            # [linux]
         - mkdir -p $PREFIX/lib                                                # [linux]
-        - mv lib/libcustatevec.so* $PREFIX/lib/                               # [linux]
+        - mv lib/{{ cuda_major}}/libcustatevec.so* $PREFIX/lib/               # [linux]
 
         # Patch for conda-forge:
         # According to the CUDA support matrix, we require glibc 2.27+ on aarch64-sbsa
@@ -140,7 +142,7 @@ outputs:
         - mkdir -p $PREFIX/include                                            # [linux]
         - mv include/cutensornet* $PREFIX/include/                            # [linux]
         - mkdir -p $PREFIX/lib                                                # [linux]
-        - mv lib/libcutensornet.so* $PREFIX/lib/                              # [linux]
+        - mv lib/{{ cuda_major }}/libcutensornet.so* $PREFIX/lib/             # [linux]
 
         # build the wrapper lib
         - $GCC -shared -std=c11 -fPIC -I$CUDA_PATH/include -I$PREFIX/include distributed_interfaces/cutensornet_distributed_interface_mpi.c -L$PREFIX/lib -lmpi -o $PREFIX/lib/libcutensornet_distributed_interface_mpi.so  # [mpi != 'nompi']
