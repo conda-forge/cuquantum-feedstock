@@ -119,7 +119,7 @@ outputs:
       home: https://developer.nvidia.com/cuquantum-sdk
       license: LicenseRef-cuQuantum-Software-License-Agreement
       license_url: https://docs.nvidia.com/cuda/cuquantum/license.html
-      license_file: docs/cuQuantum_license.pdf
+      license_file: LICENSE
       summary: 'cuStateVec: A High-Performance Library for State Vector Quantum Simulators'
       description: |
         NVIDIA cuStateVec is a high-performance GPU library dedicated to operations with state vectors
@@ -207,7 +207,7 @@ outputs:
       home: https://developer.nvidia.com/cuquantum-sdk
       license: LicenseRef-cuQuantum-Software-License-Agreement
       license_url: https://docs.nvidia.com/cuda/cuquantum/license.html
-      license_file: docs/cuQuantum_license.pdf
+      license_file: LICENSE
       summary: 'cuTensorNet: A High-Performance Library for Tensor Network Computations'
       description: |
         NVIDIA cuTensorNet is a high-performance GPU library for tensor network computations,
@@ -281,7 +281,7 @@ about:
   home: https://developer.nvidia.com/cuquantum-sdk
   license: LicenseRef-cuQuantum-Software-License-Agreement
   license_url: https://docs.nvidia.com/cuda/cuquantum/license.html
-  license_file: docs/cuQuantum_license.pdf
+  license_file: LICENSE
   summary: 'cuQuantum SDK: A High-Performance Library for Accelerating Quantum Information Science'
   description: |
     NVIDIA cuQuantum is an SDK of optimized libraries and tools for accelerating quantum computing workflows.
