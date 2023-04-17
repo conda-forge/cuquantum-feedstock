@@ -15,4 +15,4 @@ provider:
 idle_timeout_minutes: 60
 conda_build:
   pkg_format: '2'
-test: native_and_emulated
+test: native
