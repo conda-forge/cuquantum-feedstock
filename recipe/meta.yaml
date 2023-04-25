@@ -39,7 +39,7 @@ source:
 
 build:
   number: {{ build_num }}
-  skip: true  # [not linux or cuda_compiler_version != "11.2"]
+  skip: true  # [not linux]
 
 outputs:
 
@@ -47,7 +47,7 @@ outputs:
     version: {{ version }}
     build:
       number: {{ build_num }}
-      skip: true  # [not linux or cuda_compiler_version != "11.2"]
+      skip: true  # [not linux]
     requirements:
       build:
       host:
@@ -199,7 +199,7 @@ outputs:
     version: {{ ".".join(version.split(".")[:3]) }}
     build:
       number: {{ build_num }}
-      skip: true  # [not linux or cuda_compiler_version != "11.2"]
+      skip: true  # [not linux]
       script_env:
         - CUQUANTUM_ROOT=$PREFIX
         - CUTENSOR_ROOT=$PREFIX
