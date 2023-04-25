@@ -204,6 +204,7 @@ outputs:
         - CUQUANTUM_ROOT=$PREFIX
         - CUTENSOR_ROOT=$PREFIX
       script:
+        - export CUDA_PATH=$PREFIX/targets/{{ target_platform }}/
         - cd python
         # {{ PYTHON }} is not resolved properly in multi-output recipes...
         - $PREFIX/bin/python -m pip install --no-deps --no-build-isolation -vv .
