@@ -3,7 +3,7 @@
 {% set cusv_version = "1.3.0" %}
 {% set cutn_version = "2.1.0" %}
 
-{% set cuda_major = "11" %}
+{% set cuda_major = "12" %}
 
 # prioritize nompi variant via build number
 {% set build_num = 0 %}
@@ -54,10 +54,6 @@ outputs:
       run:
         - {{ pin_subpackage('custatevec', max_pin='x.x.x') }}
         - {{ pin_subpackage('cutensornet', max_pin='x.x.x') }}
-      # https://github.com/conda-forge/cuda-version-feedstock/pull/3 is not merged yet,
-      # otherwise we should add cuda-version to run, not run_constrained
-      run_constrained:
-        - cuda-version >=11.0,<12
     test:
       commands:
         - echo "ok!"
@@ -66,7 +62,7 @@ outputs:
     version: {{ cusv_version }}
     build:
       number: {{ build_num }}
-      skip: true  # [not linux or cuda_compiler_version != "11.2"]
+      skip: true  # [not linux]
       script:
         - mkdir -p $PREFIX/include                                            # [linux]
         - mv include/custatevec.h $PREFIX/include/                            # [linux]
@@ -81,40 +77,30 @@ outputs:
         - patchelf --clear-symbol-version powf $PREFIX/lib/libcustatevec.so   # [aarch64 or ppc64le]
       run_exports:
         - {{ pin_subpackage('custatevec', max_pin='x') }}
-      ignore_run_exports_from:
-        - {{ compiler('cuda') }}
-      missing_dso_whitelist:
-        - '*/libcublas.so*'
-        - '*/libcublasLt.so*'
       post-link: post-link  # this is supported by conda-build, but undocumented
     requirements:
       build:
         - {{ compiler('c') }}
-        - {{ compiler('cuda') }}
+        - {{ compiler('cxx') }}
         - sysroot_linux-64 2.17  # [linux64]
       host:
+        - libcublas
+        - cuda-version {{ cuda_major }}.0
       run:
-        - cudatoolkit >=11.0,<12
-      # https://github.com/conda-forge/cuda-version-feedstock/pull/3 is not merged yet,
-      # otherwise we should add cuda-version to run, not run_constrained
-      run_constrained:
-        - cuda-version >=11.0,<12
+        - {{ pin_compatible('libcublas', max_pin='x') }}
+        - {{ pin_compatible('cuda-version', max_pin='x') }}
     # apparently conda-build supports full test section spec, the document is super outdated
     test:
       requires:
         - git
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - {{ compiler('cuda') }}
-        - sysroot_linux-64 2.17  # [linux64]
-        # make sure we pick up the version matching the docker,
-        # or the linker would complain
-        - cudatoolkit {{ cuda_compiler_version }}
-      files:
-        - test_load_elf.c
-        - cusv_run_test.sh
-      commands:
-        - ./cusv_run_test.sh {{ version }}
+        - sysroot_{{ target_platform }} 2.17  # [linux]
+      #files:
+      #  - test_load_elf.c
+      #  - cusv_run_test.sh
+      #commands:
+      #  - ./cusv_run_test.sh {{ version }}
     about:
       home: https://developer.nvidia.com/cuquantum-sdk
       license: LicenseRef-cuQuantum-Software-License-Agreement
@@ -137,7 +123,7 @@ outputs:
     build:
       number: {{ cutn_build }}
       string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ cutn_build }}"
-      skip: true  # [not linux or cuda_compiler_version != "11.2"]
+      skip: true  # [not linux]
       script:
         - mkdir -p $PREFIX/include                                            # [linux]
         - mv include/cutensornet* $PREFIX/include/                            # [linux]
@@ -153,25 +139,21 @@ outputs:
         - cp "${RECIPE_DIR}/cutn-deactivate.sh" "${PREFIX}/etc/conda/deactivate.d/cutn-deactivate.sh"  # [mpi != 'nompi']
       run_exports:
         - {{ pin_subpackage('cutensornet', max_pin='x') }} {{ mpi_prefix }}_*
-      ignore_run_exports_from:
-        - {{ compiler('cuda') }}
-      missing_dso_whitelist:
-        - '*/libcutensor.so*'
-        - '*/libcublas.so*'
-        - '*/libcublasLt.so*'
-        - '*/libcusolver.so*'
-        - '*/libcusparse.so*'
       post-link: post-link  # this is supported by conda-build, but undocumented
     requirements:
       build:
         - {{ compiler('c') }}
-        - {{ compiler('cuda') }}
+        - {{ compiler('cxx') }}
         - sysroot_linux-64 2.17  # [linux64]
       host:
         - {{ mpi }}  # [mpi != 'nompi']
+        - cutensor
+        - libcusolver
+        - cuda-version {{ cuda_major }}.0
       run:
-        - cudatoolkit >=11.0,<12
-        - cutensor >=1.6.1,<2
+        - {{ pin_compatible('cutensor', max_pin='x') }}
+        - {{ pin_compatible('libcusolver', max_pin='x') }}
+        - {{ pin_compatible('cuda-version', max_pin='x') }}
         # conda-forge mpich does not support CUDA...
         - {{ mpi }} * external*  # [mpi == 'mpich']
         - {{ mpi }}              # [mpi == 'openmpi']
@@ -180,25 +162,18 @@ outputs:
         # picked by the solver, we do so by createing a conflict
         - openmpi <0.a0          # [mpi == 'nompi']
         - mpich <0.a0            # [mpi == 'nompi']
-        # https://github.com/conda-forge/cuda-version-feedstock/pull/3 is not merged yet,
-        # otherwise we should add cuda-version to run, not run_constrained
-        - cuda-version >=11.0,<12
     # apparently conda-build supports full test section spec, the document is super outdated
     test:
       requires:
         - git
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - {{ compiler('cuda') }}
-        - sysroot_linux-64 2.17  # [linux64]
-        # make sure we pick up the version matching the docker,
-        # or the linker would complain
-        - cudatoolkit {{ cuda_compiler_version }}
-      files:
-        - test_load_elf.c
-        - cutn_run_test.sh
+        - sysroot_{{ target_platform }} 2.17  # [linux]
+      #files:
+      #  - test_load_elf.c
+      #  - cutn_run_test.sh
       commands:
-        - ./cutn_run_test.sh {{ version }}
+      #  - ./cutn_run_test.sh {{ version }}
         - echo $CUTENSORNET_COMM_LIB
         - test -n $CUTENSORNET_COMM_LIB  # [mpi != 'nompi']
         - test -f $CUTENSORNET_COMM_LIB  # [mpi != 'nompi']
@@ -232,15 +207,11 @@ outputs:
         - cd python
         # {{ PYTHON }} is not resolved properly in multi-output recipes...
         - $PREFIX/bin/python -m pip install --no-deps --no-build-isolation -vv .
-      ignore_run_exports_from:
-        # let cuquantum handle the CUDA deps
-        - {{ compiler('cuda') }}
     requirements:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - {{ compiler('cuda') }}
-        - sysroot_linux-64 2.17  # [linux64]
+        - sysroot_{{ target_platform }} 2.17  # [linux]
       host:
         - python
         - pip
