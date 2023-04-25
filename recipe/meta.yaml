@@ -219,6 +219,7 @@ outputs:
         - custatevec ={{ cusv_version }}
         - cutensornet ={{ cutn_version }}
         - packaging
+        - cuda-cudart-dev  # for cudart headers
       run:
         - python
         - numpy >=1.19
