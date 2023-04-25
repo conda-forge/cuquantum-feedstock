@@ -131,7 +131,9 @@ outputs:
         - mv lib/{{ cuda_major }}/libcutensornet.so* $PREFIX/lib/             # [linux]
 
         # build the wrapper lib
-        - export CUDA_PATH=$PREFIX/targets/{{ target_platform }}/
+        - export CUDA_PATH=$PREFIX/targets/x86_64-linux/   # [linux64]
+        - export CUDA_PATH=$PREFIX/targets/sbsa-linux/     # [aarch64]
+        - export CUDA_PATH=$PREFIX/targets/ppc64le-linux/  # [ppc64le]
         - $GCC -shared -std=c11 -fPIC -I$CUDA_PATH/include -I$PREFIX/include distributed_interfaces/cutensornet_distributed_interface_mpi.c -L$PREFIX/lib -lmpi -o $PREFIX/lib/libcutensornet_distributed_interface_mpi.so  # [mpi != 'nompi']
         # copy activate/deactivate scripts
         - mkdir -p "${PREFIX}/etc/conda/activate.d"  # [mpi != 'nompi']
@@ -206,7 +208,9 @@ outputs:
         - CUQUANTUM_ROOT=$PREFIX
         - CUTENSOR_ROOT=$PREFIX
       script:
-        - export CUDA_PATH=$PREFIX/targets/{{ target_platform }}/
+        - export CUDA_PATH=$PREFIX/targets/x86_64-linux/   # [linux64]
+        - export CUDA_PATH=$PREFIX/targets/sbsa-linux/     # [aarch64]
+        - export CUDA_PATH=$PREFIX/targets/ppc64le-linux/  # [ppc64le]
         - cd python
         # {{ PYTHON }} is not resolved properly in multi-output recipes...
         - $PREFIX/bin/python -m pip install --no-deps --no-build-isolation -vv .
