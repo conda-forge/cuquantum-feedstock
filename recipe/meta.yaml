@@ -131,6 +131,7 @@ outputs:
         - mv lib/{{ cuda_major }}/libcutensornet.so* $PREFIX/lib/             # [linux]
 
         # build the wrapper lib
+        - export CUDA_PATH=$PREFIX/targets/{{ target_platform }}/
         - $GCC -shared -std=c11 -fPIC -I$CUDA_PATH/include -I$PREFIX/include distributed_interfaces/cutensornet_distributed_interface_mpi.c -L$PREFIX/lib -lmpi -o $PREFIX/lib/libcutensornet_distributed_interface_mpi.so  # [mpi != 'nompi']
         # copy activate/deactivate scripts
         - mkdir -p "${PREFIX}/etc/conda/activate.d"  # [mpi != 'nompi']
@@ -149,6 +150,7 @@ outputs:
         - {{ mpi }}  # [mpi != 'nompi']
         - cutensor
         - libcusolver
+        - cuda-cudart-dev  # for cudart headers
         - cuda-version {{ cuda_major }}.0
       run:
         - {{ pin_compatible('cutensor', max_pin='x') }}
