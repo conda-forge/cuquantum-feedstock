@@ -12,3 +12,6 @@ provider:
 idle_timeout_minutes: 60
 conda_build:
   pkg_format: '2'
+bot:
+  abi_migration_branches:
+    - cuda-11
