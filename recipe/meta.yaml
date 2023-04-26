@@ -153,6 +153,7 @@ outputs:
         - cutensor
         - libcusolver
         - cuda-cudart-dev  # for cudart headers
+        - cuda-nvcc_{{ target_platform }}
         - cuda-version {{ cuda_major }}.0
       run:
         - {{ pin_compatible('cutensor', max_pin='x') }}
