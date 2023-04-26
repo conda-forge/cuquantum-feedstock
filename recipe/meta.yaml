@@ -153,7 +153,7 @@ outputs:
         - cutensor
         - libcusolver
         - cuda-cudart-dev  # for cudart headers
-        - cuda-nvcc_{{ target_platform }}
+        - cuda-nvcc_{{ target_platform }}  # for crt headers
         - cuda-version {{ cuda_major }}.0
       run:
         - {{ pin_compatible('cutensor', max_pin='x') }}
@@ -228,6 +228,7 @@ outputs:
         - cutensornet ={{ cutn_version }}
         - packaging
         - cuda-cudart-dev_{{ target_platform }}  # for cudart headers
+        - cuda-nvcc_{{ target_platform }}  # for crt headers
       run:
         - python
         - numpy >=1.19
