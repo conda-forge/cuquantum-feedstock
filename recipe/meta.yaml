@@ -86,7 +86,7 @@ outputs:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - sysroot_linux-64 2.17  # [linux64]
+        - sysroot_{{ target_platform }} 2.17  # [linux]
       host:
         - libcublas  # [cuda_compiler_version == "12.0"]
         - cuda-version {{ cuda_major }}.0
@@ -114,7 +114,7 @@ outputs:
       description: |
         NVIDIA cuStateVec is a high-performance GPU library dedicated to operations with state vectors
         for expressing quantum algorithms. cuStateVec is a component of the NVIDIA cuQuantum SDK.
-
+gg
         The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
         Software License Agreement (EULA). By downloading and using the packages,
         you accept the terms and conditions of the NVIDIA cuQuantum EULA -
@@ -151,14 +151,13 @@ outputs:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        # only for crt headers
-        - {{ compiler('cuda') }}  # [cuda_compiler_version == "12.0"]
         - sysroot_linux-64 2.17   # [linux64]
       host:
         - {{ mpi }}  # [mpi != 'nompi']
         - cutensor
         - libcusolver      # [cuda_compiler_version == "12.0"]
         - cuda-cudart-dev  # [cuda_compiler_version == "12.0"]
+        - cuda-nvcc-dev    # [cuda_compiler_version == "12.0"]
         - cuda-version {{ cuda_major }}.0
       run:
         - {{ pin_compatible('cutensor', max_pin='x') }}
@@ -179,11 +178,11 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - sysroot_{{ target_platform }} 2.17  # [linux]
-      #files:
-      #  - test_load_elf.c
-      #  - cutn_run_test.sh
+      files:
+        - test_load_elf.c
+        - cutn_run_test.sh
       commands:
-      #  - ./cutn_run_test.sh {{ version }}
+        - ./cutn_run_test.sh {{ version }}
         - echo $CUTENSORNET_COMM_LIB
         - test -n $CUTENSORNET_COMM_LIB  # [mpi != 'nompi']
         - test -f $CUTENSORNET_COMM_LIB  # [mpi != 'nompi']
@@ -232,8 +231,10 @@ outputs:
         - custatevec ={{ cusv_version }}
         - cutensornet ={{ cutn_version }}
         - packaging
-        - cuda-cudart-dev_{{ target_platform }}  # for cudart headers
-        - cuda-nvcc_{{ target_platform }}  # for crt headers
+        # for cudart headers
+        - cuda-cudart-dev  # [cuda_compiler_version == "12.0"]
+        # for crt headers
+        - cuda-nvcc-dev    # [cuda_compiler_version == "12.0"]
       run:
         - python
         - numpy >=1.19
