@@ -51,7 +51,6 @@ outputs:
     version: {{ version }}
     build:
       number: {{ build_num }}
-      skip: true  # [not linux]
     requirements:
       build:
       host:
@@ -66,7 +65,6 @@ outputs:
     version: {{ cusv_version }}
     build:
       number: {{ build_num }}
-      skip: true  # [not linux]
       script:
         - mkdir -p $PREFIX/include                                            # [linux]
         - mv include/custatevec.h $PREFIX/include/                            # [linux]
@@ -127,7 +125,6 @@ outputs:
     build:
       number: {{ cutn_build }}
       string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ cutn_build }}"
-      skip: true  # [not linux]
       script:
         - mkdir -p $PREFIX/include                                            # [linux]
         - mv include/cutensornet* $PREFIX/include/                            # [linux]
@@ -208,7 +205,6 @@ outputs:
     version: {{ ".".join(version.split(".")[:3]) }}
     build:
       number: {{ build_num }}
-      skip: true  # [not linux]
       script_env:
         - CUQUANTUM_ROOT=$PREFIX
         - CUTENSOR_ROOT=$PREFIX
