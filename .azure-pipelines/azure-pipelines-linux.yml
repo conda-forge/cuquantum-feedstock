@@ -8,42 +8,54 @@ jobs:
     vmImage: ubuntu-latest
   strategy:
     matrix:
-      linux_64_mpimpich:
-        CONFIG: linux_64_mpimpich
+      linux_64_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10mpimpich:
+        CONFIG: linux_64_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10mpimpich
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.2
+      linux_64_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10mpinompi:
+        CONFIG: linux_64_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10mpinompi
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.2
+      linux_64_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10mpiopenmpi:
+        CONFIG: linux_64_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10mpiopenmpi
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.2
+      linux_64_c_compiler_version12cuda_compilercuda-nvcccuda_compiler_version12.0cxx_compiler_version12mpimpich:
+        CONFIG: linux_64_c_compiler_version12cuda_compilercuda-nvcccuda_compiler_version12.0cxx_compiler_version12mpimpich
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_64_mpinompi:
-        CONFIG: linux_64_mpinompi
+      linux_64_c_compiler_version12cuda_compilercuda-nvcccuda_compiler_version12.0cxx_compiler_version12mpinompi:
+        CONFIG: linux_64_c_compiler_version12cuda_compilercuda-nvcccuda_compiler_version12.0cxx_compiler_version12mpinompi
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_64_mpiopenmpi:
-        CONFIG: linux_64_mpiopenmpi
+      linux_64_c_compiler_version12cuda_compilercuda-nvcccuda_compiler_version12.0cxx_compiler_version12mpiopenmpi:
+        CONFIG: linux_64_c_compiler_version12cuda_compilercuda-nvcccuda_compiler_version12.0cxx_compiler_version12mpiopenmpi
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_aarch64_mpimpich:
-        CONFIG: linux_aarch64_mpimpich
+      linux_aarch64_c_compiler_version10cuda_compilerNonecuda_compiler_version11.2cxx_compiler_version10mpimpich:
+        CONFIG: linux_aarch64_c_compiler_version10cuda_compilerNonecuda_compiler_version11.2cxx_compiler_version10mpimpich
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
-      linux_aarch64_mpinompi:
-        CONFIG: linux_aarch64_mpinompi
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64-cuda:11.2
+      linux_aarch64_c_compiler_version10cuda_compilerNonecuda_compiler_version11.2cxx_compiler_version10mpinompi:
+        CONFIG: linux_aarch64_c_compiler_version10cuda_compilerNonecuda_compiler_version11.2cxx_compiler_version10mpinompi
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
-      linux_aarch64_mpiopenmpi:
-        CONFIG: linux_aarch64_mpiopenmpi
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64-cuda:11.2
+      linux_aarch64_c_compiler_version10cuda_compilerNonecuda_compiler_version11.2cxx_compiler_version10mpiopenmpi:
+        CONFIG: linux_aarch64_c_compiler_version10cuda_compilerNonecuda_compiler_version11.2cxx_compiler_version10mpiopenmpi
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64
-      linux_ppc64le_mpimpich:
-        CONFIG: linux_ppc64le_mpimpich
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64-cuda:11.2
+      linux_ppc64le_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10mpimpich:
+        CONFIG: linux_ppc64le_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10mpimpich
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
-      linux_ppc64le_mpinompi:
-        CONFIG: linux_ppc64le_mpinompi
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le-cuda:11.2
+      linux_ppc64le_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10mpinompi:
+        CONFIG: linux_ppc64le_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10mpinompi
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
-      linux_ppc64le_mpiopenmpi:
-        CONFIG: linux_ppc64le_mpiopenmpi
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le-cuda:11.2
+      linux_ppc64le_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10mpiopenmpi:
+        CONFIG: linux_ppc64le_c_compiler_version10cuda_compilernvcccuda_compiler_version11.2cxx_compiler_version10mpiopenmpi
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le-cuda:11.2
   timeoutInMinutes: 360
 
   steps:
