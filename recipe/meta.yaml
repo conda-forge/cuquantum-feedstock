@@ -147,7 +147,7 @@ outputs:
       run_exports:
         - {{ pin_subpackage('cutensornet', max_pin='x') }} {{ mpi_prefix }}_*
       ignore_run_exports_from:
-         - {{ compiler('cuda') }}
+        - {{ compiler('cuda') }}
       post-link: post-link  # this is supported by conda-build, but undocumented
     requirements:
       build:
@@ -220,8 +220,8 @@ outputs:
         # {{ PYTHON }} is not resolved properly in multi-output recipes...
         - $PREFIX/bin/python -m pip install --no-deps --no-build-isolation -vv .
       ignore_run_exports_from:
-         # let cuquantum handle the CUDA deps
-         - {{ compiler('cuda') }}
+        # let cuquantum handle the CUDA deps
+        - {{ compiler('cuda') }}
     requirements:
       build:
         - {{ compiler('c') }}
