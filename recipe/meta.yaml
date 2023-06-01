@@ -132,10 +132,8 @@ outputs:
         - mv lib/{{ cuda_major }}/libcutensornet.so* $PREFIX/lib/             # [linux]
 
         # build the wrapper lib
-        - export CUDA_PATH=$PREFIX/targets/x86_64-linux/   # [linux64]
-        - export CUDA_PATH=$PREFIX/targets/sbsa-linux/     # [aarch64]
-        - export CUDA_PATH=$PREFIX/targets/ppc64le-linux/  # [ppc64le]
-        - $GCC -shared -std=c11 -fPIC -I$CUDA_PATH/include -I$PREFIX/include distributed_interfaces/cutensornet_distributed_interface_mpi.c -L$PREFIX/lib -lmpi -o $PREFIX/lib/libcutensornet_distributed_interface_mpi.so  # [mpi != 'nompi']
+        - $GCC -shared -std=c11 -fPIC -I$CUDA_PATH/include -I$PREFIX/include distributed_interfaces/cutensornet_distributed_interface_mpi.c -L$PREFIX/lib -lmpi -o $PREFIX/lib/libcutensornet_distributed_interface_mpi.so  # [mpi != 'nompi' and cuda_compiler_version == "11.2"]
+        - $GCC -shared -std=c11 -fPIC $CFLAGS -I$PREFIX/include distributed_interfaces/cutensornet_distributed_interface_mpi.c -L$PREFIX/lib -lmpi -o $PREFIX/lib/libcutensornet_distributed_interface_mpi.so               # [mpi != 'nompi' and cuda_compiler_version == "12.0"]
         # copy activate/deactivate scripts
         - mkdir -p "${PREFIX}/etc/conda/activate.d"  # [mpi != 'nompi']
         - cp "${RECIPE_DIR}/cutn-activate.sh" "${PREFIX}/etc/conda/activate.d/cutn-activate.sh"  # [mpi != 'nompi']
