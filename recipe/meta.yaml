@@ -114,7 +114,6 @@ outputs:
       description: |
         NVIDIA cuStateVec is a high-performance GPU library dedicated to operations with state vectors
         for expressing quantum algorithms. cuStateVec is a component of the NVIDIA cuQuantum SDK.
-gg
         The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
         Software License Agreement (EULA). By downloading and using the packages,
         you accept the terms and conditions of the NVIDIA cuQuantum EULA -
