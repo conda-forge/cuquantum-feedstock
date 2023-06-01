@@ -9,7 +9,7 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cuda_compiler:
-- None
+- nvcc
 cuda_compiler_version:
 - '11.2'
 cutensor:
@@ -21,7 +21,7 @@ cxx_compiler_version:
 docker_image:
 - quay.io/condaforge/linux-anvil-ppc64le-cuda:11.2
 mpi:
-- nompi
+- mpich
 mpich:
 - '4'
 openmpi:
