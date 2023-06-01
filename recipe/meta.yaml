@@ -158,8 +158,6 @@ outputs:
         - {{ mpi }}  # [mpi != 'nompi']
         - cutensor
         - libcusolver      # [cuda_compiler_version == "12.0"]
-        - cuda-cudart-dev  # [cuda_compiler_version == "12.0"]
-        - cuda-nvcc-dev    # [cuda_compiler_version == "12.0"]
         - cuda-version {{ cuda_major }}.0
       run:
         - {{ pin_compatible('cutensor', max_pin='x') }}
@@ -215,16 +213,20 @@ outputs:
         - CUQUANTUM_ROOT=$PREFIX
         - CUTENSOR_ROOT=$PREFIX
       script:
-        - export CUDA_PATH=$PREFIX/targets/x86_64-linux/   # [linux64]
-        - export CUDA_PATH=$PREFIX/targets/sbsa-linux/     # [aarch64]
-        - export CUDA_PATH=$PREFIX/targets/ppc64le-linux/  # [ppc64le]
+        #- export CUDA_PATH=$PREFIX/targets/x86_64-linux/   # [linux64]
+        #- export CUDA_PATH=$PREFIX/targets/sbsa-linux/     # [aarch64]
+        #- export CUDA_PATH=$PREFIX/targets/ppc64le-linux/  # [ppc64le]
         - cd python
         # {{ PYTHON }} is not resolved properly in multi-output recipes...
         - $PREFIX/bin/python -m pip install --no-deps --no-build-isolation -vv .
+      ignore_run_exports_from:
+         # let cuquantum handle the CUDA deps
+         - {{ compiler('cuda') }}
     requirements:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
+        - {{ compiler('cuda') }}
         - sysroot_{{ target_platform }} 2.17  # [linux]
       host:
         - python
@@ -233,10 +235,6 @@ outputs:
         - custatevec ={{ cusv_version }}
         - cutensornet ={{ cutn_version }}
         - packaging
-        # for cudart headers
-        - cuda-cudart-dev  # [cuda_compiler_version == "12.0"]
-        # for crt headers
-        - cuda-nvcc-dev    # [cuda_compiler_version == "12.0"]
       run:
         - python
         - numpy >=1.19
