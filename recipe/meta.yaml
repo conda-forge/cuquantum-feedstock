@@ -86,6 +86,8 @@ outputs:
         - {{ compiler('cxx') }}
         - sysroot_{{ target_platform }} 2.17  # [linux]
       host:
+        # https://github.com/NixOS/patchelf/issues/492
+        - patchelf !=0.18
         - libcublas  # [cuda_compiler_version == "12.0"]
         - cuda-version {{ cuda_major }}.0
       run:
@@ -151,6 +153,8 @@ outputs:
         - {{ compiler('cuda') }}
         - sysroot_{{ target_platform }} 2.17   # [linux]
       host:
+        # https://github.com/NixOS/patchelf/issues/492
+        - patchelf !=0.18
         - {{ mpi }}  # [mpi != 'nompi']
         - cutensor
         - libcusolver      # [cuda_compiler_version == "12.0"]
