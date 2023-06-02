@@ -76,7 +76,7 @@ outputs:
         # and ppc64le, while conda-forge is still on 2.17. However, given that powf is
         # the only offending symbol that needs a newer glibc, it is the easiest if we
         # just patch it.
-        - patchelf --clear-symbol-version powf $PREFIX/lib/libcustatevec.so   # [aarch64 or ppc64le]
+        - patchelf --clear-symbol-version powf $PREFIX/lib/libcustatevec.so  # [aarch64 or ppc64le]
       run_exports:
         - {{ pin_subpackage('custatevec', max_pin='x') }}
       ignore_run_exports_from:
@@ -167,16 +167,18 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - {{ compiler('cuda') }}
-        - sysroot_{{ target_platform }} 2.17   # [linux]
+        - sysroot_{{ target_platform }} 2.17  # [linux]
       host:
         # https://github.com/NixOS/patchelf/issues/492
         - patchelf !=0.18
         - {{ mpi }}  # [mpi != 'nompi']
         - cutensor
+        - libcublas        # [cuda_compiler_version == "12.0"]
         - libcusolver      # [cuda_compiler_version == "12.0"]
         - cuda-version {{ cuda_major }}.0
       run:
         - {{ pin_compatible('cutensor', max_pin='x') }}
+        - {{ pin_compatible('libcublas', max_pin='x') }}    # [cuda_compiler_version == "12.0"]
         - {{ pin_compatible('libcusolver', max_pin='x') }}  # [cuda_compiler_version == "12.0"]
         - {{ pin_compatible('cuda-version', max_pin='x') }}
         # conda-forge mpich does not support CUDA...
@@ -247,7 +249,7 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - {{ compiler('cuda') }}
-        - sysroot_{{ target_platform }} 2.17    # [linux]
+        - sysroot_{{ target_platform }} 2.17  # [linux]
       host:
         - python
         - pip
