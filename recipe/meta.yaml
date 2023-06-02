@@ -270,9 +270,6 @@ outputs:
         - cuda-driver-dev  # [linux and cuda_compiler_version == "12.0"]
       commands:
         # perform the import test via CLI because we need to load the stub for CUDA 12
-        #- export CUDA_STUB="${PREFIX}/targets/x86_64-linux/lib/stubs/libcuda.so"   # [linux64 and cuda_compiler_version == "12.0"]
-        #- export CUDA_STUB="${PREFIX}/targets/sbsa-linux/lib/stubs/libcuda.so"     # [aarch64 and cuda_compiler_version == "12.0"]
-        #- export CUDA_STUB="${PREFIX}/targets/ppc64le-linux/lib/stubs/libcuda.so"  # [ppc64le and cuda_compiler_version == "12.0"]
         - export CUDA_STUB="$PREFIX/lib/stubs/libcuda.so"  # [cuda_compiler_version == "12.0"]
         - LD_PRELOAD="$CUDA_STUB" python -c "import cuquantum"
         - LD_PRELOAD="$CUDA_STUB" python -c "import cuquantum.custatevec"
