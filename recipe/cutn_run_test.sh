@@ -8,8 +8,21 @@ test -f $PREFIX/include/cutensornet/typesDistributed.h
 test -f $PREFIX/lib/libcutensornet.so
 
 # dlopen test
+if [[ "${cuda_compiler_version}" =~ 12.* ]]; then
+    if [[ $target_platform == linux-64 ]]; then
+        EXTRA_LIBS="$PREFIX/targets/x86_64-linux/lib/stubs/libcuda.so"
+    elif [[ $target_platform == linux-aarch64 ]]; then
+        EXTRA_LIBS="$PREFIX/targets/sbsa-linux/lib/stubs/libcuda.so"
+    elif [[ $target_platform == linux-ppc64le ]]; then
+        EXTRA_LIBS="$PREFIX/targets/ppc64le-linux/lib/stubs/libcuda.so"
+    else
+        exit 1  # should not happen
+    fi
+else
+    EXTRA_LIBS=""
+fi
 ${GCC} test_load_elf.c -std=c99 -Werror -ldl -o test_load_elf
-./test_load_elf $PREFIX/lib/libcutensornet.so
+LD_PRELOAD="$EXTRA_LIBS" ./test_load_elf $PREFIX/lib/libcutensornet.so
 
 # if MPI is present (as in the case of openmpi), do the dlopen test
 #   - for nompi, $CUTENSORNET_COMM_LIB does not exist
@@ -20,7 +33,7 @@ else
     EXTRA_LIBS=""
 fi
 if [[ -n ${EXTRA_LIBS:+x} ]]; then
-    LD_PRELOAD=$EXTRA_LIBS ./test_load_elf $CUTENSORNET_COMM_LIB cutensornetCommInterface
+    LD_PRELOAD="$EXTRA_LIBS" ./test_load_elf $CUTENSORNET_COMM_LIB cutensornetCommInterface
 fi
 
 # get the package version (major.minor.patch) from cmdline
