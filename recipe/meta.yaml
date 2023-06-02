@@ -79,11 +79,17 @@ outputs:
         - patchelf --clear-symbol-version powf $PREFIX/lib/libcustatevec.so   # [aarch64 or ppc64le]
       run_exports:
         - {{ pin_subpackage('custatevec', max_pin='x') }}
+      ignore_run_exports_from:
+        - {{ compiler('cuda') }}
+      missing_dso_whitelist:
+        - '*/libcublas.so*'    # [cuda_compiler_version == "11.2"]
+        - '*/libcublasLt.so*'  # [cuda_compiler_version == "11.2"]
       post-link: post-link  # this is supported by conda-build, but undocumented
     requirements:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
+        - {{ compiler('cuda') }}
         - sysroot_{{ target_platform }} 2.17  # [linux]
       host:
         # https://github.com/NixOS/patchelf/issues/492
@@ -91,6 +97,7 @@ outputs:
         - libcublas  # [cuda_compiler_version == "12.0"]
         - cuda-version {{ cuda_major }}.0
       run:
+        - cudatoolkit                                     # [cuda_compiler_version == "11.2"]
         - {{ pin_compatible('libcublas', max_pin='x') }}  # [cuda_compiler_version == "12.0"]
         - {{ pin_compatible('cuda-version', max_pin='x') }}
     # apparently conda-build supports full test section spec, the document is super outdated
@@ -149,6 +156,11 @@ outputs:
         - {{ pin_subpackage('cutensornet', max_pin='x') }} {{ mpi_prefix }}_*
       ignore_run_exports_from:
         - {{ compiler('cuda') }}
+      missing_dso_whitelist:
+        - '*/libcutensor.so*'  # [cuda_compiler_version == "11.2"]
+        - '*/libcublas.so*'    # [cuda_compiler_version == "11.2"]
+        - '*/libcublasLt.so*'  # [cuda_compiler_version == "11.2"]
+        - '*/libcusolver.so*'  # [cuda_compiler_version == "11.2"]
       post-link: post-link  # this is supported by conda-build, but undocumented
     requirements:
       build:
@@ -220,9 +232,10 @@ outputs:
         - CUQUANTUM_ROOT=$PREFIX
         - CUTENSOR_ROOT=$PREFIX
       script:
-        #- export CUDA_PATH=$PREFIX/targets/x86_64-linux/   # [linux64]
-        #- export CUDA_PATH=$PREFIX/targets/sbsa-linux/     # [aarch64]
-        #- export CUDA_PATH=$PREFIX/targets/ppc64le-linux/  # [ppc64le]
+        # The CUDA 11 docker image sets CUDA_PATH for us
+        - export CUDA_PATH=$BUILD_PREFIX/targets/x86_64-linux/   # [linux64 and cuda_compiler_version == "12.0"]
+        - export CUDA_PATH=$BUILD_PREFIX/targets/sbsa-linux/     # [aarch64 and cuda_compiler_version == "12.0"]
+        - export CUDA_PATH=$BUILD_PREFIX/targets/ppc64le-linux/  # [ppc64le and cuda_compiler_version == "12.0"]
         - cd python
         # {{ PYTHON }} is not resolved properly in multi-output recipes...
         - $PREFIX/bin/python -m pip install --no-deps --no-build-isolation -vv .
@@ -234,7 +247,7 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - {{ compiler('cuda') }}
-        - sysroot_{{ target_platform }} 2.17  # [linux]
+        - sysroot_{{ target_platform }} 2.17    # [linux]
       host:
         - python
         - pip
@@ -253,12 +266,18 @@ outputs:
         - mpi4py >=3.1.0
         # we don't have to pin Qiskit or Cirq here because their versions are fairly recent on conda-forge
     test:
-      imports:
-        - cuquantum
-        - cuquantum.custatevec
-        - cuquantum.cutensornet
+      requires:
+        - cuda-driver-dev  # [linux and cuda_compiler_version == "12.0"]
       commands:
-        - python -m cuquantum --includes --libs --target custatevec --target cutensornet
+        # perform the import test via CLI because we need to load the stub for CUDA 12
+        #- export CUDA_STUB="${PREFIX}/targets/x86_64-linux/lib/stubs/libcuda.so"   # [linux64 and cuda_compiler_version == "12.0"]
+        #- export CUDA_STUB="${PREFIX}/targets/sbsa-linux/lib/stubs/libcuda.so"     # [aarch64 and cuda_compiler_version == "12.0"]
+        #- export CUDA_STUB="${PREFIX}/targets/ppc64le-linux/lib/stubs/libcuda.so"  # [ppc64le and cuda_compiler_version == "12.0"]
+        - export CUDA_STUB="$PREFIX/lib/stubs/libcuda.so"  # [cuda_compiler_version == "12.0"]
+        - LD_PRELOAD="$CUDA_STUB" python -c "import cuquantum"
+        - LD_PRELOAD="$CUDA_STUB" python -c "import cuquantum.custatevec"
+        - LD_PRELOAD="$CUDA_STUB" python -c "import cuquantum.cutensornet"
+        - LD_PRELOAD="$CUDA_STUB" python -m cuquantum --includes --libs --target custatevec --target cutensornet
     about:
       home: https://developer.nvidia.com/cuquantum-sdk
       license: BSD-3-Clause
