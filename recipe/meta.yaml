@@ -10,7 +10,7 @@
 {% endif %}
 
 # prioritize nompi variant via build number
-{% set build_num = 1 %}
+{% set build_num = 2 %}
 {% if mpi == 'nompi' %}
 {% set cutn_build = build_num + 100 %}
 {% else %}
@@ -230,6 +230,9 @@ outputs:
     version: {{ ".".join(version.split(".")[:3]) }}
     build:
       number: {{ build_num }}
+      # build cuQuantum Python in a CUDA agnostic way to serve both CUDA 11/12
+      # (note: this would still use cuda_compiler_version to calculate hash)
+      skip: true  # [not cuda_compiler_version.startswith("11")]
       script_env:
         - CUQUANTUM_ROOT=$PREFIX
         - CUTENSOR_ROOT=$PREFIX
@@ -263,6 +266,7 @@ outputs:
         - cupy >=9.5
         - {{ pin_subpackage('custatevec', max_pin='x') }}
         - {{ pin_subpackage('cutensornet', max_pin='x') }}
+        - cuda-version >=11.0.*,<13.a0
       run_constrained:
         - pytorch >=1.10
         - mpi4py >=3.1.0
