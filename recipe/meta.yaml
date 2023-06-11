@@ -232,7 +232,7 @@ outputs:
       number: {{ build_num }}
       # build cuQuantum Python in a CUDA agnostic way to serve both CUDA 11/12
       # (note: this would still use cuda_compiler_version to calculate hash)
-      skip: true  # [not cuda_compiler_version.startswith("11")]
+      skip: true  # [not (cuda_compiler_version or "").startswith("11")]
       script_env:
         - CUQUANTUM_ROOT=$PREFIX
         - CUTENSOR_ROOT=$PREFIX
