@@ -3,6 +3,7 @@ About cuquantum-sdk-feedstock
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/cuquantum-feedstock/blob/main/LICENSE.txt)
 
+
 About cuquantum-sdk
 -------------------
 
@@ -29,6 +30,7 @@ Software License Agreement (EULA). By downloading and using the packages,
 you accept the terms and conditions of the NVIDIA cuQuantum EULA -
 https://docs.nvidia.com/cuda/cuquantum/license.html
 
+
 About custatevec
 ----------------
 
@@ -50,6 +52,7 @@ Software License Agreement (EULA). By downloading and using the packages,
 you accept the terms and conditions of the NVIDIA cuQuantum EULA -
 https://docs.nvidia.com/cuda/cuquantum/license.html
 
+
 About cutensornet
 -----------------
 
@@ -70,6 +73,7 @@ The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA c
 Software License Agreement (EULA). By downloading and using the packages,
 you accept the terms and conditions of the NVIDIA cuQuantum EULA -
 https://docs.nvidia.com/cuda/cuquantum/license.html
+
 
 About cuquantum-python
 ----------------------
