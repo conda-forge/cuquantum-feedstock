@@ -1,5 +1,5 @@
 # Make sure the component versions are consistent with the SDK version!
-{% set version = "v23.06.0.7" %}
+{% set version = "23.06.0.7" %}
 {% set cusv_version = "1.4.0" %}
 {% set cutn_version = "2.2.0" %}
 
