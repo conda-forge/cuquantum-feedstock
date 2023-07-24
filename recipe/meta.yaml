@@ -1,7 +1,7 @@
 # Make sure the component versions are consistent with the SDK version!
-{% set version = "23.06.0.7" %}
-{% set cusv_version = "1.4.0" %}
-{% set cutn_version = "2.2.0" %}
+{% set version = "23.06.1.100" %}
+{% set cusv_version = "1.4.1" %}
+{% set cutn_version = "2.2.1" %}
 
 {% if cuda_compiler_version in (None, "None", True, False) %}
 {% set cuda_major = 0 %}
@@ -41,7 +41,9 @@ source:
     sha256: ff180a0aae5da68ad01f613124849350f24d2713c9460412ce675200cf048b41  # [ppc64le and (cuda_compiler_version or "").startswith("11")]
     sha256: 6df174b3a84f54c6bf5cb77a1812f980b42fa238a01ae66b7d4d65137826cdfd  # [ppc64le and (cuda_compiler_version or "").startswith("12")]
 
-  - url: https://github.com/NVIDIA/cuQuantum/archive/refs/tags/v{{ ".".join(version.split(".")[:3]) }}.tar.gz
+  # TODO: revert me
+  # - url: https://github.com/NVIDIA/cuQuantum/archive/refs/tags/v{{ ".".join(version.split(".")[:3]) }}.tar.gz
+  - url: https://github.com/NVIDIA/cuQuantum/archive/refs/tags/v23.06.0.tar.gz
     sha256: 0c819a21d0dfc158d19c44f999d2caeb19a9f4567baa0e77d712a83315c039e8
 
 build:
@@ -230,7 +232,8 @@ outputs:
       dev_url: https://github.com/NVIDIA/cuQuantum
 
   - name: cuquantum-python
-    version: {{ ".".join(version.split(".")[:3]) }}
+    # version: {{ ".".join(version.split(".")[:3]) }}
+    version: 23.06.0
     build:
       number: {{ build_num }}
       # build cuQuantum Python in a CUDA agnostic way to serve both CUDA 11/12
