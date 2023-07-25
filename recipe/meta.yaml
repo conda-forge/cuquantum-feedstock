@@ -232,6 +232,7 @@ outputs:
       dev_url: https://github.com/NVIDIA/cuQuantum
 
   - name: cuquantum-python
+    # TODO: revert me
     # version: {{ ".".join(version.split(".")[:3]) }}
     version: 23.06.0
     build:
