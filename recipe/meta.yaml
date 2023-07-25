@@ -1,6 +1,6 @@
 # Make sure the component versions are consistent with the SDK version!
 {% set version = "23.06.1.8" %}
-{% set cusv_version = "1.4.1.8" %}
+{% set cusv_version = "1.4.1" %}
 {% set cutn_version = "2.2.1" %}
 
 {% if cuda_compiler_version in (None, "None", True, False) %}
