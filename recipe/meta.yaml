@@ -10,7 +10,7 @@
 {% endif %}
 
 # prioritize nompi variant via build number
-{% set build_num = 0 %}
+{% set build_num = 1 %}
 {% if mpi == 'nompi' %}
 {% set cutn_build = build_num + 100 %}
 {% else %}
@@ -48,7 +48,7 @@ source:
 
 build:
   number: {{ build_num }}
-  skip: true  # [not linux or cuda_compiler_version not in ("11.2", "12.0") or ((aarch64 or ppc64le) and (cuda_compiler_version or "").startswith("12"))]
+  skip: true  # [not linux or cuda_compiler_version not in ("11.2", "12.0")]
 
 outputs:
 
@@ -135,7 +135,7 @@ outputs:
         Software License Agreement (EULA). By downloading and using the packages,
         you accept the terms and conditions of the NVIDIA cuQuantum EULA -
         https://docs.nvidia.com/cuda/cuquantum/license.html
-      doc_url: https://docs.nvidia.com/cuda/custatevec/index.html
+      doc_url: https://docs.nvidia.com/cuda/cuquantum/latest/custatevec/
       dev_url: https://github.com/NVIDIA/cuQuantum
 
   - name: cutensornet
@@ -228,7 +228,7 @@ outputs:
         Software License Agreement (EULA). By downloading and using the packages,
         you accept the terms and conditions of the NVIDIA cuQuantum EULA -
         https://docs.nvidia.com/cuda/cuquantum/license.html
-      doc_url: https://docs.nvidia.com/cuda/cutensornet/index.html
+      doc_url: https://docs.nvidia.com/cuda/cuquantum/latest/cutensornet/
       dev_url: https://github.com/NVIDIA/cuQuantum
 
   - name: cuquantum-python
@@ -297,7 +297,7 @@ outputs:
       description: |
         NVIDIA cuQuantum Python provides Python bindings and high-level object-oriented
         models for accessing the full functionalities of NVIDIA cuQuantum SDK from Python.
-      doc_url: https://docs.nvidia.com/cuda/cuquantum/python/index.html
+      doc_url: https://docs.nvidia.com/cuda/cuquantum/latest/python/
       dev_url: https://github.com/NVIDIA/cuQuantum
 
 about:
