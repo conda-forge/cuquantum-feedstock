@@ -75,13 +75,6 @@ outputs:
         - mv include/custatevec.h $PREFIX/include/                            # [linux]
         - mkdir -p $PREFIX/lib                                                # [linux]
         - mv lib/libcustatevec.so* $PREFIX/lib/                               # [linux]
-
-        # Patch for conda-forge:
-        # According to the CUDA support matrix, we require glibc 2.27+ on aarch64-sbsa
-        # and ppc64le, while conda-forge is still on 2.17. However, given that powf is
-        # the only offending symbol that needs a newer glibc, it is the easiest if we
-        # just patch it.
-        #- patchelf --clear-symbol-version powf $PREFIX/lib/libcustatevec.so  # [aarch64 or ppc64le]
       run_exports:
         - {{ pin_subpackage('custatevec', max_pin='x') }}
       ignore_run_exports_from:
@@ -105,6 +98,8 @@ outputs:
         - cudatoolkit                                     # [(cuda_compiler_version or "").startswith("11")]
         - {{ pin_compatible('libcublas', max_pin='x') }}  # [(cuda_compiler_version or "").startswith("12")]
         - {{ pin_compatible('cuda-version', max_pin='x') }}
+      run_constrained:
+        - __glibc >=2.27  # [aarch64 or ppc64le]
     # apparently conda-build supports full test section spec, the document is super outdated
     test:
       requires:
@@ -260,6 +255,9 @@ outputs:
         - {{ compiler('cxx') }}
         - {{ compiler('cuda') }}
         - sysroot_{{ target_platform }} 2.17  # [linux]
+        - cross-python_{{ target_platform }}  # [build_platform != target_platform]
+        - python                              # [build_platform != target_platform]
+        - cython                              # [build_platform != target_platform]
       host:
         - python
         - pip
