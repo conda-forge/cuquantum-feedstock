@@ -10,7 +10,7 @@
 {% endif %}
 
 # prioritize nompi variant via build number
-{% set build_num = 1 %}
+{% set build_num = 2 %}
 {% if mpi == 'nompi' %}
 {% set cutn_build = build_num + 100 %}
 {% else %}
@@ -48,7 +48,7 @@ source:
 
 build:
   number: {{ build_num }}
-  skip: true  # [not linux or cuda_compiler_version not in ("11.2", "12.0")]
+  skip: true  # [not linux or cuda_compiler_version not in ("11.8", "12.0")]
 
 outputs:
 
