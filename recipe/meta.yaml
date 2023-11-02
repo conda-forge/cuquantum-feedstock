@@ -208,7 +208,7 @@ outputs:
     about:
       home: https://developer.nvidia.com/cuquantum-sdk
       license: LicenseRef-cuQuantum-Software-License-Agreement
-      license_url: https://docs.nvidia.com/cuda/cuquantum/license.html
+      license_url: https://docs.nvidia.com/cuda/cuquantum/latest/license.html
       license_file: LICENSE
       summary: 'cuTensorNet: A High-Performance Library for Tensor Network Computations'
       description: |
@@ -284,7 +284,7 @@ outputs:
     about:
       home: https://developer.nvidia.com/cuquantum-sdk
       license: BSD-3-Clause
-      license_url: https://docs.nvidia.com/cuda/cuquantum/license.html#nvidia-cuquantum-python
+      license_url: https://docs.nvidia.com/cuda/cuquantum/latest/license.html#nvidia-cuquantum-python
       license_file: LICENSE
       summary: "cuQuantum Python: Python APIs for NVIDIA cuQuantum SDK"
       description: |
@@ -296,7 +296,7 @@ outputs:
 about:
   home: https://developer.nvidia.com/cuquantum-sdk
   license: LicenseRef-cuQuantum-Software-License-Agreement
-  license_url: https://docs.nvidia.com/cuda/cuquantum/license.html
+  license_url: https://docs.nvidia.com/cuda/cuquantum/latest/license.html
   license_file: LICENSE
   summary: 'cuQuantum SDK: A High-Performance Library for Accelerating Quantum Information Science'
   description: |
