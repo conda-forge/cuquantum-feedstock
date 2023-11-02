@@ -14,7 +14,7 @@ IFS="." read -a CUQUANTUM_VER <<< $1
 CUQUANTUM_VER=v${CUQUANTUM_VER[0]}.${CUQUANTUM_VER[1]}.${CUQUANTUM_VER[2]}
 
 # compilation test
-# git clone -b $CUQUANTUM_VER https://github.com/NVIDIA/cuQuantum.git sample_linux/
+git clone -b $CUQUANTUM_VER https://github.com/NVIDIA/cuQuantum.git sample_linux/
 cd sample_linux/samples/
 pushd .
 
