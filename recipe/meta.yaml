@@ -42,7 +42,7 @@ source:
     sha256: ddef9c8c7ac977ca8477af07a53cc3d497f39c1feed88a0cb6a5d73ba9f3a1db  # [ppc64le and (cuda_compiler_version or "").startswith("12")]
 
   - url: https://github.com/NVIDIA/cuQuantum/archive/refs/tags/v{{ ".".join(version.split(".")[:3]) }}.tar.gz
-    sha256: 0c819a21d0dfc158d19c44f999d2caeb19a9f4567baa0e77d712a83315c039e8
+    sha256: 837d345eb520388c4dfac33fdd1e8b90c001cb751dd90626589870f35ac9b3e0
 
 build:
   number: {{ build_num }}
