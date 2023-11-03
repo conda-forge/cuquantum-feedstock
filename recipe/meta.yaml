@@ -224,7 +224,6 @@ outputs:
 
   - name: cuquantum-python
     version: {{ ".".join(version.split(".")[:3]) }}
-    version: 23.06.0
     build:
       number: {{ build_num }}
       # build cuQuantum Python in a CUDA agnostic way to serve both CUDA 11/12
