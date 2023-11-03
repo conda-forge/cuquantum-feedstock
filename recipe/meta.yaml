@@ -1,12 +1,12 @@
 # Make sure the component versions are consistent with the SDK version!
-{% set version = "23.06.1.8" %}
-{% set cusv_version = "1.4.1" %}
-{% set cutn_version = "2.2.1" %}
+{% set version = "23.10.0.6" %}
+{% set cusv_version = "1.5.0" %}
+{% set cutn_version = "2.3.0" %}
 
 {% if cuda_compiler_version in (None, "None", True, False) %}
 {% set cuda_major = 0 %}
 {% else %}
-{% set cuda_major = environ.get("cuda_compiler_version", "11.2").split(".")[0]|int %}
+{% set cuda_major = environ.get("cuda_compiler_version", "11.8").split(".")[0]|int %}
 {% endif %}
 
 # prioritize nompi variant via build number
@@ -30,21 +30,19 @@ package:
 
 source:
   - url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-x86_64/cuquantum-linux-x86_64-{{ version }}_cuda{{ cuda_major }}-archive.tar.xz  # [linux64]
-    sha256: 7794952a6dc8593881b0aef5798a6a2bf5087bc64748ec951971235d2357aae3  # [linux64 and (cuda_compiler_version or "").startswith("11")]
-    sha256: 6f53da19c6f052ed1eb83a3c594862a161c92517c7fa2e0c054466d7783d4920  # [linux64 and (cuda_compiler_version or "").startswith("12")]
+    sha256: 7e214d6020190ff7299a483448a4d44f54c98b69fd8dc9866a187d995ecc46e2  # [linux64 and (cuda_compiler_version or "").startswith("11")]
+    sha256: 5ff77bd5cf62fab02e598fe5e1b1617d521207552808173e135f9a9607f56bad  # [linux64 and (cuda_compiler_version or "").startswith("12")]
 
   - url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-sbsa/cuquantum-linux-sbsa-{{ version }}_cuda{{ cuda_major }}-archive.tar.xz  # [aarch64]
-    sha256: 9cbd6f44705133a8743048276bc81823f0778a0d107cce641600e1a3dfc1ae75  # [aarch64 and (cuda_compiler_version or "").startswith("11")]
-    sha256: c0b6c54b790907b30a57e4e0c8dd9620e2bd4d0cd67134ccf063af1d4c36b160  # [aarch64 and (cuda_compiler_version or "").startswith("12")]
+    sha256: a8f403a17663d4c7304b6d7944ba2c78afc630dad7741577dde3bc849b54fc79  # [aarch64 and (cuda_compiler_version or "").startswith("11")]
+    sha256: 395ac98d0993fc3419395dce86947cbdfe0abf556bb4dc674dcffcf939e0d482  # [aarch64 and (cuda_compiler_version or "").startswith("12")]
 
   - url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-ppc64le/cuquantum-linux-ppc64le-{{ version }}_cuda{{ cuda_major }}-archive.tar.xz  # [ppc64le]
-    sha256: 5265dc591d7c4352eaf1d3b5cbb7780af5d1255714c36f0436b8297f62a9f6bb  # [ppc64le and (cuda_compiler_version or "").startswith("11")]
-    sha256: d8a52117c2adc874363d4f128344e80ee9fb1b45e1c572377cf6f3392a95362c  # [ppc64le and (cuda_compiler_version or "").startswith("12")]
+    sha256: 983c3fdf50c0ad1639a98eae0eca670b60e02516d5240e37aac4726abcbce839  # [ppc64le and (cuda_compiler_version or "").startswith("11")]
+    sha256: ddef9c8c7ac977ca8477af07a53cc3d497f39c1feed88a0cb6a5d73ba9f3a1db  # [ppc64le and (cuda_compiler_version or "").startswith("12")]
 
-  # TODO: revert me
-  # - url: https://github.com/NVIDIA/cuQuantum/archive/refs/tags/v{{ ".".join(version.split(".")[:3]) }}.tar.gz
-  - url: https://github.com/NVIDIA/cuQuantum/archive/refs/tags/v23.06.0.tar.gz
-    sha256: 0c819a21d0dfc158d19c44f999d2caeb19a9f4567baa0e77d712a83315c039e8
+  - url: https://github.com/NVIDIA/cuQuantum/archive/refs/tags/v{{ ".".join(version.split(".")[:3]) }}.tar.gz
+    sha256: 837d345eb520388c4dfac33fdd1e8b90c001cb751dd90626589870f35ac9b3e0
 
 build:
   number: {{ build_num }}
@@ -119,7 +117,7 @@ outputs:
     about:
       home: https://developer.nvidia.com/cuquantum-sdk
       license: LicenseRef-cuQuantum-Software-License-Agreement
-      license_url: https://docs.nvidia.com/cuda/cuquantum/license.html
+      license_url: https://docs.nvidia.com/cuda/cuquantum/latest/license.html
       license_file: LICENSE
       summary: 'cuStateVec: A High-Performance Library for State Vector Quantum Simulators'
       description: |
@@ -210,7 +208,7 @@ outputs:
     about:
       home: https://developer.nvidia.com/cuquantum-sdk
       license: LicenseRef-cuQuantum-Software-License-Agreement
-      license_url: https://docs.nvidia.com/cuda/cuquantum/license.html
+      license_url: https://docs.nvidia.com/cuda/cuquantum/latest/license.html
       license_file: LICENSE
       summary: 'cuTensorNet: A High-Performance Library for Tensor Network Computations'
       description: |
@@ -225,9 +223,7 @@ outputs:
       dev_url: https://github.com/NVIDIA/cuQuantum
 
   - name: cuquantum-python
-    # TODO: revert me
-    # version: {{ ".".join(version.split(".")[:3]) }}
-    version: 23.06.0
+    version: {{ ".".join(version.split(".")[:3]) }}
     build:
       number: {{ build_num }}
       # build cuQuantum Python in a CUDA agnostic way to serve both CUDA 11/12
@@ -287,7 +283,7 @@ outputs:
     about:
       home: https://developer.nvidia.com/cuquantum-sdk
       license: BSD-3-Clause
-      license_url: https://docs.nvidia.com/cuda/cuquantum/license.html#nvidia-cuquantum-python
+      license_url: https://docs.nvidia.com/cuda/cuquantum/latest/license.html#nvidia-cuquantum-python
       license_file: LICENSE
       summary: "cuQuantum Python: Python APIs for NVIDIA cuQuantum SDK"
       description: |
@@ -299,7 +295,7 @@ outputs:
 about:
   home: https://developer.nvidia.com/cuquantum-sdk
   license: LicenseRef-cuQuantum-Software-License-Agreement
-  license_url: https://docs.nvidia.com/cuda/cuquantum/license.html
+  license_url: https://docs.nvidia.com/cuda/cuquantum/latest/license.html
   license_file: LICENSE
   summary: 'cuQuantum SDK: A High-Performance Library for Accelerating Quantum Information Science'
   description: |
@@ -315,7 +311,7 @@ about:
     Software License Agreement (EULA). By downloading and using the packages,
     you accept the terms and conditions of the NVIDIA cuQuantum EULA -
     https://docs.nvidia.com/cuda/cuquantum/license.html
-  doc_url: https://docs.nvidia.com/cuda/cuquantum/index.html
+  doc_url: https://docs.nvidia.com/cuda/cuquantum/latest/index.html
   dev_url: https://github.com/NVIDIA/cuQuantum
 
 extra:

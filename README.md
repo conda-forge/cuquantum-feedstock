@@ -9,13 +9,13 @@ About cuquantum-sdk
 
 Home: https://developer.nvidia.com/cuquantum-sdk
 
-Package license: [LicenseRef-cuQuantum-Software-License-Agreement](https://docs.nvidia.com/cuda/cuquantum/license.html)
+Package license: [LicenseRef-cuQuantum-Software-License-Agreement](https://docs.nvidia.com/cuda/cuquantum/latest/license.html)
 
 Summary: cuQuantum SDK: A High-Performance Library for Accelerating Quantum Information Science
 
 Development: https://github.com/NVIDIA/cuQuantum
 
-Documentation: https://docs.nvidia.com/cuda/cuquantum/index.html
+Documentation: https://docs.nvidia.com/cuda/cuquantum/latest/index.html
 
 NVIDIA cuQuantum is an SDK of optimized libraries and tools for accelerating quantum computing workflows.
 Using NVIDIA GPU Tensor Core GPUs, developers can use cuQuantum to speed up quantum circuit simulations
@@ -36,7 +36,7 @@ About custatevec
 
 Home: https://developer.nvidia.com/cuquantum-sdk
 
-Package license: [LicenseRef-cuQuantum-Software-License-Agreement](https://docs.nvidia.com/cuda/cuquantum/license.html)
+Package license: [LicenseRef-cuQuantum-Software-License-Agreement](https://docs.nvidia.com/cuda/cuquantum/latest/license.html)
 
 Summary: cuStateVec: A High-Performance Library for State Vector Quantum Simulators
 
@@ -58,7 +58,7 @@ About cutensornet
 
 Home: https://developer.nvidia.com/cuquantum-sdk
 
-Package license: [LicenseRef-cuQuantum-Software-License-Agreement](https://docs.nvidia.com/cuda/cuquantum/license.html)
+Package license: [LicenseRef-cuQuantum-Software-License-Agreement](https://docs.nvidia.com/cuda/cuquantum/latest/license.html)
 
 Summary: cuTensorNet: A High-Performance Library for Tensor Network Computations
 
@@ -80,7 +80,7 @@ About cuquantum-python
 
 Home: https://developer.nvidia.com/cuquantum-sdk
 
-Package license: [BSD-3-Clause](https://docs.nvidia.com/cuda/cuquantum/license.html#nvidia-cuquantum-python)
+Package license: [BSD-3-Clause](https://docs.nvidia.com/cuda/cuquantum/latest/license.html#nvidia-cuquantum-python)
 
 Summary: cuQuantum Python: Python APIs for NVIDIA cuQuantum SDK
 
