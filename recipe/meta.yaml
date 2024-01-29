@@ -10,7 +10,7 @@
 {% endif %}
 
 # prioritize nompi variant via build number
-{% set build_num = 2 %}
+{% set build_num = 3 %}
 {% if mpi == 'nompi' %}
 {% set cutn_build = build_num + 100 %}
 {% else %}
