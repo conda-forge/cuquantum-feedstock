@@ -20,8 +20,6 @@ cuda_compiler:
 - nvcc
 cuda_compiler_version:
 - '11.8'
-cutensor:
-- '2'
 cxx_compiler:
 - gxx
 cxx_compiler_version:
@@ -33,7 +31,7 @@ mpi:
 mpich:
 - '4'
 openmpi:
-- '4'
+- '5'
 pin_run_as_build:
   python:
     min_pin: x.x
