@@ -10,3 +10,5 @@ mpi:
 # 1 unique upload would be done by the CI.
 ignore_version:
   - mpi
+c_stdlib_version:   # [linux]
+  - "2.17"          # [linux]
