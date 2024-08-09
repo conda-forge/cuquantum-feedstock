@@ -251,7 +251,7 @@ outputs:
         - python >=3.10                       # [build_platform != target_platform]
         - cython <3                           # [build_platform != target_platform]
       host:
-        - python
+        - python >=3.10
         - pip
         - cython <3
         - custatevec  ={{ cusv_version }}
