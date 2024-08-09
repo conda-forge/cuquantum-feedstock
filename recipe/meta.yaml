@@ -248,19 +248,19 @@ outputs:
         - {{ compiler('cxx') }}
         - {{ compiler('cuda') }}
         - cross-python_{{ target_platform }}  # [build_platform != target_platform]
-        - python                              # [build_platform != target_platform]
+        - python >=3.10                       # [build_platform != target_platform]
         - cython <3                           # [build_platform != target_platform]
       host:
         - python
         - pip
         - cython <3
-        - custatevec ={{ cusv_version }}
+        - custatevec  ={{ cusv_version }}
         - cutensornet ={{ cutn_version }}
         - packaging
       run:
-        - python
-        - numpy >=1.21,<2
-        - cupy >=13.0
+        - python >=3.10
+        - numpy  >=1.21,<2
+        - cupy   >=13.0
         - {{ pin_subpackage('custatevec', max_pin='x') }}
         - {{ pin_subpackage('cutensornet', max_pin='x') }}
         - cuda-version >=11.0.*,<13.a0  # again, cuQuantum Python is "CUDA agnostic"
