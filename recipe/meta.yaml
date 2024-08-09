@@ -1,7 +1,7 @@
 # Make sure the component versions are consistent with the SDK version!
-{% set version = "24.03.0.4" %}
+{% set version = "24.08.0.5" %}
 {% set cusv_version = "1.6.0" %}
-{% set cutn_version = "2.4.0" %}
+{% set cutn_version = "2.5.0" %}
 
 {% if cuda_compiler_version in (None, "None", True, False) %}
 {% set cuda_major = 0 %}
@@ -10,7 +10,7 @@
 {% endif %}
 
 # prioritize nompi variant via build number
-{% set build_num = 3 %}
+{% set build_num = 5 %}
 {% if mpi == 'nompi' %}
 {% set cutn_build = build_num + 100 %}
 {% else %}
@@ -30,16 +30,16 @@ package:
 
 source:
   - url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-x86_64/cuquantum-linux-x86_64-{{ version }}_cuda{{ cuda_major }}-archive.tar.xz  # [linux64]
-    sha256: 8b7b0431ed6fb31c940bcf18f1344d35ab17a36ad53d23858344abcee2576c7f  # [linux64 and (cuda_compiler_version or "").startswith("11")]
-    sha256: 5926c71d6f816936b29d9220ebd8ba800abfeecf7b58b0ad06c33608acf511cc  # [linux64 and (cuda_compiler_version or "").startswith("12")]
-
-  - url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-sbsa/cuquantum-linux-sbsa-{{ version }}_cuda{{ cuda_major }}-archive.tar.xz  # [aarch64]
-    sha256: e0cf0a59ecc7ae821e37c4ed0b507cb441d1fe7c02068ae773f847c7369a7c18  # [aarch64 and (cuda_compiler_version or "").startswith("11")]
-    sha256: 0da2a771c0135753173f65a6b00ca1201cc1a48339659146e553526cc44eab20  # [aarch64 and (cuda_compiler_version or "").startswith("12")]
+    sha256: f361f2e45ff863e7eb152f1553580c3bcfb7c0a6b9efea909688fdc519fee4d1  # [linux64 and (cuda_compiler_version or "").startswith("11")]
+    sha256: 485968734706eeffcd3adc3b2d2086e59be7ff3ddd907e96f1eb97335beb344a  # [linux64 and (cuda_compiler_version or "").startswith("12")]
 
   - url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-ppc64le/cuquantum-linux-ppc64le-{{ version }}_cuda{{ cuda_major }}-archive.tar.xz  # [ppc64le]
-    sha256: d9e87ffcc6472b1dd27e228478af9271d5e19b7ae09b25b31fb883241dd56ab5  # [ppc64le and (cuda_compiler_version or "").startswith("11")]
-    sha256: 7aba28d8683490d407945a6cada65bc83273b21715241fa537f1f744c539b7b7  # [ppc64le and (cuda_compiler_version or "").startswith("12")]
+    sha256: 8767174f86211ca3610d91bdf8c6b8145408836a3d14808414297aef3631fd43  # [ppc64le and (cuda_compiler_version or "").startswith("11")]
+    sha256: 06d63f5c3a7a3f3e910259c1bfca3e7fdab72d0378099002941bc0a743f35694  # [ppc64le and (cuda_compiler_version or "").startswith("12")]
+
+  - url: https://developer.download.nvidia.com/compute/cuquantum/redist/cuquantum/linux-sbsa/cuquantum-linux-sbsa-{{ version }}_cuda{{ cuda_major }}-archive.tar.xz  # [aarch64]
+    sha256: 4b695e25f8e2bfdaa04f68c379fe2001b6fdb8fe63169780b584f7b49acd0312  # [aarch64 and (cuda_compiler_version or "").startswith("11")]
+    sha256: 9ca173c8b58ac5c097a8c69f4900bc9ef0179def721804f1e9f033677445cafc  # [aarch64 and (cuda_compiler_version or "").startswith("12")]
 
   - url: https://github.com/NVIDIA/cuQuantum/archive/refs/tags/v{{ ".".join(version.split(".")[:3]) }}.tar.gz
     sha256: 77350d0d6e3249df1c67bfdc7df8802061ab1061177ae30a26655c2ef1d895de
@@ -83,11 +83,10 @@ outputs:
       post-link: post-link  # this is supported by conda-build, but undocumented
     requirements:
       build:
+        - {{ stdlib('c') }}
         - {{ compiler('c') }}
-        - {{ stdlib("c") }}
         - {{ compiler('cxx') }}
         - {{ compiler('cuda') }}
-        - sysroot_{{ target_platform }} 2.17  # [linux]
       host:
         - libcublas  # [(cuda_compiler_version or "").startswith("12")]
         - cuda-version {{ cuda_compiler_version }}
@@ -109,7 +108,6 @@ outputs:
         # make sure we pick up the version matching the docker,
         # or the linker would complain
         - cuda-version {{ cuda_compiler_version }}.*
-        - sysroot_{{ target_platform }} 2.17  # [linux]
       files:
         - test_load_elf.c
         - cusv_run_test.sh
@@ -163,11 +161,10 @@ outputs:
       post-link: post-link  # this is supported by conda-build, but undocumented
     requirements:
       build:
+        - {{ stdlib('c') }}
         - {{ compiler('c') }}
-        - {{ stdlib("c") }}
         - {{ compiler('cxx') }}
         - {{ compiler('cuda') }}
-        - sysroot_{{ target_platform }} 2.17  # [linux]
       host:
         - {{ mpi }}  # [mpi != 'nompi']
         - cutensor >=2.0.1,<3
@@ -197,7 +194,6 @@ outputs:
         # make sure we pick up the version matching the docker,
         # or the linker would complain
         - cuda-version {{ cuda_compiler_version }}.*
-        - sysroot_{{ target_platform }} 2.17  # [linux]
       files:
         - test_load_elf.c
         - cutn_run_test.sh
@@ -247,11 +243,10 @@ outputs:
         - {{ compiler('cuda') }}
     requirements:
       build:
+        - {{ stdlib('c') }}
         - {{ compiler('c') }}
-        - {{ stdlib("c") }}
         - {{ compiler('cxx') }}
         - {{ compiler('cuda') }}
-        - sysroot_{{ target_platform }} 2.17  # [linux]
         - cross-python_{{ target_platform }}  # [build_platform != target_platform]
         - python                              # [build_platform != target_platform]
         - cython <3                           # [build_platform != target_platform]
