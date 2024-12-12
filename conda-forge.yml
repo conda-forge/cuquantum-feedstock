@@ -1,3 +1,9 @@
+azure:
+  free_disk_space: true
+  settings_linux:
+    swapfile_size: 10GiB
+conda_build:
+  pkg_format: '2'
 conda_forge_output_validation: true
 github:
   branch_name: main
@@ -5,10 +11,5 @@ github:
 os_version:
   linux_64: cos7
   linux_aarch64: cos7
-  linux_ppc64le: cos7
 provider:
   linux_aarch64: azure
-  linux_ppc64le: azure
-idle_timeout_minutes: 60
-conda_build:
-  pkg_format: '2'

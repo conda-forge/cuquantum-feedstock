@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -ex
+
+declare -gx cutensornet_dir
+cutensornet_dir="$(
+  cd "${RECIPE_DIR}/cutensornet" &&
+  pwd -L
+)"
+mkdir -p "${PREFIX}/etc/conda/activate.d"
+mkdir -p "${PREFIX}/etc/conda/deactivate.d"
+cp "${cutensornet_dir}/cutn-activate.sh" "${PREFIX}/etc/conda/activate.d/"
+cp "${cutensornet_dir}/cutn-deactivate.sh" "${PREFIX}/etc/conda/deactivate.d/"
