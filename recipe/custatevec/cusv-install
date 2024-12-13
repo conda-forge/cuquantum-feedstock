@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC1091
+set -ex
+
+
+if [[ -f "${RECIPE_DIR}/common/handle-files" ]] ; then
+  source "${RECIPE_DIR}/common/handle-files"
+else
+  echo "error: common/handle-files is not available"
+  exit 1
+fi
+
+conda clean --all --yes
+
+{(
+
+  declare -gx from named
+  from="include" named="*custatevec.h*" files move "${PREFIX}/include"
+  from="lib" named="*custatevec.so*" files move "${PREFIX}/lib"
+)}
