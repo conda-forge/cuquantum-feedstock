@@ -1,10 +1,12 @@
-c_stdlib_version:
-  - 2.17
-
 mpi:
   - nompi
   - mpich
   - openmpi
-
+# This is to make sure "mpi" above is *NOT* used to compute the package hash. For "cutensornet"
+# the non-colliding hashes are acceptable (though not preferred if avoidable) because we
+# wanted 3 flavors of "cutensornet" generated. But, for the "cuquantum" metapackage if the
+# hashes are not colliding we'd also generate 3 packages (one for each "mpi" flavor), despite
+# it has nothing to do with MPI. We better make sure we have colliding hashes, so that only
+# 1 unique upload would be done by the CI.
 ignore_version:
   - mpi

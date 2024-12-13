@@ -8,85 +8,50 @@ jobs:
     vmImage: ubuntu-latest
   strategy:
     matrix:
-      linux_64_c_compiler_version11cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11mpimpich:
-        CONFIG: linux_64_c_compiler_version11cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11mpimpich
+      linux_64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpimpich:
+        CONFIG: linux_64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpimpich
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64-cuda11.8:cos7
-      linux_64_c_compiler_version11cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11mpinompi:
-        CONFIG: linux_64_c_compiler_version11cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11mpinompi
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.2
+      linux_64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpinompi:
+        CONFIG: linux_64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpinompi
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64-cuda11.8:cos7
-      linux_64_c_compiler_version11cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11mpiopenmpi:
-        CONFIG: linux_64_c_compiler_version11cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11mpiopenmpi
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.2
+      linux_64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpiopenmpi:
+        CONFIG: linux_64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpiopenmpi
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64-cuda11.8:cos7
-      linux_64_c_compiler_version12cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version12mpimpich:
-        CONFIG: linux_64_c_compiler_version12cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version12mpimpich
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cuda:11.2
+      linux_aarch64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpimpich:
+        CONFIG: linux_aarch64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpimpich
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64:cos7
-      linux_64_c_compiler_version12cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version12mpinompi:
-        CONFIG: linux_64_c_compiler_version12cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version12mpinompi
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64-cuda:11.2
+      linux_aarch64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpinompi:
+        CONFIG: linux_aarch64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpinompi
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64:cos7
-      linux_64_c_compiler_version12cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version12mpiopenmpi:
-        CONFIG: linux_64_c_compiler_version12cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version12mpiopenmpi
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64-cuda:11.2
+      linux_aarch64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpiopenmpi:
+        CONFIG: linux_aarch64_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpiopenmpi
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64:cos7
-      linux_aarch64_c_compiler_version11cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11mpimpich:
-        CONFIG: linux_aarch64_c_compiler_version11cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11mpimpich
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64-cuda:11.2
+      linux_ppc64le_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpimpich:
+        CONFIG: linux_ppc64le_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpimpich
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64-cuda11.8:ubi8
-      linux_aarch64_c_compiler_version11cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11mpinompi:
-        CONFIG: linux_aarch64_c_compiler_version11cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11mpinompi
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le-cuda:11.2
+      linux_ppc64le_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpinompi:
+        CONFIG: linux_ppc64le_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpinompi
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64-cuda11.8:ubi8
-      linux_aarch64_c_compiler_version11cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11mpiopenmpi:
-        CONFIG: linux_aarch64_c_compiler_version11cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11mpiopenmpi
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le-cuda:11.2
+      linux_ppc64le_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpiopenmpi:
+        CONFIG: linux_ppc64le_c_compiler_version10cuda_compiler_version11.2cxx_compiler_version10mpiopenmpi
         UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64-cuda11.8:ubi8
-      linux_aarch64_c_compiler_version12cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version12mpimpich:
-        CONFIG: linux_aarch64_c_compiler_version12cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version12mpimpich
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64:cos7
-      linux_aarch64_c_compiler_version12cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version12mpinompi:
-        CONFIG: linux_aarch64_c_compiler_version12cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version12mpinompi
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64:cos7
-      linux_aarch64_c_compiler_version12cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version12mpiopenmpi:
-        CONFIG: linux_aarch64_c_compiler_version12cuda_compilercuda-nvcccuda_compiler_version12.6cxx_compiler_version12mpiopenmpi
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64:cos7
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-ppc64le-cuda:11.2
   timeoutInMinutes: 360
-  variables: {}
 
   steps:
   - script: |
-         sudo mkdir -p /opt/empty_dir || true
-         for d in \
-                  /opt/ghc \
-                  /opt/hostedtoolcache \
-                  /usr/lib/jvm \
-                  /usr/local/.ghcup \
-                  /usr/local/lib/android \
-                  /usr/local/share/powershell \
-                  /usr/share/dotnet \
-                  /usr/share/swift \
-                  ; do
-           sudo rsync --stats -a --delete /opt/empty_dir/ $d || true
-         done
-         sudo apt-get purge -y -f firefox \
-                                  google-chrome-stable \
-                                  microsoft-edge-stable
-         sudo apt-get autoremove -y >& /dev/null
-         sudo apt-get autoclean -y >& /dev/null
+         rm -rf /opt/ghc
          df -h
     displayName: Manage disk space
-  - script: |
-         sudo fallocate -l 10GiB /swapfile || true
-         sudo chmod 600 /swapfile || true
-         sudo mkswap /swapfile || true
-         sudo swapon /swapfile || true
-    displayName: Create swap file
+
   # configure qemu binfmt-misc running.  This allows us to run docker containers
   # embedded qemu-static
   - script: |
@@ -97,9 +62,6 @@ jobs:
 
   - script: |
         export CI=azure
-        export flow_run_id=azure_$(Build.BuildNumber).$(System.JobAttempt)
-        export remote_url=$(Build.Repository.Uri)
-        export sha=$(Build.SourceVersion)
         export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
         export FEEDSTOCK_NAME=$(basename ${BUILD_REPOSITORY_NAME})
         if [[ "${BUILD_REASON:-}" == "PullRequest" ]]; then
