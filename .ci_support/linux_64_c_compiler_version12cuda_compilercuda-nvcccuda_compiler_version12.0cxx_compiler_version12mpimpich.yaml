@@ -1,44 +1,32 @@
 c_compiler:
 - gcc
 c_compiler_version:
-- '11'
+- '12'
 c_stdlib:
 - sysroot
 c_stdlib_version:
 - '2.17'
 cdt_name:
-- conda
+- cos7
 channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge main
 cuda_compiler:
-- nvcc
+- cuda-nvcc
 cuda_compiler_version:
-- '11.8'
-<<<<<<< HEAD
-cutensor:
-- '2'
-=======
->>>>>>> 33f1b84d1df2b5683c2b18f0c44bcefacf736e3e
+- '12.0'
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '11'
+- '12'
 docker_image:
-<<<<<<< HEAD
-- quay.io/condaforge/linux-anvil-x86_64-cuda11.8:cos7
-=======
-- quay.io/condaforge/linux-anvil-cuda:11.8
->>>>>>> 33f1b84d1df2b5683c2b18f0c44bcefacf736e3e
+- quay.io/condaforge/linux-anvil-cos7-x86_64
 mpi:
-- nompi
+- mpich
 mpich:
 - '4'
 openmpi:
-<<<<<<< HEAD
-- '4'
-=======
 - '5'
 pin_run_as_build:
   python:
@@ -50,17 +38,13 @@ python:
 - 3.12.* *_cpython
 - 3.8.* *_cpython
 - 3.9.* *_cpython
->>>>>>> 33f1b84d1df2b5683c2b18f0c44bcefacf736e3e
 target_platform:
 - linux-64
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
-<<<<<<< HEAD
-=======
   - c_stdlib_version
   - cdt_name
->>>>>>> 33f1b84d1df2b5683c2b18f0c44bcefacf736e3e
   - cuda_compiler
   - cuda_compiler_version
   - docker_image
