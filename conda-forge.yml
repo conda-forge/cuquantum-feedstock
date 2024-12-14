@@ -1,13 +1,7 @@
 azure:
   free_disk_space: true
-<<<<<<< HEAD
   settings_linux:
     swapfile_size: 10GiB
-=======
-build_platform:
-  linux_aarch64: linux_64
-  linux_ppc64le: linux_64
->>>>>>> 33f1b84d1df2b5683c2b18f0c44bcefacf736e3e
 conda_build:
   pkg_format: '2'
 conda_forge_output_validation: true
@@ -19,10 +13,4 @@ os_version:
   linux_64: cos7
   linux_aarch64: cos7
 provider:
-<<<<<<< HEAD
   linux_aarch64: azure
-=======
-  linux_aarch64: azure
-  linux_ppc64le: azure
-test: native
->>>>>>> 33f1b84d1df2b5683c2b18f0c44bcefacf736e3e
