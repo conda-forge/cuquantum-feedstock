@@ -17,9 +17,53 @@ conda clean --all --yes
   declare -gx from named
   from="include" named="*cutensornet.h*" files move "${PREFIX}/include"
   from="include/cutensornet" named="*.h*" files move "${PREFIX}/include/cutensornet"
-  
   from="lib" named="*cutensornet.so*" files move "${PREFIX}/lib"
+  
+  if [[ "${mpi}" != "nompi" ]]; then
+  #if [[ -f "${PREFIX}/lib/libmpi.so" ]] ; then
+    echo " detected mpi lib, building wrappers" 
+    # build the mpi wrapper lib  
+    if ! [[ -f "distributed_interfaces/cutensornet_distributed_interface_mpi.c" ]] ; then
+      echo " error: distributed interface source not found in expected location "
+      exit 1
+    fi
+    declare -a compile_command
+    if [[ "${cuda_compiler_version}" == "11.8" ]]; then
+      compile_command=(
+          "${GCC}" "-shared" "-std=c11" "-fPIC"
+          "-I${CUDA_PATH}/include" "-I${PREFIX}/include"
+          "distributed_interfaces/cutensornet_distributed_interface_mpi.c"
+          "-L${PREFIX}/lib" "-lmpi"
+          "-o" "${PREFIX}/lib/libcutensornet_distributed_interface_mpi.so"
+        )
+      #"${GCC}" "-shared" "-std=c11" "-fPIC" "-I${CUDA_PATH}/include" "-I${PREFIX}/include" "distributed_interfaces/cutensornet_distributed_interface_mpi.c" "-L${PREFIX}/lib" "-lmpi" "-o" "${PREFIX}/lib/libcutensornet_distributed_interface_mpi.so"
+    elif [[ "${cuda_compiler_version}" == "12.0" ]] ||  [[ "${cuda_compiler_version}" == "12.6" ]]; then
+      compile_command=(
+          "${GCC}" "-shared" "-std=c11" "-fPIC" ${CFLAGS} "-I${PREFIX}/include"
+          "distributed_interfaces/cutensornet_distributed_interface_mpi.c"
+          "-L${PREFIX}/lib" "-lmpi"
+          "-o" "${PREFIX}/lib/libcutensornet_distributed_interface_mpi.so"
+        )
+      #"${GCC}" "-shared" "-std=c11" "-fPIC" ${CFLAGS} "-I${PREFIX}/include" "distributed_interfaces/cutensornet_distributed_interface_mpi.c" "-L${PREFIX}/lib" "-lmpi" "-o" "${PREFIX}/lib/libcutensornet_distributed_interface_mpi.so"
+    else
+      echo "error: incompatible cuda version"
+      exit 1
+    fi
+    echo "compile_command[@]"
+    "${compile_command[@]}"
+    if ! [[ -f "${PREFIX}/lib/libcutensornet_distributed_interface_mpi.so" ]] ; then
+      echo "error: cutensornet comm lib not in expected place, exiting"
+      exit 1
+    fi
+    # copy activate/deactivate scripts
+    mkdir -p "${PREFIX}/etc/conda/activate.d"
+    cp "${RECIPE_DIR}/cutensornet/cutn-activate.sh" "${PREFIX}/etc/conda/activate.d/cutn-activate.sh" 
+    mkdir -p "${PREFIX}/etc/conda/deactivate.d"
+    cp "${RECIPE_DIR}/cutensornet/cutn-deactivate.sh" "${PREFIX}/etc/conda/deactivate.d/cutn-deactivate.sh"
+  else
+    echo " not detected mpi lib, not building wrappers"
+  fi
+  
 )}
-
 
 

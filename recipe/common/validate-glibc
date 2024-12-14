@@ -15,6 +15,20 @@
     exit 1
   fi
 
+  RECIPE_GLIBC="$(
+        glibc-detect env c_stdlib_version
+      )"
+      echo "Recipe-glibc: ${RECIPE_GLIBC}"
+  if [[ -z "${RECIPE_GLIBC}" ]] ; then
+    echo "error: recipe glibc not set"
+    exit 1
+  fi
+
+  SYSTEM_GLIBC="$(
+        glibc-detect system
+      )"
+      echo "System-glibc: ${SYSTEM_GLIBC}"  
+
   declare -agx LIBRARIES
   if [[ -z "${LIBRARIES[*]}" ]] ; then
     LIBRARIES=("${@}")
@@ -27,14 +41,6 @@
         glibc-detect required-by "${LIBRARY}"
       )"
       echo "Library-glibc: ${LIBRARY_GLIBC}"
-      RECIPE_GLIBC="$(
-        glibc-detect env c_stdlib_version
-      )"
-      echo "Recipe-glibc: ${RECIPE_GLIBC}"
-      SYSTEM_GLIBC="$(
-        glibc-detect system
-      )"
-      echo "System-glibc: ${SYSTEM_GLIBC}"
       glibc-check compatible "${SYSTEM_GLIBC}" "${RECIPE_GLIBC}" || {
         echo "warning: the glibc version required by the recipe"
         echo "         is not compatible with the system glibc version"

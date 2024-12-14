@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-=======
-BUILD:
-- aarch64-conda_cos7-linux-gnu
->>>>>>> 33f1b84d1df2b5683c2b18f0c44bcefacf736e3e
 c_compiler:
 - gcc
 c_compiler_version:
@@ -11,15 +6,8 @@ c_stdlib:
 - sysroot
 c_stdlib_version:
 - '2.17'
-<<<<<<< HEAD
 cdt_name:
 - conda
-=======
-cdt_arch:
-- aarch64
-cdt_name:
-- cos7
->>>>>>> 33f1b84d1df2b5683c2b18f0c44bcefacf736e3e
 channel_sources:
 - conda-forge
 channel_targets:
@@ -28,69 +16,25 @@ cuda_compiler:
 - nvcc
 cuda_compiler_version:
 - '11.8'
-<<<<<<< HEAD
-<<<<<<<< HEAD:.ci_support/linux_aarch64_c_compiler_version11cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11mpinompi.yaml
 cutensor:
 - '2'
-========
->>>>>>>> 33f1b84d1df2b5683c2b18f0c44bcefacf736e3e:.ci_support/linux_ppc64le_c_compiler_version11cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11mpinompi.yaml
-=======
->>>>>>> 33f1b84d1df2b5683c2b18f0c44bcefacf736e3e
 cxx_compiler:
 - gxx
 cxx_compiler_version:
 - '11'
 docker_image:
-<<<<<<< HEAD
-<<<<<<<< HEAD:.ci_support/linux_aarch64_c_compiler_version11cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11mpinompi.yaml
 - quay.io/condaforge/linux-anvil-aarch64-cuda11.8:ubi8
-========
-- quay.io/condaforge/linux-anvil-cuda:11.8
->>>>>>>> 33f1b84d1df2b5683c2b18f0c44bcefacf736e3e:.ci_support/linux_ppc64le_c_compiler_version11cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11mpinompi.yaml
-=======
-- quay.io/condaforge/linux-anvil-cuda:11.8
->>>>>>> 33f1b84d1df2b5683c2b18f0c44bcefacf736e3e
 mpi:
 - nompi
 mpich:
 - '4'
 openmpi:
-<<<<<<< HEAD
-<<<<<<<< HEAD:.ci_support/linux_aarch64_c_compiler_version11cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11mpinompi.yaml
-- '4'
-========
-=======
->>>>>>> 33f1b84d1df2b5683c2b18f0c44bcefacf736e3e
 - '5'
-pin_run_as_build:
-  python:
-    min_pin: x.x
-    max_pin: x.x
-python:
-- 3.10.* *_cpython
-- 3.11.* *_cpython
-- 3.12.* *_cpython
-- 3.8.* *_cpython
-- 3.9.* *_cpython
-<<<<<<< HEAD
->>>>>>>> 33f1b84d1df2b5683c2b18f0c44bcefacf736e3e:.ci_support/linux_ppc64le_c_compiler_version11cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11mpinompi.yaml
-=======
->>>>>>> 33f1b84d1df2b5683c2b18f0c44bcefacf736e3e
 target_platform:
 - linux-aarch64
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
-<<<<<<< HEAD
-<<<<<<<< HEAD:.ci_support/linux_aarch64_c_compiler_version11cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11mpinompi.yaml
-========
-  - c_stdlib_version
-  - cdt_name
->>>>>>>> 33f1b84d1df2b5683c2b18f0c44bcefacf736e3e:.ci_support/linux_ppc64le_c_compiler_version11cuda_compilernvcccuda_compiler_version11.8cxx_compiler_version11mpinompi.yaml
-=======
-  - c_stdlib_version
-  - cdt_name
->>>>>>> 33f1b84d1df2b5683c2b18f0c44bcefacf736e3e
   - cuda_compiler
   - cuda_compiler_version
   - docker_image

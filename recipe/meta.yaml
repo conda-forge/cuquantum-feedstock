@@ -94,9 +94,14 @@ outputs:
         - {{ pin_subpackage("cudensitymat", max_pin="x") }} {{ mpi_prefix }}_*
       ignore_run_exports:
         - {{ compiler("cuda") }}
+      missing_dso_whitelist:
+        - '*/libcutensor.so*'  # [cuda_compiler_version in ("11.8",)]
+        - '*/libcublas.so*'    # [cuda_compiler_version in ("11.8",)]
+        - '*/libcublasLt.so*'  # [cuda_compiler_version in ("11.8",)]
       post-link: post-link
     requirements:
       build:
+        - {{ stdlib('c') }}
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
@@ -125,18 +130,28 @@ outputs:
         - ./common/*
         - ./cudensitymat/*
       commands:
+        - export mpi="nompi"    # [mpi == "nompi"]
+        - export mpi="mpich"    # [mpi == "mpich"]
+        - export mpi="openmpi"  # [mpi == "openmpi"]
         - ./common/detect-glibc
         - ./common/validate-glibc
         - ./cudensitymat/cudm-tests {{ sdk_version_string }}
     about:
-      home:
-      license:
-      license_url:
-      license_file:
-      summary:
-      description:
-      doc_url:
-      dev_url:
+      home: https://developer.nvidia.com/cuquantum-sdk
+      license: LicenseRef-cuQuantum-Software-License-Agreement
+      license_url: https://docs.nvidia.com/cuda/cuquantum/latest/license.html
+      license_file: LICENSE
+      summary: 'cuDensityMat: A High-Performance Library for accelerating analog quantum dynamics solvers'
+      description: |
+        NVIDIA cuDensityMat is a high-performance library for accelerating analog quantum dynamics solvers,
+        a component of the NVIDIA cuQuantum SDK.
+
+        The packages cuquantum, cudensitymat, custatevec, and cutensornet  are governed by the NVIDIA cuQuantum
+        Software License Agreement (EULA). By downloading and using the packages,
+        you accept the terms and conditions of the NVIDIA cuQuantum EULA -
+        https://docs.nvidia.com/cuda/cuquantum/license.html
+      doc_url: https://docs.nvidia.com/cuda/cuquantum/latest/cudensitymat/
+      dev_url: https://github.com/NVIDIA/cuQuantum
   - name: cutensornet
     version: 2.6.0
     build:
@@ -148,12 +163,20 @@ outputs:
         - {{ pin_subpackage("cutensornet", max_pin="x") }} {{ mpi_prefix }}_*
       ignore_run_exports:
         - {{ compiler("cuda") }}
+      missing_dso_whitelist:
+        - '*/libcutensor.so*'  # [cuda_compiler_version in ("11.8",)]
+        - '*/libcublas.so*'    # [cuda_compiler_version in ("11.8",)]
+        - '*/libcublasLt.so*'  # [cuda_compiler_version in ("11.8",)]
+        - '*/libcusolver.so*'  # [cuda_compiler_version in ("11.8",)]
       post-link: post-link
     requirements:
       build:
+        - {{ stdlib('c') }}
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
+        - {{ mpi }} * external*  # [mpi == "mpich"]
+        - {{ mpi }}              # [mpi == "openmpi"]
       host:
         - cutensor >=2.0.2,<3
         - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version in ("11.8", "12.0", "12.6")]
@@ -181,18 +204,28 @@ outputs:
         - ./common/*
         - ./cutensornet/*
       commands:
+        - export mpi="nompi"    # [mpi == "nompi"]
+        - export mpi="mpich"    # [mpi == "mpich"]
+        - export mpi="openmpi"  # [mpi == "openmpi"]
         - ./common/detect-glibc
         - ./common/validate-glibc
         - ./cutensornet/cutn-tests {{ sdk_version_string }}
     about:
-      home:
-      license:
-      license_url:
-      license_file:
-      summary:
-      description:
-      doc_url:
-      dev_url:
+      home: https://developer.nvidia.com/cuquantum-sdk
+      license: LicenseRef-cuQuantum-Software-License-Agreement
+      license_url: https://docs.nvidia.com/cuda/cuquantum/latest/license.html
+      license_file: LICENSE
+      summary: 'cuTensorNet: A High-Performance Library for Tensor Network Computations'
+      description: |
+        NVIDIA cuTensorNet is a high-performance GPU library for tensor network computations,
+        a component of the NVIDIA cuQuantum SDK.
+
+        The packages cuquantum, cudensitymat, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+        Software License Agreement (EULA). By downloading and using the packages,
+        you accept the terms and conditions of the NVIDIA cuQuantum EULA -
+        https://docs.nvidia.com/cuda/cuquantum/license.html
+      doc_url: https://docs.nvidia.com/cuda/cuquantum/latest/cutensornet/
+      dev_url: https://github.com/NVIDIA/cuQuantum
   - name: custatevec
     version: 1.7.0
     build:
@@ -204,9 +237,13 @@ outputs:
         - {{ pin_subpackage("custatevec", max_pin="x") }} {{ mpi_prefix }}_*
       ignore_run_exports:
         - {{ compiler("cuda") }}
+      missing_dso_whitelist:
+        - '*/libcublas.so*'    # [cuda_compiler_version in ("11.8",)]
+        - '*/libcublasLt.so*'  # [cuda_compiler_version in ("11.8",)]
       post-link: post-link
     requirements:
       build:
+        - {{ stdlib('c') }}
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
@@ -235,14 +272,21 @@ outputs:
         - ./common/validate-glibc
         - ./custatevec/cusv-tests {{ sdk_version_string }}
     about:
-      home:
-      license:
-      license_url:
-      license_file:
-      summary:
-      description:
-      doc_url:
-      dev_url:
+      home: https://developer.nvidia.com/cuquantum-sdk
+      license: LicenseRef-cuQuantum-Software-License-Agreement
+      license_url: https://docs.nvidia.com/cuda/cuquantum/latest/license.html
+      license_file: LICENSE
+      summary: 'cuStateVec: A High-Performance Library for State Vector Quantum Simulators'
+      description: |
+        NVIDIA cuStateVec is a high-performance GPU library dedicated to operations with state vectors
+        for expressing quantum algorithms. cuStateVec is a component of the NVIDIA cuQuantum SDK.
+
+        The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+        Software License Agreement (EULA). By downloading and using the packages,
+        you accept the terms and conditions of the NVIDIA cuQuantum EULA -
+        https://docs.nvidia.com/cuda/cuquantum/license.html
+      doc_url: https://docs.nvidia.com/cuda/cuquantum/latest/custatevec/
+      dev_url: https://github.com/NVIDIA/cuQuantum
   - name: cuquantum-python
     version: {{ ".".join(sdk_version[:3]) }}
     build:
@@ -270,7 +314,7 @@ outputs:
         - packaging
       run:
         - python >=3.10
-        - numpy  >=1.21,<2
+        - numpy  >=1.21
         - cupy   >=13.0
         - {{ pin_subpackage('custatevec', max_pin='x') }}
         - {{ pin_subpackage('cutensornet', max_pin='x') }}
@@ -288,14 +332,16 @@ outputs:
       commands:
         - ./cuquantum-python/cuquantum-python-tests
     about:
-      home:
-      license:
-      license_url:
-      license_file:
-      summary:
-      description:
-      doc_url:
-      dev_url:
+      home: https://developer.nvidia.com/cuquantum-sdk
+      license: BSD-3-Clause
+      license_url: https://docs.nvidia.com/cuda/cuquantum/latest/license.html#nvidia-cuquantum-python
+      license_file: LICENSE
+      summary: "cuQuantum Python: Python APIs for NVIDIA cuQuantum SDK"
+      description: |
+        NVIDIA cuQuantum Python provides Python bindings and high-level object-oriented
+        models for accessing the full functionalities of NVIDIA cuQuantum SDK from Python.
+      doc_url: https://docs.nvidia.com/cuda/cuquantum/latest/python/
+      dev_url: https://github.com/NVIDIA/cuQuantum
 
 about:
   home: https://developer.nvidia.com/cuquantum-sdk

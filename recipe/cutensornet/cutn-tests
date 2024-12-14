@@ -92,3 +92,12 @@ if [[ -n "${CUQUANTUM_VER}" ]] ; then
     done
   )}
 fi
+
+# check for existence of distributed interface library if this is an MPI build
+if [[ "${mpi}" != "nompi" ]] ; then
+#if [[ -f "${PREFIX}/lib/libmpi.so" ]] ; then
+  if ! [[ -f "${CUTENSORNET_COMM_LIB}" ]]; then
+    echo "error: cutensornet distributed interface not set in an MPI build"
+    exit 1
+  fi
+fi
