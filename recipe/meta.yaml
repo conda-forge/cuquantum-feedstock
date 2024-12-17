@@ -5,6 +5,7 @@
 {% set sdk_month = sdk_version[1] | int %}
 {% set sdk_patch = sdk_version[2] | int %}
 {% set sdk_build = sdk_version[3] | int %}
+{% set build_num = 0 %}
 
 {% set cuda_compiler_version = cuda_compiler_version | default("None") %}
 
@@ -46,7 +47,7 @@ package:
   version: {{ ".".join(sdk_version[:3]) }}
 
 build:
-  number: {{ sdk_build }}
+  number: {{ build_num }}
   skip: true  # [not cuda_compiler_version in ("11.8", "12.0", "12.6")]
   skip: true  # [py<310]
   skip: true  # [win]
@@ -72,7 +73,7 @@ outputs:
   - name: cuquantum
     version: {{ ".".join(sdk_version[:3]) }}
     build:
-      number: {{ sdk_build }}
+      number: {{ build_num }}
     requirements:
       build:
       host:
@@ -86,18 +87,14 @@ outputs:
   - name: cudensitymat
     version: 0.0.5
     build:
-      number: {{ sdk_build }}
+      number: {{ build_num }}
       string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ mpi_suffix }}"
-      script:
-        - "${RECIPE_DIR}/cudensitymat/cudm-install"
+      script: "${RECIPE_DIR}/cudensitymat/cudm-install"
       run_exports:
         - {{ pin_subpackage("cudensitymat", max_pin="x") }} {{ mpi_prefix }}_*
-      ignore_run_exports:
+      ignore_run_exports_from:
         - {{ compiler("cuda") }}
-      missing_dso_whitelist:
-        - '*/libcutensor.so*'  # [cuda_compiler_version in ("11.8",)]
-        - '*/libcublas.so*'    # [cuda_compiler_version in ("11.8",)]
-        - '*/libcublasLt.so*'  # [cuda_compiler_version in ("11.8",)]
+        - libcublas  # [cuda_compiler_version in ("12.0", "12.6")]
       post-link: post-link
     requirements:
       build:
@@ -107,13 +104,16 @@ outputs:
         - {{ compiler("cuda") }}
       host:
         - cutensor >=2.0.2,<3
-        - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version in ("11.8", "12.0", "12.6")]
+        - cuda-version={{ cuda_compiler_version }}  # [cuda_compiler_version in ("11.8", "12.0", "12.6")]
         - libcublas  # [cuda_compiler_version in ("12.0", "12.6")]
         - {{ mpi }}  # [mpi != "nompi"]
       run:
         - {{ pin_compatible("cutensor", max_pin="x") }}
-        - cuda-version >={{ cuda_major }}.0,<{{ cuda_major + 1 }}  # [cuda_compiler_version in ("11.8", "12.0", "12.6")]
-        - {{ pin_compatible("libcublas", max_pin="x", min_pin="x") }}  # [cuda_compiler_version in ("12.0", "12.6")]
+        - cuda-version >={{ cuda_major }}.0,<{{ cuda_major + 1 }}        # [cuda_compiler_version in ("11.8", "12.0", "12.6")]
+        - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}  
+        - libcublas # [cuda_compiler_version in ("12.0", "12.6")]
+        - cudatoolkit  # [cuda_compiler_version == "11.8"]
+        - cuda-cudart-dev # [cuda_compiler_version in ("12.0", "12.6")]
         - {{ mpi }} * external*  # [mpi == "mpich"]
         - {{ mpi }}  # [mpi == "openmpi"]
       run_constrained:
@@ -125,7 +125,6 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
-        - cuda-version {{ cuda_compiler_version }}.*
       files:
         - ./common/*
         - ./cudensitymat/*
@@ -155,19 +154,15 @@ outputs:
   - name: cutensornet
     version: 2.6.0
     build:
-      number: {{ sdk_build }}
+      number: {{ build_num }}
       string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ mpi_suffix }}"
-      script:
-        - "${RECIPE_DIR}/cutensornet/cutn-install"
+      script: "${RECIPE_DIR}/cutensornet/cutn-install"
       run_exports:
         - {{ pin_subpackage("cutensornet", max_pin="x") }} {{ mpi_prefix }}_*
-      ignore_run_exports:
+      ignore_run_exports_from:
         - {{ compiler("cuda") }}
-      missing_dso_whitelist:
-        - '*/libcutensor.so*'  # [cuda_compiler_version in ("11.8",)]
-        - '*/libcublas.so*'    # [cuda_compiler_version in ("11.8",)]
-        - '*/libcublasLt.so*'  # [cuda_compiler_version in ("11.8",)]
-        - '*/libcusolver.so*'  # [cuda_compiler_version in ("11.8",)]
+        - libcublas  # [cuda_compiler_version in ("12.0", "12.6")]
+        - libcusolver  # [cuda_compiler_version in ("12.0", "12.6")]
       post-link: post-link
     requirements:
       build:
@@ -182,12 +177,15 @@ outputs:
         - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version in ("11.8", "12.0", "12.6")]
         - libcusolver  # [cuda_compiler_version in ("12.0", "12.6")]
         - libcublas    # [cuda_compiler_version in ("12.0", "12.6")]
+        - cuda-cudart-dev # [cuda_compiler_version in ("12.0", "12.6")]
         - {{ mpi }}  # [mpi != "nompi"]
       run:
         - {{ pin_compatible("cutensor", max_pin="x") }}
         - cuda-version >={{ cuda_major }}.0,<{{ cuda_major + 1 }}        # [cuda_compiler_version in ("11.8", "12.0", "12.6")]
-        - {{ pin_compatible("libcublas", max_pin="x", min_pin="x") }}    # [cuda_compiler_version in ("12.0", "12.6")]
-        - {{ pin_compatible("libcusolver", max_pin="x", min_pin="x") }}  # [cuda_compiler_version in ("12.0", "12.6")]
+        - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}  
+        - libcublas # [cuda_compiler_version in ("12.0", "12.6")]
+        - libcusolver  # [cuda_compiler_version in ("12.0", "12.6")]
+        - cudatoolkit  # [cuda_compiler_version == "11.8"]
         - {{ mpi }} * external*  # [mpi == "mpich"]
         - {{ mpi }}              # [mpi == "openmpi"]
       run_constrained:
@@ -199,7 +197,6 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
-        - cuda-version {{ cuda_compiler_version }}.*
       files:
         - ./common/*
         - ./cutensornet/*
@@ -229,17 +226,14 @@ outputs:
   - name: custatevec
     version: 1.7.0
     build:
-      number: {{ sdk_build }}
+      number: {{ build_num }}
       string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ mpi_suffix }}"
-      script:
-        - "${RECIPE_DIR}/custatevec/cusv-install"
+      script: "${RECIPE_DIR}/custatevec/cusv-install"
       run_exports:
         - {{ pin_subpackage("custatevec", max_pin="x") }} {{ mpi_prefix }}_*
-      ignore_run_exports:
+      ignore_run_exports_from:
         - {{ compiler("cuda") }}
-      missing_dso_whitelist:
-        - '*/libcublas.so*'    # [cuda_compiler_version in ("11.8",)]
-        - '*/libcublasLt.so*'  # [cuda_compiler_version in ("11.8",)]
+        - libcublas  # [cuda_compiler_version in ("12.0", "12.6")]
       post-link: post-link
     requirements:
       build:
@@ -251,8 +245,9 @@ outputs:
         - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version in ("11.8", "12.0", "12.6")]
         - libcublas                                 # [cuda_compiler_version in ("12.0", "12.6")]
       run:
-        - cuda-version >={{ cuda_major }}.0,<{{ cuda_major + 1 }}      # [cuda_compiler_version in ("11.8", "12.0", "12.6")]
-        - {{ pin_compatible("libcublas", max_pin="x", min_pin="x") }}  # [cuda_compiler_version in ("12.0", "12.6")]
+        - cuda-version >={{ cuda_major }}.0,<{{ cuda_major + 1 }}  # [cuda_compiler_version in ("11.8", "12.0", "12.6")]
+        - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}  
+        - libcublas  # [cuda_compiler_version in ("12.0", "12.6")]
         - cudatoolkit  # [cuda_compiler_version == "11.8"]
       run_constrained:
         - openmpi <0.a0  # [mpi == "nompi"]
@@ -263,7 +258,6 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
-        - cuda-version {{ cuda_compiler_version }}.*
       files:
         - ./common/*
         - ./custatevec/*
@@ -290,9 +284,8 @@ outputs:
   - name: cuquantum-python
     version: {{ ".".join(sdk_version[:3]) }}
     build:
-      number: {{ sdk_build }}
-      script:
-        - "${RECIPE_DIR}/cuquantum-python/cuquantum-python-install"
+      number: {{ build_num }}
+      script: "${RECIPE_DIR}/cuquantum-python/cuquantum-python-install"
       ignore_run_exports_from:
         - {{ compiler('cuda') }}
     requirements:
@@ -312,6 +305,7 @@ outputs:
         - cutensornet =2.6.0
         - cudensitymat =0.0.5
         - packaging
+        - setuptools
       run:
         - python >=3.10
         - numpy  >=1.21
