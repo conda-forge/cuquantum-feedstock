@@ -31,25 +31,6 @@ declare -agx LIBRARIES=(
   "${PREFIX}/lib/libcutensornet.so"
 )
 
-declare -agx supported_platforms
-supported_platforms=(
-  "linux-64"
-  "linux-aarch64"
-)
-
-declare -Agx cuda_stub_library
-cuda_stub_library=(
-  ["linux-64"]="${PREFIX}/targets/x86_64-linux/lib/stubs/libcuda.so"
-  ["linux-aarch64"]="${PREFIX}/targets/sbsa-linux/lib/stubs/libcuda.so"
-)
-
-declare -gx CUDA_STUB_LIBRARY
-declare platform ; for platform in "${supported_platforms[@]}" ; do
-  if [[ "${target_platform}" == "${platform}" ]] ; then
-    CUDA_STUB_LIBRARY+=("${cuda_stub_library[${platform}]}")
-  fi
-done
-
 declare -gx LINK_MPI=""
 declare -gx MPI_LIBRARY EXTRA_LIBS=""
 if [[ -f "${PREFIX}/lib/libmpi.so" ]] ; then

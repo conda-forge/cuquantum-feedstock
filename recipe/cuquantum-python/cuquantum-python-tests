@@ -53,16 +53,16 @@ cuda_stub_library=(
 
 declare -gx CUDA_STUB_LIBRARY
 declare platform ; for platform in "${supported_platforms[@]}" ; do
-  if [[ "${target_platform}" == "${platform}" ]] ; then
+  if [[ "${target_platform}" == "${platform}" ]] && ["${cuda_compiler_version}" != "11.8"] ; then
     CUDA_STUB_LIBRARY="${cuda_stub_library[${platform}]}"
   fi
 done
 
 
-LD_PRELOAD="$CUDA_STUB_LIBRARY" python -c "import cuquantum"
-LD_PRELOAD="$CUDA_STUB_LIBRARY" python -c "import cuquantum.custatevec"
-LD_PRELOAD="$CUDA_STUB_LIBRARY" python -c "import cuquantum.cutensornet"
-LD_PRELOAD="$CUDA_STUB_LIBRARY" python -c "import cuquantum.densitymat"
+LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum"
+LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum.custatevec"
+LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum.cutensornet"
+LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum.densitymat"
 
 echo "CuQuantum python and submodules are importable."
 
