@@ -46,6 +46,16 @@ package:
   name: cuquantum-sdk
   version: {{ ".".join(sdk_version[:3]) }}
 
+source:
+  - url: {{ devzone }}  # [cuda_compiler_version in ("11.8", "12.0", "12.6") and (linux64 or aarch64)]
+    sha256: a36123e52daeae5e6e5c543b12d45fb41411280ceb924bbde54d4d1051cf10ef  # [cuda_compiler_version == "11.8" and linux64]
+    sha256: 4640da62e66f17671c8d89be93a439b8a7a13169f7aa902a3e9b6cf676d4bffd  # [cuda_compiler_version in ("12.0", "12.6") and linux64]
+    sha256: 16c1aba50c657456928386a8597d4b766daa3c6f69da738a9568ad4ac97094ae  # [cuda_compiler_version == "11.8" and aarch64]
+    sha256: e3e4a289887d17d4b78eaac97f2fa03b2de9d832f918eb48ab97de997c104ce6  # [cuda_compiler_version in ("12.0", "12.6") and aarch64]
+
+  - url: {{ github }}  # [linux64 or aarch64]
+    sha256: a4b0965e7193515930542cc558d922e24c1732d8240efde3e622e84d6c4416fe  # [linux64 or aarch64]
+
 build:
   number: {{ build_num }}
   skip: true  # [not cuda_compiler_version in ("11.8", "12.0", "12.6")]
@@ -57,16 +67,6 @@ requirements:
     - {{ compiler("c") }}
     - {{ compiler("cxx") }}
     - {{ compiler("cuda") }}
-
-source:
-  - url: {{ devzone }}  # [cuda_compiler_version in ("11.8", "12.0", "12.6") and (linux64 or aarch64)]
-    sha256: a36123e52daeae5e6e5c543b12d45fb41411280ceb924bbde54d4d1051cf10ef  # [cuda_compiler_version == "11.8" and linux64]
-    sha256: 4640da62e66f17671c8d89be93a439b8a7a13169f7aa902a3e9b6cf676d4bffd  # [cuda_compiler_version in ("12.0", "12.6") and linux64]
-    sha256: 16c1aba50c657456928386a8597d4b766daa3c6f69da738a9568ad4ac97094ae  # [cuda_compiler_version == "11.8" and aarch64]
-    sha256: e3e4a289887d17d4b78eaac97f2fa03b2de9d832f918eb48ab97de997c104ce6  # [cuda_compiler_version in ("12.0", "12.6") and aarch64]
-
-  - url: {{ github }}  # [linux64 or aarch64]
-    sha256: a4b0965e7193515930542cc558d922e24c1732d8240efde3e622e84d6c4416fe  # [linux64 or aarch64]
 
 outputs:
   - name: cuquantum
