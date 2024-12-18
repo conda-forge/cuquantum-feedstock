@@ -49,7 +49,6 @@ package:
 build:
   number: {{ build_num }}
   skip: true  # [not cuda_compiler_version in ("11.8", "12.0", "12.6")]
-  skip: true  # [py<310]
   skip: true  # [win]
   skip: true  # [osx]
 
@@ -106,6 +105,7 @@ outputs:
         - cutensor >=2.0.2,<3
         - cuda-version={{ cuda_compiler_version }}  # [cuda_compiler_version in ("11.8", "12.0", "12.6")]
         - libcublas  # [cuda_compiler_version in ("12.0", "12.6")]
+        - cuda-cudart-dev # [cuda_compiler_version in ("12.0", "12.6")]
         - {{ mpi }}  # [mpi != "nompi"]
       run:
         - {{ pin_compatible("cutensor", max_pin="x") }}
@@ -280,61 +280,6 @@ outputs:
         you accept the terms and conditions of the NVIDIA cuQuantum EULA -
         https://docs.nvidia.com/cuda/cuquantum/license.html
       doc_url: https://docs.nvidia.com/cuda/cuquantum/latest/custatevec/
-      dev_url: https://github.com/NVIDIA/cuQuantum
-  - name: cuquantum-python
-    version: {{ ".".join(sdk_version[:3]) }}
-    build:
-      number: {{ build_num }}
-      script: "${RECIPE_DIR}/cuquantum-python/cuquantum-python-install"
-      ignore_run_exports_from:
-        - {{ compiler('cuda') }}
-    requirements:
-      build:
-        - {{ stdlib('c') }}
-        - {{ compiler('c') }}
-        - {{ compiler('cxx') }}
-        - {{ compiler('cuda') }}
-        - cross-python_{{ target_platform }}  # [build_platform != target_platform]
-        - python >=3.10                       # [build_platform != target_platform]
-        - cython <3                           # [build_platform != target_platform]
-      host:
-        - python >=3.10
-        - pip
-        - cython <3
-        - custatevec  =1.7.0
-        - cutensornet =2.6.0
-        - cudensitymat =0.0.5
-        - packaging
-        - setuptools
-      run:
-        - python >=3.10
-        - numpy  >=1.21
-        - cupy   >=13.0
-        - {{ pin_subpackage('custatevec', max_pin='x') }}
-        - {{ pin_subpackage('cutensornet', max_pin='x') }}
-        - {{ pin_subpackage('cudensitymat', max_pin='x') }}
-        - cuda-version >={{ cuda_major }}.0,<{{ cuda_major + 1 }}
-      run_constrained:
-        - pytorch >=1.10
-        - mpi4py >=3.1.0
-    test:
-      requires:
-        - cuda-driver-dev  # [linux and cuda_compiler_version in ("12.0", "12.6")]
-      files:
-        - ./common/*
-        - ./cuquantum-python/*
-      commands:
-        - ./cuquantum-python/cuquantum-python-tests
-    about:
-      home: https://developer.nvidia.com/cuquantum-sdk
-      license: BSD-3-Clause
-      license_url: https://docs.nvidia.com/cuda/cuquantum/latest/license.html#nvidia-cuquantum-python
-      license_file: LICENSE
-      summary: "cuQuantum Python: Python APIs for NVIDIA cuQuantum SDK"
-      description: |
-        NVIDIA cuQuantum Python provides Python bindings and high-level object-oriented
-        models for accessing the full functionalities of NVIDIA cuQuantum SDK from Python.
-      doc_url: https://docs.nvidia.com/cuda/cuquantum/latest/python/
       dev_url: https://github.com/NVIDIA/cuQuantum
 
 about:
