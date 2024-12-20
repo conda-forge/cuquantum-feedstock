@@ -9,9 +9,6 @@ github:
   branch_name: main
   tooling_branch_name: main
 idle_timeout_minutes: 60
-os_version:
-  linux_64: cos7
-  linux_aarch64: cos7
 provider:
   linux_aarch64: azure 
 test: native
