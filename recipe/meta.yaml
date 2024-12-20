@@ -109,11 +109,11 @@ outputs:
         - {{ mpi }}  # [mpi != "nompi"]
       run:
         - {{ pin_compatible("cutensor", max_pin="x") }}
-        - cuda-version >={{ cuda_major }}.0,<{{ cuda_major + 1 }}        # [cuda_compiler_version in ("11.8", "12.0", "12.6")]
-        - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}  
-        - libcublas # [cuda_compiler_version in ("12.0", "12.6")]
+        - cuda-version >={{ cuda_major }}.0,<{{ cuda_major + 1 }}  # [cuda_compiler_version in ("11.8", "12.0", "12.6")]
+        - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }} 
+        - libcublas  # [cuda_compiler_version in ("12.0", "12.6")]
         - cudatoolkit  # [cuda_compiler_version == "11.8"]
-        - cuda-cudart-dev # [cuda_compiler_version in ("12.0", "12.6")]
+        - cuda-cudart-dev  # [cuda_compiler_version in ("12.0", "12.6")]
         - {{ mpi }} * external*  # [mpi == "mpich"]
         - {{ mpi }}  # [mpi == "openmpi"]
       run_constrained:
@@ -176,8 +176,7 @@ outputs:
         - cutensor >=2.0.2,<3
         - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version in ("11.8", "12.0", "12.6")]
         - libcusolver  # [cuda_compiler_version in ("12.0", "12.6")]
-        - libcublas    # [cuda_compiler_version in ("12.0", "12.6")]
-        - cuda-cudart-dev # [cuda_compiler_version in ("12.0", "12.6")]
+        - libcublas  # [cuda_compiler_version in ("12.0", "12.6")]
         - {{ mpi }}  # [mpi != "nompi"]
       run:
         - {{ pin_compatible("cutensor", max_pin="x") }}
