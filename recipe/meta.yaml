@@ -58,7 +58,7 @@ source:
 
 build:
   number: {{ build_num }}
-  skip: true  # [not cuda_compiler_version in ("11.8", "12.0", "12.6")]
+  skip: true  # [not ( (cuda_compiler_version or "").startswith("11") or (cuda_compiler_version or "").startswith("12") )]
   skip: true  # [win]
   skip: true  # [osx]
 
@@ -93,7 +93,7 @@ outputs:
         - {{ pin_subpackage("cudensitymat", max_pin="x") }} {{ mpi_prefix }}_*
       ignore_run_exports_from:
         - {{ compiler("cuda") }}
-        - libcublas  # [cuda_compiler_version in ("12.0", "12.6")]
+        - libcublas  # [(cuda_compiler_version or "").startswith("12")]
       post-link: post-link
     requirements:
       build:
@@ -103,17 +103,16 @@ outputs:
         - {{ compiler("cuda") }}
       host:
         - cutensor >=2.0.2,<3
-        - cuda-version={{ cuda_compiler_version }}  # [cuda_compiler_version in ("11.8", "12.0", "12.6")]
-        - libcublas  # [cuda_compiler_version in ("12.0", "12.6")]
-        - cuda-cudart-dev # [cuda_compiler_version in ("12.0", "12.6")]
+        - cuda-version={{ cuda_compiler_version }}
+        - libcublas  # [(cuda_compiler_version or "").startswith("12")]
+        - cuda-cudart-dev # [(cuda_compiler_version or "").startswith("12")]
         - {{ mpi }}  # [mpi != "nompi"]
       run:
+        - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}
         - {{ pin_compatible("cutensor", max_pin="x") }}
-        - cuda-version >={{ cuda_major }}.0,<{{ cuda_major + 1 }}  # [cuda_compiler_version in ("11.8", "12.0", "12.6")]
-        - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }} 
-        - libcublas  # [cuda_compiler_version in ("12.0", "12.6")]
-        - cudatoolkit  # [cuda_compiler_version == "11.8"]
-        - cuda-cudart-dev  # [cuda_compiler_version in ("12.0", "12.6")]
+        - cudatoolkit  # [(cuda_compiler_version or "").startswith("11")]
+        - libcublas  # [(cuda_compiler_version or "").startswith("12")]
+        - cuda-cudart  # [(cuda_compiler_version or "").startswith("12")]
         - {{ mpi }} * external*  # [mpi == "mpich"]
         - {{ mpi }}  # [mpi == "openmpi"]
       run_constrained:
@@ -145,7 +144,7 @@ outputs:
         NVIDIA cuDensityMat is a high-performance library for accelerating analog quantum dynamics solvers,
         a component of the NVIDIA cuQuantum SDK.
 
-        The packages cuquantum, cudensitymat, custatevec, and cutensornet  are governed by the NVIDIA cuQuantum
+        The packages cuquantum, cudensitymat, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
         Software License Agreement (EULA). By downloading and using the packages,
         you accept the terms and conditions of the NVIDIA cuQuantum EULA -
         https://docs.nvidia.com/cuda/cuquantum/license.html
@@ -161,8 +160,8 @@ outputs:
         - {{ pin_subpackage("cutensornet", max_pin="x") }} {{ mpi_prefix }}_*
       ignore_run_exports_from:
         - {{ compiler("cuda") }}
-        - libcublas  # [cuda_compiler_version in ("12.0", "12.6")]
-        - libcusolver  # [cuda_compiler_version in ("12.0", "12.6")]
+        - libcublas  # [(cuda_compiler_version or "").startswith("12")]
+        - libcusolver  # [(cuda_compiler_version or "").startswith("12")]
       post-link: post-link
     requirements:
       build:
@@ -174,17 +173,16 @@ outputs:
         - {{ mpi }}              # [mpi == "openmpi"]
       host:
         - cutensor >=2.0.2,<3
-        - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version in ("11.8", "12.0", "12.6")]
-        - libcusolver  # [cuda_compiler_version in ("12.0", "12.6")]
-        - libcublas  # [cuda_compiler_version in ("12.0", "12.6")]
+        - cuda-version {{ cuda_compiler_version }}
+        - libcusolver  # [(cuda_compiler_version or "").startswith("12")]
+        - libcublas  # [(cuda_compiler_version or "").startswith("12")]
         - {{ mpi }}  # [mpi != "nompi"]
       run:
+        - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}
         - {{ pin_compatible("cutensor", max_pin="x") }}
-        - cuda-version >={{ cuda_major }}.0,<{{ cuda_major + 1 }}        # [cuda_compiler_version in ("11.8", "12.0", "12.6")]
-        - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}  
-        - libcublas # [cuda_compiler_version in ("12.0", "12.6")]
-        - libcusolver  # [cuda_compiler_version in ("12.0", "12.6")]
-        - cudatoolkit  # [cuda_compiler_version == "11.8"]
+        - libcublas # [(cuda_compiler_version or "").startswith("12")]
+        - libcusolver  # [(cuda_compiler_version or "").startswith("12")]
+        - cudatoolkit  # [(cuda_compiler_version or "").startswith("11")]
         - {{ mpi }} * external*  # [mpi == "mpich"]
         - {{ mpi }}              # [mpi == "openmpi"]
       run_constrained:
@@ -232,7 +230,7 @@ outputs:
         - {{ pin_subpackage("custatevec", max_pin="x") }} {{ mpi_prefix }}_*
       ignore_run_exports_from:
         - {{ compiler("cuda") }}
-        - libcublas  # [cuda_compiler_version in ("12.0", "12.6")]
+        - libcublas  # [(cuda_compiler_version or "").startswith("12")]
       post-link: post-link
     requirements:
       build:
@@ -241,13 +239,12 @@ outputs:
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
       host:
-        - cuda-version {{ cuda_compiler_version }}  # [cuda_compiler_version in ("11.8", "12.0", "12.6")]
-        - libcublas                                 # [cuda_compiler_version in ("12.0", "12.6")]
+        - cuda-version {{ cuda_compiler_version }}
+        - libcublas  # [(cuda_compiler_version or "").startswith("12")]
       run:
-        - cuda-version >={{ cuda_major }}.0,<{{ cuda_major + 1 }}  # [cuda_compiler_version in ("11.8", "12.0", "12.6")]
         - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}  
-        - libcublas  # [cuda_compiler_version in ("12.0", "12.6")]
-        - cudatoolkit  # [cuda_compiler_version == "11.8"]
+        - libcublas  # [(cuda_compiler_version or "").startswith("12")]
+        - cudatoolkit  # [(cuda_compiler_version or "").startswith("11")]
       run_constrained:
         - openmpi <0.a0  # [mpi == "nompi"]
         - mpich   <0.a0  # [mpi == "nompi"]

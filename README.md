@@ -48,7 +48,7 @@ Documentation: https://docs.nvidia.com/cuda/cuquantum/latest/cudensitymat/
 NVIDIA cuDensityMat is a high-performance library for accelerating analog quantum dynamics solvers,
 a component of the NVIDIA cuQuantum SDK.
 
-The packages cuquantum, cudensitymat, custatevec, and cutensornet  are governed by the NVIDIA cuQuantum
+The packages cuquantum, cudensitymat, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
 Software License Agreement (EULA). By downloading and using the packages,
 you accept the terms and conditions of the NVIDIA cuQuantum EULA -
 https://docs.nvidia.com/cuda/cuquantum/license.html
