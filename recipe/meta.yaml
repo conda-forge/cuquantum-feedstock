@@ -67,6 +67,7 @@ requirements:
     - {{ compiler("c") }}
     - {{ compiler("cxx") }}
     - {{ compiler("cuda") }}
+    - {{ stdlib('c') }}
 
 outputs:
   - name: cuquantum
@@ -91,10 +92,14 @@ outputs:
       script: "${RECIPE_DIR}/cudensitymat/cudm-install"
       run_exports:
         - {{ pin_subpackage("cudensitymat", max_pin="x") }} {{ mpi_prefix }}_*
+      ignore_run_exports:
+        - sysroot_linux-64  # [linux64]
+        - sysroot_linux-aarch64  # [aarch64]
       ignore_run_exports_from:
         - {{ compiler("cuda") }}
         - libcublas  # [(cuda_compiler_version or "").startswith("12")]
         - cuda-cudart-dev  # [(cuda_compiler_version or "").startswith("12")]
+        - cutensor
       post-link: post-link
     requirements:
       build:
@@ -125,6 +130,7 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
+        - {{ stdlib("c") }}
       files:
         - ./common/*
         - ./cudensitymat/*
@@ -159,10 +165,14 @@ outputs:
       script: "${RECIPE_DIR}/cutensornet/cutn-install"
       run_exports:
         - {{ pin_subpackage("cutensornet", max_pin="x") }} {{ mpi_prefix }}_*
+      ignore_run_exports:
+        - sysroot_linux-64  # [linux64]
+        - sysroot_linux-aarch64  # [aarch64]
       ignore_run_exports_from:
         - {{ compiler("cuda") }}
         - libcublas  # [(cuda_compiler_version or "").startswith("12")]
         - libcusolver  # [(cuda_compiler_version or "").startswith("12")]
+        - cutensor
       post-link: post-link
     requirements:
       build:
@@ -195,6 +205,7 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
+        - {{ stdlib("c") }}
       files:
         - ./common/*
         - ./cutensornet/*
@@ -255,6 +266,7 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
+        - {{ stdlib("c") }}
       files:
         - ./common/*
         - ./custatevec/*
