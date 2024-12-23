@@ -24,7 +24,7 @@ conda clean --all --yes
     echo " detected mpi lib, building wrappers" 
     # build the mpi wrapper lib  
     if ! [[ -f "distributed_interfaces/cutensornet_distributed_interface_mpi.c" ]] ; then
-      echo " error: distributed interface source not found in expected location "
+      echo "error: distributed interface source not found in expected location"
       exit 1
     fi
     declare -a compile_command
@@ -36,15 +36,13 @@ conda clean --all --yes
           "-L${PREFIX}/lib" "-lmpi"
           "-o" "${PREFIX}/lib/libcutensornet_distributed_interface_mpi.so"
         )
-      #"${GCC}" "-shared" "-std=c11" "-fPIC" "-I${CUDA_PATH}/include" "-I${PREFIX}/include" "distributed_interfaces/cutensornet_distributed_interface_mpi.c" "-L${PREFIX}/lib" "-lmpi" "-o" "${PREFIX}/lib/libcutensornet_distributed_interface_mpi.so"
-    elif [[ "${cuda_compiler_version}" == "12.0" ]] ||  [[ "${cuda_compiler_version}" == "12.6" ]]; then
+    elif [[ "${cuda_compiler_version}" == 12.* ]]; then
       compile_command=(
           "${GCC}" "-shared" "-std=c11" "-fPIC" ${CFLAGS} "-I${PREFIX}/include"
           "distributed_interfaces/cutensornet_distributed_interface_mpi.c"
           "-L${PREFIX}/lib" "-lmpi"
           "-o" "${PREFIX}/lib/libcutensornet_distributed_interface_mpi.so"
         )
-      #"${GCC}" "-shared" "-std=c11" "-fPIC" ${CFLAGS} "-I${PREFIX}/include" "distributed_interfaces/cutensornet_distributed_interface_mpi.c" "-L${PREFIX}/lib" "-lmpi" "-o" "${PREFIX}/lib/libcutensornet_distributed_interface_mpi.so"
     else
       echo "error: incompatible cuda version"
       exit 1
@@ -52,7 +50,7 @@ conda clean --all --yes
     echo "compile_command[@]"
     "${compile_command[@]}"
     if ! [[ -f "${PREFIX}/lib/libcutensornet_distributed_interface_mpi.so" ]] ; then
-      echo "error: cutensornet comm lib not in expected place, exiting"
+      echo "error: cutensornet communication library not found in expected location"
       exit 1
     fi
     # copy activate/deactivate scripts
@@ -61,7 +59,7 @@ conda clean --all --yes
     mkdir -p "${PREFIX}/etc/conda/deactivate.d"
     cp "${RECIPE_DIR}/cutensornet/cutn-deactivate.sh" "${PREFIX}/etc/conda/deactivate.d/cutn-deactivate.sh"
   else
-    echo " not detected mpi lib, not building wrappers"
+    echo "no mpi library found, not building wrappers"
   fi
   
 )}
