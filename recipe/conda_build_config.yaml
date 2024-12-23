@@ -1,3 +1,6 @@
+c_stdlib_version: # [linux]
+  - 2.28  # [linux]
+
 mpi:
   - nompi
   - mpich
