@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+set -ex
+
+declare -gx VALIDATE_GLIBC="./common/validate-glibc"
+if ! [[ -f "${VALIDATE_GLIBC}" ]] ; then
+  echo "error: validate-glibc is not available"
+  exit 1
+fi
+
+declare -gx FILES_LIB="./common/handle-files"
+if ! [[ -f "${FILES_LIB}" ]] ; then
+  echo "error: files-lib is not available"
+  exit 1
+else
+  source "${FILES_LIB}"
+fi
+
+declare -agx filepaths=(
+  "${PREFIX}/include/cutensornet.h"
+  "${PREFIX}/include/cutensornet/types.h"
+  "${PREFIX}/include/cutensornet/typesDistributed.h"
+  "${PREFIX}/lib/libcutensornet.so"
+)
+
+if ! files exist "${filepaths[@]}" ; then
+  echo "error: cutensornet files are not available"
+  exit 1
+fi
+
+declare -agx LIBRARIES=(
+  "${PREFIX}/lib/libcutensornet.so"
+)
+
+declare -gx LINK_MPI=""
+declare -gx MPI_LIBRARY EXTRA_LIBS=""
+if [[ -f "${PREFIX}/lib/libmpi.so" ]] ; then
+  MPI_LIBRARY="${PREFIX}/lib/libmpi.so"
+  LIBRARIES+=("${MPI_LIBRARY}")
+  EXTRA_LIBS="${PREFIX}/lib/libmpi.so"
+  LINK_MPI="-lmpi"
+fi
+
+source "${VALIDATE_GLIBC}" "${LIBRARIES[@]}"
+
+declare -gx CUQUANTUM_VER="${1}"
+if [[ -n "${CUQUANTUM_VER}" ]] ; then
+  declare -agx CUQUANTUM_VERSION
+  mapfile -t CUQUANTUM_VERSION <<< "${CUQUANTUM_VER//./$'\n'}"
+  {(
+
+    declare -gx IFS_PREV="${IFS}" ; IFS="."
+      git clone --branch "v${CUQUANTUM_VERSION[*]:0:3}" "https://github.com/NVIDIA/cuQuantum.git" "cuquantum-cutensornet"
+    IFS="${IFS_PREV}" ; unset IFS_PREV
+    cd "cuquantum-cutensornet/samples/cutensornet" || exit 1
+    declare -agx examples
+    mapfile -t examples < <(
+      find . -name "*.cu" -type f -print
+    )
+    declare -a compile_command
+    export LD_LIBRARY_PATH="${PREFIX}/lib"
+    declare example ; for example in "${examples[@]}" ; do
+      if [[ "${example}" != *"mpi"* ]] ; then
+        echo "${example}"
+        compile_command=(
+          "${NVCC:-"nvcc"}" "${NVCC_FLAGS:-"--verbose"}" "--std=c++11"
+          "-I${PREFIX}/include" "-L${PREFIX}/lib"
+          "-lcutensornet" "-lcutensor"
+          "${example}" "-o" "${example}.out"
+        ) 
+        echo "${compile_command[@]}"
+        "${compile_command[@]}"
+      fi
+    done
+  )}
+fi
+
+# check for existence of distributed interface library if this is an MPI build
+if [[ "${mpi}" != "nompi" ]] ; then
+  if ! [[ -f "${CUTENSORNET_COMM_LIB}" ]]; then
+    echo "error: cutensornet distributed interface not set in an MPI build"
+    exit 1
+  fi
+fi
