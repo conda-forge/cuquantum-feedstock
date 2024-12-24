@@ -58,7 +58,7 @@ source:
 
 build:
   number: {{ build_num }}
-  skip: true  # [not ((cuda_compiler_version or "").startswith("11") or (cuda_compiler_version or "").startswith("12"))]
+  skip: true  # [cuda_compiler_version in (None, "None")]
   skip: true  # [win]
   skip: true  # [osx]
 
@@ -129,7 +129,8 @@ outputs:
         - git
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        - {{ compiler("cuda") }} 
+        - {{ compiler("cuda") }}
+        - {{ stdlib('c') }}
       files:
         - ./common/*
         - ./cudensitymat/*
@@ -139,8 +140,7 @@ outputs:
         - export mpi="openmpi"  # [mpi == "openmpi"]
         - ./common/detect-glibc
         - ./common/validate-glibc
-        #TODO: remove selector when cutensor package doesn't force the version to 2.17 anymore
-        - ./cudensitymat/cudm-tests {{ sdk_version_string }}  # [not (aarch64 and (cuda_compiler_version or "").startswith("12"))]
+        - ./cudensitymat/cudm-tests {{ sdk_version_string }}
     about:
       home: https://developer.nvidia.com/cuquantum-sdk
       license: LicenseRef-cuQuantum-Software-License-Agreement
@@ -203,6 +203,7 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
+        - {{ stdlib('c') }}
       files:
         - ./common/*
         - ./cutensornet/*
@@ -212,8 +213,7 @@ outputs:
         - export mpi="openmpi"  # [mpi == "openmpi"]
         - ./common/detect-glibc
         - ./common/validate-glibc
-        #TODO: remove selector when cutensor package doesn't force the version to 2.17 anymore
-        - ./cutensornet/cutn-tests {{ sdk_version_string }} # [not (aarch64 and (cuda_compiler_version or "").startswith("12"))]
+        - ./cutensornet/cutn-tests {{ sdk_version_string }}
     about:
       home: https://developer.nvidia.com/cuquantum-sdk
       license: LicenseRef-cuQuantum-Software-License-Agreement
@@ -261,7 +261,6 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
-        #TODO: remove stdlib("c") requirement once cutensor package doesn't force the version to 2.17 anymore
         - {{ stdlib('c') }}
       files:
         - ./common/*
