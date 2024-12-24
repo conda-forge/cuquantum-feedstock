@@ -92,14 +92,10 @@ outputs:
       script: "${RECIPE_DIR}/cudensitymat/cudm-install"
       run_exports:
         - {{ pin_subpackage("cudensitymat", max_pin="x") }} {{ mpi_prefix }}_*
-      ignore_run_exports:
-        - sysroot_linux-64  # [linux64]
-        - sysroot_linux-aarch64  # [aarch64]
       ignore_run_exports_from:
         - {{ compiler("cuda") }}
         - libcublas  # [(cuda_compiler_version or "").startswith("12")]
         - cuda-cudart-dev  # [(cuda_compiler_version or "").startswith("12")]
-        - cutensor
       post-link: post-link
     requirements:
       build:
@@ -111,6 +107,7 @@ outputs:
         - cutensor >=2.0.2,<3
         - cuda-version={{ cuda_compiler_version }}
         - libcublas  # [(cuda_compiler_version or "").startswith("12")]
+        # TODO: remove cudart dependency once statically linked
         - cuda-cudart-dev # [(cuda_compiler_version or "").startswith("12")]
         - {{ mpi }}  # [mpi != "nompi"]
       run:
@@ -118,21 +115,19 @@ outputs:
         - {{ pin_compatible("cutensor", max_pin="x") }}
         - cudatoolkit  # [(cuda_compiler_version or "").startswith("11")]
         - libcublas  # [(cuda_compiler_version or "").startswith("12")]
+        # TODO: remove cudart dependency once statically linked
         - cuda-cudart  # [(cuda_compiler_version or "").startswith("12")]
         - {{ mpi }} * external*  # [mpi == "mpich"]
         - {{ mpi }}  # [mpi == "openmpi"]
       run_constrained:
         - openmpi <0.a0  # [mpi == "nompi"]
         - mpich   <0.a0  # [mpi == "nompi"]
-        - __glibc >=2.27,<3.0.a0  # [aarch64 and (cuda_compiler_version or "").startswith("12")]
-        - __glibc >=2.17,<3.0.a0  # [linux64]
     test:
       requires:
         - git
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
-        - {{ compiler("cuda") }}
-        - {{ stdlib('c') }}  # [aarch64 and (cuda_compiler_version or "").startswith("12")]
+        - {{ compiler("cuda") }} 
       files:
         - ./common/*
         - ./cudensitymat/*
@@ -142,7 +137,8 @@ outputs:
         - export mpi="openmpi"  # [mpi == "openmpi"]
         - ./common/detect-glibc
         - ./common/validate-glibc
-        - ./cudensitymat/cudm-tests {{ sdk_version_string }}
+        #TODO: remove selector when cutensor package doesn't force the version to 2.17 anymore
+        - ./cudensitymat/cudm-tests {{ sdk_version_string }}  # [not (aarch64 and (cuda_compiler_version or "").startswith("12"))]
     about:
       home: https://developer.nvidia.com/cuquantum-sdk
       license: LicenseRef-cuQuantum-Software-License-Agreement
@@ -167,14 +163,10 @@ outputs:
       script: "${RECIPE_DIR}/cutensornet/cutn-install"
       run_exports:
         - {{ pin_subpackage("cutensornet", max_pin="x") }} {{ mpi_prefix }}_*
-      ignore_run_exports:
-        - sysroot_linux-64  # [linux64]
-        - sysroot_linux-aarch64  # [aarch64]
       ignore_run_exports_from:
         - {{ compiler("cuda") }}
         - libcublas  # [(cuda_compiler_version or "").startswith("12")]
         - libcusolver  # [(cuda_compiler_version or "").startswith("12")]
-        - cutensor
       post-link: post-link
     requirements:
       build:
@@ -201,15 +193,12 @@ outputs:
       run_constrained:
         - openmpi <0.a0  # [mpi == "nompi"]
         - mpich   <0.a0  # [mpi == "nompi"]
-        - __glibc >=2.27,<3.0.a0  # [aarch64 and (cuda_compiler_version or "").startswith("12")]
-        - __glibc >=2.17,<3.0.a0  # [linux64]
     test:
       requires:
         - git
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
-        - {{ stdlib('c') }}  # [aarch64]
       files:
         - ./common/*
         - ./cutensornet/*
@@ -219,7 +208,8 @@ outputs:
         - export mpi="openmpi"  # [mpi == "openmpi"]
         - ./common/detect-glibc
         - ./common/validate-glibc
-        - ./cutensornet/cutn-tests {{ sdk_version_string }}
+        #TODO: remove selector when cutensor package doesn't force the version to 2.17 anymore
+        - ./cutensornet/cutn-tests {{ sdk_version_string }} # [not (aarch64 and (cuda_compiler_version or "").startswith("12"))]
     about:
       home: https://developer.nvidia.com/cuquantum-sdk
       license: LicenseRef-cuQuantum-Software-License-Agreement
@@ -262,7 +252,6 @@ outputs:
         - libcublas  # [(cuda_compiler_version or "").startswith("12")]
         - cudatoolkit  # [(cuda_compiler_version or "").startswith("11")]
       run_constrained:
-        - __glibc >=2.27,<3.0.a0
         - openmpi <0.a0  # [mpi == "nompi"]
         - mpich   <0.a0  # [mpi == "nompi"]
     test:
@@ -271,6 +260,7 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
+        #TODO: remove stdlib("c") requirement once cutensor package doesn't force the version to 2.17 anymore
         - {{ stdlib('c') }}
       files:
         - ./common/*

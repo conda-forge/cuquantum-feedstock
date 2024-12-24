@@ -1,4 +1,4 @@
-c_stdlib_version: # [linux]
+c_stdlib_version:  # [linux]
   - 2.28  # [linux]
 
 mpi:
