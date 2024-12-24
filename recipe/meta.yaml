@@ -120,6 +120,8 @@ outputs:
         - {{ mpi }} * external*  # [mpi == "mpich"]
         - {{ mpi }}  # [mpi == "openmpi"]
       run_constrained:
+        # if users also wanna install mpi, we need to ensure the nompi version is not
+        # picked by the solver, we do so by createing a conflict
         - openmpi <0.a0  # [mpi == "nompi"]
         - mpich   <0.a0  # [mpi == "nompi"]
     test:
@@ -191,6 +193,8 @@ outputs:
         - {{ mpi }} * external*  # [mpi == "mpich"]
         - {{ mpi }}              # [mpi == "openmpi"]
       run_constrained:
+        # if users also wanna install mpi, we need to ensure the nompi version is not
+        # picked by the solver, we do so by createing a conflict
         - openmpi <0.a0  # [mpi == "nompi"]
         - mpich   <0.a0  # [mpi == "nompi"]
     test:
@@ -251,9 +255,6 @@ outputs:
         - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}  
         - libcublas  # [(cuda_compiler_version or "").startswith("12")]
         - cudatoolkit  # [(cuda_compiler_version or "").startswith("11")]
-      run_constrained:
-        - openmpi <0.a0  # [mpi == "nompi"]
-        - mpich   <0.a0  # [mpi == "nompi"]
     test:
       requires:
         - git
