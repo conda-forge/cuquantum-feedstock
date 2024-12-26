@@ -5,7 +5,7 @@
 {% set sdk_month = sdk_version[1] | int %}
 {% set sdk_patch = sdk_version[2] | int %}
 {% set sdk_build = sdk_version[3] | int %}
-{% set build_num = 0 %}
+{% set build_num = 1 %}
 
 {% set cuda_compiler_version = cuda_compiler_version | default("None") %}
 
@@ -18,12 +18,16 @@
   {% set cuda_minor = 0 %}
 {% endif %}
 
+# prioritize nompi variant via build number
 {% if mpi != "nompi" %}
   {% set mpi_prefix = "mpi_" + mpi %}
+  # TODO: set increment to 0 instead of 100
+  # this is a temporary fix applied for 24.11 release due to originally inverted priorities
   {% set mpi_suffix = sdk_build + 100 %}
 {% else %}
   {% set mpi_prefix = "nompi_" %}
-  {% set mpi_suffix = sdk_build %}
+  # TODO: set increment to 100 instead of 200
+  {% set mpi_suffix = sdk_build + 200 %}
 {% endif %}
 
 {% if linux64 or aarch64 %}
@@ -234,9 +238,11 @@ outputs:
     version: 1.7.0
     build:
       number: {{ build_num }}
+      # TODO: for next version, remove mpi_prefix and suffix since this subpackage is not dependent on mpi 
       string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ mpi_suffix }}"
       script: "${RECIPE_DIR}/custatevec/cusv-install"
       run_exports:
+        # TODO: for next version, remove mpi_prefix since this subpackage is not dependent on mpi 
         - {{ pin_subpackage("custatevec", max_pin="x") }} {{ mpi_prefix }}_*
       ignore_run_exports_from:
         - {{ compiler("cuda") }}
