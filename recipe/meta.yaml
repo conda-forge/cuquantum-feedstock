@@ -1,11 +1,15 @@
-{% set package="cuquantum" %}
+# do we need this variable to be set?
+{% set package = "cuquantum" %}
+# Make sure the component versions are consistent with the SDK version!
 {% set sdk_version_string = "24.11.0.21" %}
 {% set sdk_version = sdk_version_string.split(".") %}
 {% set sdk_year  = sdk_version[0] | int %}
 {% set sdk_month = sdk_version[1] | int %}
 {% set sdk_patch = sdk_version[2] | int %}
 {% set sdk_build = sdk_version[3] | int %}
-{% set build_num = 1 %}
+# TODO: 24.11 release moved to MAJOR.MINOR.PATCH label, maybe restore MAJOR.MINOR.PATCH.BUILD next release?
+{% set version = ".".join(sdk_version[:3]) %}
+{% set build_num = 0 %}
 
 {% set cuda_compiler_version = cuda_compiler_version | default("None") %}
 
@@ -18,16 +22,18 @@
   {% set cuda_minor = 0 %}
 {% endif %}
 
-# prioritize nompi variant via build number
+# encode mpi dependency in the build string
+# and prioritize nompi variant via build number
 {% if mpi != "nompi" %}
   {% set mpi_prefix = "mpi_" + mpi %}
-  # TODO: set increment to 0 instead of 100
-  # this is a temporary fix applied for 24.11 release due to originally inverted priorities
-  {% set mpi_suffix = sdk_build + 100 %}
+  # TODO: next release, set increment to 0 instead of 100
+  # keep it for now to avoid generating new uploads
+  {% set mpi_suffix = sdk_build + 100 + build_num %}
 {% else %}
   {% set mpi_prefix = "nompi_" %}
   # TODO: set increment to 100 instead of 200
-  {% set mpi_suffix = sdk_build + 200 %}
+  # setting the increment to 200 is a temporary fix to prioritize nompi build over mpi builds
+  {% set mpi_suffix = sdk_build + 200 + build_num %}
 {% endif %}
 
 {% if linux64 or aarch64 %}
@@ -48,7 +54,7 @@
 
 package:
   name: cuquantum-sdk
-  version: {{ ".".join(sdk_version[:3]) }}
+  version: {{ version }}
 
 source:
   - url: {{ devzone }}  # [((cuda_compiler_version or "").startswith("11") or (cuda_compiler_version or "").startswith("12")) and (linux64 or aarch64)]
@@ -75,7 +81,7 @@ requirements:
 
 outputs:
   - name: cuquantum
-    version: {{ ".".join(sdk_version[:3]) }}
+    version: {{ version }}
     build:
       number: {{ build_num }}
     requirements:
@@ -88,6 +94,7 @@ outputs:
     test:
       commands:
         - echo "cuquantum metapackage {{ sdk_version_string }}"
+  
   - name: cudensitymat
     version: 0.0.5
     build:
@@ -134,7 +141,11 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
+        # avoid sysroot_linux exported by dependency causing it to fall back to baseline
         - {{ stdlib('c') }}
+        # make sure we pick up the version matching the docker,
+        # or the linker would complain
+        - cuda-version {{ cuda_compiler_version }}.*
       files:
         - ./common/*
         - ./cudensitymat/*
@@ -161,6 +172,7 @@ outputs:
         https://docs.nvidia.com/cuda/cuquantum/license.html
       doc_url: https://docs.nvidia.com/cuda/cuquantum/latest/cudensitymat/
       dev_url: https://github.com/NVIDIA/cuQuantum
+  
   - name: cutensornet
     version: 2.6.0
     build:
@@ -191,7 +203,7 @@ outputs:
       run:
         - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}
         - {{ pin_compatible("cutensor", max_pin="x") }}
-        - libcublas # [(cuda_compiler_version or "").startswith("12")]
+        - libcublas  # [(cuda_compiler_version or "").startswith("12")]
         - libcusolver  # [(cuda_compiler_version or "").startswith("12")]
         - cudatoolkit  # [(cuda_compiler_version or "").startswith("11")]
         - {{ mpi }} * external*  # [mpi == "mpich"]
@@ -207,7 +219,12 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
+        # avoid sysroot_linux exported by dependency causing it to fall back to baseline
         - {{ stdlib('c') }}
+        # make sure we pick up the version matching the docker,
+        # or the linker would complain
+        ## seems unnecessary?
+        - cuda-version {{ cuda_compiler_version }}.*
       files:
         - ./common/*
         - ./cutensornet/*
@@ -234,6 +251,7 @@ outputs:
         https://docs.nvidia.com/cuda/cuquantum/license.html
       doc_url: https://docs.nvidia.com/cuda/cuquantum/latest/cutensornet/
       dev_url: https://github.com/NVIDIA/cuQuantum
+  
   - name: custatevec
     version: 1.7.0
     build:
@@ -267,7 +285,12 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
+        # avoid sysroot_linux exported by dependency causing it to fall back to baseline
         - {{ stdlib('c') }}
+        # make sure we pick up the version matching the docker,
+        # or the linker would complain
+        ## seems unnecessary?
+        - cuda-version {{ cuda_compiler_version }}.*
       files:
         - ./common/*
         - ./custatevec/*
@@ -290,6 +313,68 @@ outputs:
         you accept the terms and conditions of the NVIDIA cuQuantum EULA -
         https://docs.nvidia.com/cuda/cuquantum/license.html
       doc_url: https://docs.nvidia.com/cuda/cuquantum/latest/custatevec/
+      dev_url: https://github.com/NVIDIA/cuQuantum
+  
+  - name: cuquantum-python
+    # cuquantum python version label is MAJOR.MINOR.PATCH
+    version: {{ ".".join(sdk_version[:3]) }}
+    build:
+      number: {{ build_num }}
+      skip: true  # [py<310 or py>312]
+      # build cuQuantum Python package is CUDA agnostic, serving both CUDA 11/12
+      # only build in the CUDA 11 pipeline
+      # (note: this would still use cuda_compiler_version to calculate hash)
+      skip: true  # [not (cuda_compiler_version or "").startswith("11")]
+      script: "${RECIPE_DIR}/cuquantum-python/cuquantum-python-install"
+      ignore_run_exports_from:
+        # let cuquantum handle the CUDA deps
+        - {{ compiler('cuda') }}
+    requirements:
+      build:
+        - {{ stdlib('c') }}
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+        - {{ compiler('cuda') }}
+        - cross-python_{{ target_platform }}  # [build_platform != target_platform]
+        - python                              # [build_platform != target_platform]
+        - cython <3                           # [build_platform != target_platform]
+      host:
+        - python
+        - pip
+        - cython <3
+        - cuquantum ={{ ".".join(sdk_version[:3]) }}
+        - packaging
+        - setuptools
+      run:
+        - python
+        - numpy  >=1.21
+        - cupy   >=13.0
+        - {{ pin_subpackage('custatevec', max_pin='x') }}
+        - {{ pin_subpackage('cutensornet', max_pin='x') }}
+        - {{ pin_subpackage('cudensitymat', max_pin='x') }}
+        - cuda-version >=11.0.*,<13.a0
+      run_constrained:
+        - pytorch >=1.10
+        - mpi4py >=3.1.0
+        # we don't have to pin Qiskit or Cirq here because their versions are fairly recent on conda-forge
+    test:
+      requires:
+        - cuda-driver-dev  # [linux and (cuda_compiler_version or "").startswith("12")]
+      files:
+        - ./common/*
+        - ./cuquantum-python/*
+      commands:
+        - ./cuquantum-python/cuquantum-python-tests
+    about:
+      home: https://developer.nvidia.com/cuquantum-sdk
+      license: BSD-3-Clause
+      license_url: https://docs.nvidia.com/cuda/cuquantum/latest/license.html#nvidia-cuquantum-python
+      license_file: LICENSE
+      summary: "cuQuantum Python: Python APIs for NVIDIA cuQuantum SDK"
+      description: |
+        NVIDIA cuQuantum Python provides Python bindings and high-level object-oriented
+        models for accessing the full functionalities of NVIDIA cuQuantum SDK from Python.
+      doc_url: https://docs.nvidia.com/cuda/cuquantum/latest/python/
       dev_url: https://github.com/NVIDIA/cuQuantum
 
 about:
