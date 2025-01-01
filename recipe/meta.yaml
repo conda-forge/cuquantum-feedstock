@@ -1,18 +1,22 @@
-# do we need this variable to be set?
 {% set package = "cuquantum" %}
 # Make sure the component versions are consistent with the SDK version!
-{% set sdk_version_string = "24.11.0.21" %}
+{% set version =  "24.11.0.21" %}
+{% set cudm_version = "0.0.5" %}
+{% set cusv_version = "1.7.0" %}
+{% set cutn_version = "2.6.0" %}
+
+{% set sdk_version_string = version %}
 {% set sdk_version = sdk_version_string.split(".") %}
 {% set sdk_year  = sdk_version[0] | int %}
 {% set sdk_month = sdk_version[1] | int %}
 {% set sdk_patch = sdk_version[2] | int %}
 {% set sdk_build = sdk_version[3] | int %}
-# TODO: 24.11 release moved to MAJOR.MINOR.PATCH label, maybe restore MAJOR.MINOR.PATCH.BUILD next release?
-{% set version = ".".join(sdk_version[:3]) %}
-{% set build_num = 0 %}
+# MAJOR.MINOR.BUILD version label
+# assumes that we never have an updated release build without also incrementing the patch number
+# since the recipe build variable is decoupled from the release build number
+{% set version_label = ".".join(sdk_version[:3]) %}
 
 {% set cuda_compiler_version = cuda_compiler_version | default("None") %}
-
 {% if "." in (cuda_compiler_version | string) %}
   {% set cuda_version = cuda_compiler_version.split(".") %}
   {% set cuda_major = cuda_version[0] | int %}
@@ -22,19 +26,23 @@
   {% set cuda_minor = 0 %}
 {% endif %}
 
-# encode mpi dependency in the build string
-# and prioritize nompi variant via build number
+# baseline for build number for existing subpackages to align build string with build number and correct priority
+# TODO: next release, set baseline to 0 or remove variable
+{% set build_num_baseline = 200 %}
+{% set build_num_mpi_increment = 0 %}
+# prioritize nompi variant via build number
+{% set build_num_nompi_increment = 100 %}
+{% set build_num = 1 %}
+
+# encode mpi dependency in the build string for cutensornet and cudensitymat
 {% if mpi != "nompi" %}
   {% set mpi_prefix = "mpi_" + mpi %}
-  # TODO: next release, set increment to 0 instead of 100
-  # keep it for now to avoid generating new uploads
-  {% set mpi_suffix = sdk_build + 100 + build_num %}
+  {% set mpi_build_num = build_num_baseline + build_num_mpi_increment + build_num %}
 {% else %}
-  {% set mpi_prefix = "nompi_" %}
-  # TODO: set increment to 100 instead of 200
-  # setting the increment to 200 is a temporary fix to prioritize nompi build over mpi builds
-  {% set mpi_suffix = sdk_build + 200 + build_num %}
+  {% set mpi_prefix = "nompi" %}
+  {% set mpi_build_num = build_num_baseline + build_num_nompi_increment + build_num  %}
 {% endif %}
+
 
 {% if linux64 or aarch64 %}
   {% set kname = "linux" %}
@@ -54,7 +62,8 @@
 
 package:
   name: cuquantum-sdk
-  version: {{ version }}
+  # TODO: 24.11 release moved to MAJOR.MINOR.PATCH label, maybe restore MAJOR.MINOR.PATCH.BUILD next release?
+  version: {{ version_label }}
 
 source:
   - url: {{ devzone }}  # [((cuda_compiler_version or "").startswith("11") or (cuda_compiler_version or "").startswith("12")) and (linux64 or aarch64)]
@@ -81,7 +90,8 @@ requirements:
 
 outputs:
   - name: cuquantum
-    version: {{ version }}
+    # TODO: 24.11 release moved to MAJOR.MINOR.PATCH label, maybe restore MAJOR.MINOR.PATCH.BUILD next release?
+    version: {{ version_label }}
     build:
       number: {{ build_num }}
     requirements:
@@ -93,13 +103,13 @@ outputs:
         - {{ pin_subpackage("custatevec", max_pin="x.x.x") }}
     test:
       commands:
-        - echo "cuquantum metapackage {{ sdk_version_string }}"
+        - echo "cuquantum metapackage {{ version_label }}"
   
   - name: cudensitymat
-    version: 0.0.5
+    version: {{ cudm_version }}
     build:
-      number: {{ build_num }}
-      string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ mpi_suffix }}"
+      number: {{ mpi_build_num }}
+      string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ mpi_build_num }}"
       script: "${RECIPE_DIR}/cudensitymat/cudm-install"
       run_exports:
         - {{ pin_subpackage("cudensitymat", max_pin="x") }} {{ mpi_prefix }}_*
@@ -119,7 +129,7 @@ outputs:
         - cuda-version={{ cuda_compiler_version }}
         - libcublas  # [(cuda_compiler_version or "").startswith("12")]
         # TODO: remove cudart dependency once statically linked
-        - cuda-cudart-dev # [(cuda_compiler_version or "").startswith("12")]
+        - cuda-cudart-dev  # [(cuda_compiler_version or "").startswith("12")]
         - {{ mpi }}  # [mpi != "nompi"]
       run:
         - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}
@@ -174,10 +184,10 @@ outputs:
       dev_url: https://github.com/NVIDIA/cuQuantum
   
   - name: cutensornet
-    version: 2.6.0
+    version: {{ cutn_version }}
     build:
-      number: {{ build_num }}
-      string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ mpi_suffix }}"
+      number: {{ mpi_build_num }}
+      string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ mpi_build_num }}"
       script: "${RECIPE_DIR}/cutensornet/cutn-install"
       run_exports:
         - {{ pin_subpackage("cutensornet", max_pin="x") }} {{ mpi_prefix }}_*
@@ -253,15 +263,15 @@ outputs:
       dev_url: https://github.com/NVIDIA/cuQuantum
   
   - name: custatevec
-    version: 1.7.0
+    version: {{ cusv_version }}
     build:
-      number: {{ build_num }}
+      number: {{ build_num_baseline + build_num }}
       # TODO: for next version, remove mpi_prefix and suffix since this subpackage is not dependent on mpi 
-      string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ mpi_suffix }}"
+      string: "h{{ PKG_HASH }}_{{ build_num_baseline + build_num }}"
       script: "${RECIPE_DIR}/custatevec/cusv-install"
+      skip: true  # [mpi != "nompi"]
       run_exports:
-        # TODO: for next version, remove mpi_prefix since this subpackage is not dependent on mpi 
-        - {{ pin_subpackage("custatevec", max_pin="x") }} {{ mpi_prefix }}_*
+        - {{ pin_subpackage("custatevec", max_pin="x") }}
       ignore_run_exports_from:
         - {{ compiler("cuda") }}
         - libcublas  # [(cuda_compiler_version or "").startswith("12")]
@@ -317,14 +327,14 @@ outputs:
   
   - name: cuquantum-python
     # cuquantum python version label is MAJOR.MINOR.PATCH
-    version: {{ ".".join(sdk_version[:3]) }}
+    version: {{ version_label }}
     build:
       number: {{ build_num }}
       skip: true  # [py<310 or py>312]
       # build cuQuantum Python package is CUDA agnostic, serving both CUDA 11/12
       # only build in the CUDA 11 pipeline
-      # (note: this would still use cuda_compiler_version to calculate hash)
       skip: true  # [not (cuda_compiler_version or "").startswith("11")]
+      skip: true  # [mpi != "nompi"]
       script: "${RECIPE_DIR}/cuquantum-python/cuquantum-python-install"
       ignore_run_exports_from:
         # let cuquantum handle the CUDA deps
@@ -352,7 +362,8 @@ outputs:
         - {{ pin_subpackage('custatevec', max_pin='x') }}
         - {{ pin_subpackage('cutensornet', max_pin='x') }}
         - {{ pin_subpackage('cudensitymat', max_pin='x') }}
-        - cuda-version >=11.0.*,<13.a0
+        # cuquantum subpackage dependencies should already be enforcing this constraint indirectly
+        #- cuda-version >=11.0.*,<13.a0
       run_constrained:
         - pytorch >=1.10
         - mpi4py >=3.1.0
