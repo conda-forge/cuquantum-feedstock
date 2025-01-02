@@ -324,6 +324,7 @@ outputs:
       skip: true  # [py<310 or py>312]
       # build cuQuantum Python package is CUDA agnostic, serving both CUDA 11/12
       # only build in the CUDA 11 pipeline
+      # (note: this still uses cuda_compiler_version to calculate hash)
       skip: true  # [not (cuda_compiler_version or "").startswith("11")]
       skip: true  # [mpi != "nompi"]
       script: "${RECIPE_DIR}/cuquantum-python/cuquantum-python-install"
