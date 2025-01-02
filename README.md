@@ -54,28 +54,6 @@ you accept the terms and conditions of the NVIDIA cuQuantum EULA -
 https://docs.nvidia.com/cuda/cuquantum/license.html
 
 
-About custatevec
-----------------
-
-Home: https://developer.nvidia.com/cuquantum-sdk
-
-Package license: [LicenseRef-cuQuantum-Software-License-Agreement](https://docs.nvidia.com/cuda/cuquantum/latest/license.html)
-
-Summary: cuStateVec: A High-Performance Library for State Vector Quantum Simulators
-
-Development: https://github.com/NVIDIA/cuQuantum
-
-Documentation: https://docs.nvidia.com/cuda/cuquantum/latest/custatevec/
-
-NVIDIA cuStateVec is a high-performance GPU library dedicated to operations with state vectors
-for expressing quantum algorithms. cuStateVec is a component of the NVIDIA cuQuantum SDK.
-
-The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
-Software License Agreement (EULA). By downloading and using the packages,
-you accept the terms and conditions of the NVIDIA cuQuantum EULA -
-https://docs.nvidia.com/cuda/cuquantum/license.html
-
-
 About cutensornet
 -----------------
 
@@ -93,6 +71,28 @@ NVIDIA cuTensorNet is a high-performance GPU library for tensor network computat
 a component of the NVIDIA cuQuantum SDK.
 
 The packages cuquantum, cudensitymat, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+Software License Agreement (EULA). By downloading and using the packages,
+you accept the terms and conditions of the NVIDIA cuQuantum EULA -
+https://docs.nvidia.com/cuda/cuquantum/license.html
+
+
+About custatevec
+----------------
+
+Home: https://developer.nvidia.com/cuquantum-sdk
+
+Package license: [LicenseRef-cuQuantum-Software-License-Agreement](https://docs.nvidia.com/cuda/cuquantum/latest/license.html)
+
+Summary: cuStateVec: A High-Performance Library for State Vector Quantum Simulators
+
+Development: https://github.com/NVIDIA/cuQuantum
+
+Documentation: https://docs.nvidia.com/cuda/cuquantum/latest/custatevec/
+
+NVIDIA cuStateVec is a high-performance GPU library dedicated to operations with state vectors
+for expressing quantum algorithms. cuStateVec is a component of the NVIDIA cuQuantum SDK.
+
+The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
 Software License Agreement (EULA). By downloading and using the packages,
 you accept the terms and conditions of the NVIDIA cuQuantum EULA -
 https://docs.nvidia.com/cuda/cuquantum/license.html
