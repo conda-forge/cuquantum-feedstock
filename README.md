@@ -54,6 +54,28 @@ you accept the terms and conditions of the NVIDIA cuQuantum EULA -
 https://docs.nvidia.com/cuda/cuquantum/license.html
 
 
+About cutensornet
+-----------------
+
+Home: https://developer.nvidia.com/cuquantum-sdk
+
+Package license: [LicenseRef-cuQuantum-Software-License-Agreement](https://docs.nvidia.com/cuda/cuquantum/latest/license.html)
+
+Summary: cuTensorNet: A High-Performance Library for Tensor Network Computations
+
+Development: https://github.com/NVIDIA/cuQuantum
+
+Documentation: https://docs.nvidia.com/cuda/cuquantum/latest/cutensornet/
+
+NVIDIA cuTensorNet is a high-performance GPU library for tensor network computations,
+a component of the NVIDIA cuQuantum SDK.
+
+The packages cuquantum, cudensitymat, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+Software License Agreement (EULA). By downloading and using the packages,
+you accept the terms and conditions of the NVIDIA cuQuantum EULA -
+https://docs.nvidia.com/cuda/cuquantum/license.html
+
+
 About custatevec
 ----------------
 
@@ -76,26 +98,21 @@ you accept the terms and conditions of the NVIDIA cuQuantum EULA -
 https://docs.nvidia.com/cuda/cuquantum/license.html
 
 
-About cutensornet
------------------
+About cuquantum-python
+----------------------
 
 Home: https://developer.nvidia.com/cuquantum-sdk
 
-Package license: [LicenseRef-cuQuantum-Software-License-Agreement](https://docs.nvidia.com/cuda/cuquantum/latest/license.html)
+Package license: [BSD-3-Clause](https://docs.nvidia.com/cuda/cuquantum/latest/license.html#nvidia-cuquantum-python)
 
-Summary: cuTensorNet: A High-Performance Library for Tensor Network Computations
+Summary: cuQuantum Python: Python APIs for NVIDIA cuQuantum SDK
 
 Development: https://github.com/NVIDIA/cuQuantum
 
-Documentation: https://docs.nvidia.com/cuda/cuquantum/latest/cutensornet/
+Documentation: https://docs.nvidia.com/cuda/cuquantum/latest/python/
 
-NVIDIA cuTensorNet is a high-performance GPU library for tensor network computations,
-a component of the NVIDIA cuQuantum SDK.
-
-The packages cuquantum, cudensitymat, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
-Software License Agreement (EULA). By downloading and using the packages,
-you accept the terms and conditions of the NVIDIA cuQuantum EULA -
-https://docs.nvidia.com/cuda/cuquantum/license.html
+NVIDIA cuQuantum Python provides Python bindings and high-level object-oriented
+models for accessing the full functionalities of NVIDIA cuQuantum SDK from Python.
 
 
 Current build status
@@ -214,6 +231,7 @@ Current release info
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-cudensitymat-green.svg)](https://anaconda.org/conda-forge/cudensitymat) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/cudensitymat.svg)](https://anaconda.org/conda-forge/cudensitymat) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/cudensitymat.svg)](https://anaconda.org/conda-forge/cudensitymat) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/cudensitymat.svg)](https://anaconda.org/conda-forge/cudensitymat) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-cuquantum-green.svg)](https://anaconda.org/conda-forge/cuquantum) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/cuquantum.svg)](https://anaconda.org/conda-forge/cuquantum) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/cuquantum.svg)](https://anaconda.org/conda-forge/cuquantum) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/cuquantum.svg)](https://anaconda.org/conda-forge/cuquantum) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-cuquantum--python-green.svg)](https://anaconda.org/conda-forge/cuquantum-python) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/cuquantum-python.svg)](https://anaconda.org/conda-forge/cuquantum-python) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/cuquantum-python.svg)](https://anaconda.org/conda-forge/cuquantum-python) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/cuquantum-python.svg)](https://anaconda.org/conda-forge/cuquantum-python) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-custatevec-green.svg)](https://anaconda.org/conda-forge/custatevec) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/custatevec.svg)](https://anaconda.org/conda-forge/custatevec) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/custatevec.svg)](https://anaconda.org/conda-forge/custatevec) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/custatevec.svg)](https://anaconda.org/conda-forge/custatevec) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-cutensornet-green.svg)](https://anaconda.org/conda-forge/cutensornet) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/cutensornet.svg)](https://anaconda.org/conda-forge/cutensornet) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/cutensornet.svg)](https://anaconda.org/conda-forge/cutensornet) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/cutensornet.svg)](https://anaconda.org/conda-forge/cutensornet) |
 
@@ -227,16 +245,16 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `cudensitymat, cuquantum, custatevec, cutensornet` can be installed with `conda`:
+Once the `conda-forge` channel has been enabled, `cudensitymat, cuquantum, cuquantum-python, custatevec, cutensornet` can be installed with `conda`:
 
 ```
-conda install cudensitymat cuquantum custatevec cutensornet
+conda install cudensitymat cuquantum cuquantum-python custatevec cutensornet
 ```
 
 or with `mamba`:
 
 ```
-mamba install cudensitymat cuquantum custatevec cutensornet
+mamba install cudensitymat cuquantum cuquantum-python custatevec cutensornet
 ```
 
 It is possible to list all of the versions of `cudensitymat` available on your platform with `conda`:
