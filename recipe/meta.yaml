@@ -1,6 +1,6 @@
 {% set package = "cuquantum" %}
 # Make sure the component versions are consistent with the SDK version!
-{% set version =  "24.08.0.5" %}
+{% set version = "24.08.0.5" %}
 {% set cusv_version = "1.6.0" %}
 {% set cutn_version = "2.5.0" %}
 
@@ -34,11 +34,12 @@
 {% endif %}
 
 
-{% if linux64 or aarch64 %}
+{% if linux64 or aarch64 or ppc64le %}
   {% set kname = "linux" %}
-  {% set march = "sbsa" %}    # [aarch64]
+  {% set march = "sbsa" %}  # [aarch64]
   {% set march = "x86_64" %}  # [linux64]
-
+  {% set march = "ppc64le" %}  # [ppc64le]
+  
   {% set target_path = os.sep.join(["", "targets", "%s-%s" % (march, kname)]) %}
   {% set devzone_base = "https://developer.download.nvidia.com/compute" %}
   {% set devzone = "%s/%s/redist/%s/%s-%s" % (devzone_base, package, package, kname, march) %}
@@ -64,7 +65,7 @@ source:
     sha256: 8767174f86211ca3610d91bdf8c6b8145408836a3d14808414297aef3631fd43  # [(cuda_compiler_version or "").startswith("11") and ppc64le]
     sha256: 06d63f5c3a7a3f3e910259c1bfca3e7fdab72d0378099002941bc0a743f35694  # [(cuda_compiler_version or "").startswith("12") and ppc64le]
     
-  - url: {{ github }}  # [linux64 or aarch64]
+  - url: {{ github }}  # [linux64 or aarch64 or ppc64le]
     sha256: 6e4a5ad168e8aaa422f338c2a273242d3c9aa22be081a4065f85d75b6eecda7a  # [linux64 or aarch64 or ppc64le]
 
 build:
@@ -168,7 +169,7 @@ outputs:
         NVIDIA cuTensorNet is a high-performance GPU library for tensor network computations,
         a component of the NVIDIA cuQuantum SDK.
 
-        The packages cuquantum, cudensitymat, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+        The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
         Software License Agreement (EULA). By downloading and using the packages,
         you accept the terms and conditions of the NVIDIA cuQuantum EULA -
         https://docs.nvidia.com/cuda/cuquantum/license.html
@@ -273,7 +274,6 @@ outputs:
         - cupy   >=13.0
         - {{ pin_subpackage('custatevec', max_pin='x') }}
         - {{ pin_subpackage('cutensornet', max_pin='x') }}
-        - {{ pin_subpackage('cudensitymat', max_pin='x') }}
         # cuquantum subpackage dependencies should already be enforcing this constraint indirectly
         - cuda-version >=11.0.*,<13.a0
       run_constrained:
