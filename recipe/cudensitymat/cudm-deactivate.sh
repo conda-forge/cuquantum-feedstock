@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-if [[ -n "${CONDA_CUDENSITYMAT_COMM_LIB}" ]]; then
-  declare -gx CUDENSITYMAT_COMM_LIB="${CONDA_CUDENSITYMAT_COMM_LIB}"
-  unset CONDA_CUDENSITYMAT_COMM_LIB
-else
-  unset CUDENSITYMAT_COMM_LIB
-fi
