@@ -312,11 +312,10 @@ about:
     based on state vector and tensor network methods by orders of magnitude. Two major components of the
     SDK are
 
-      - cuDensityMat: a high-performance library for density matrix computations
       - cuStateVec: a high-performance library for state vector computations
       - cuTensorNet: a high-performance library for tensor network computations
 
-    The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+    The packages cuquantum, custatevec and cutensornet are governed by the NVIDIA cuQuantum
     Software License Agreement (EULA). By downloading and using the packages,
     you accept the terms and conditions of the NVIDIA cuQuantum EULA -
     https://docs.nvidia.com/cuda/cuquantum/license.html
