@@ -24,7 +24,7 @@
 # prioritize nompi variant via build number
 {% set build_num_nompi_increment = 100 %}
 
-# encode mpi dependency in the build string for cutensornet and cudensitymat
+# encode mpi dependency in the build string for cutensornet
 {% if mpi != "nompi" %}
   {% set mpi_prefix = "mpi_" + mpi %}
   {% set mpi_build_num = build_num %}
