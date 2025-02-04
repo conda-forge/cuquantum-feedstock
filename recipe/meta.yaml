@@ -1,9 +1,8 @@
 {% set package = "cuquantum" %}
 # Make sure the component versions are consistent with the SDK version!
-{% set version =  "24.11.0.21" %}
-{% set cudm_version = "0.0.5" %}
-{% set cusv_version = "1.7.0" %}
-{% set cutn_version = "2.6.0" %}
+{% set version = "24.08.0.5" %}
+{% set cusv_version = "1.6.0" %}
+{% set cutn_version = "2.5.0" %}
 
 {% set sdk_version = version.split(".") %}
 {% set sdk_year  = sdk_version[0] | int %}
@@ -21,12 +20,11 @@
   {% set cuda_minor = 0 %}
 {% endif %}
 
-
-{% set build_num = 1 %}
+{% set build_num = sdk_build + 1 %}
 # prioritize nompi variant via build number
 {% set build_num_nompi_increment = 100 %}
 
-# encode mpi dependency in the build string for cutensornet and cudensitymat
+# encode mpi dependency in the build string for cutensornet
 {% if mpi != "nompi" %}
   {% set mpi_prefix = "mpi_" + mpi %}
   {% set mpi_build_num = build_num %}
@@ -36,11 +34,12 @@
 {% endif %}
 
 
-{% if linux64 or aarch64 %}
+{% if linux64 or aarch64 or ppc64le %}
   {% set kname = "linux" %}
-  {% set march = "sbsa" %}    # [aarch64]
+  {% set march = "sbsa" %}  # [aarch64]
   {% set march = "x86_64" %}  # [linux64]
-
+  {% set march = "ppc64le" %}  # [ppc64le]
+  
   {% set target_path = os.sep.join(["", "targets", "%s-%s" % (march, kname)]) %}
   {% set devzone_base = "https://developer.download.nvidia.com/compute" %}
   {% set devzone = "%s/%s/redist/%s/%s-%s" % (devzone_base, package, package, kname, march) %}
@@ -57,14 +56,17 @@ package:
   version: {{ version }}
 
 source:
-  - url: {{ devzone }}  # [((cuda_compiler_version or "").startswith("11") or (cuda_compiler_version or "").startswith("12")) and (linux64 or aarch64)]
-    sha256: a36123e52daeae5e6e5c543b12d45fb41411280ceb924bbde54d4d1051cf10ef  # [(cuda_compiler_version or "").startswith("11") and linux64]
-    sha256: 4640da62e66f17671c8d89be93a439b8a7a13169f7aa902a3e9b6cf676d4bffd  # [(cuda_compiler_version or "").startswith("12") and linux64]
-    sha256: 16c1aba50c657456928386a8597d4b766daa3c6f69da738a9568ad4ac97094ae  # [(cuda_compiler_version or "").startswith("11") and aarch64]
-    sha256: e3e4a289887d17d4b78eaac97f2fa03b2de9d832f918eb48ab97de997c104ce6  # [(cuda_compiler_version or "").startswith("12") and aarch64]
 
-  - url: {{ github }}  # [linux64 or aarch64]
-    sha256: a4b0965e7193515930542cc558d922e24c1732d8240efde3e622e84d6c4416fe  # [linux64 or aarch64]
+  - url: {{ devzone }}  # [((cuda_compiler_version or "").startswith("11") or (cuda_compiler_version or "").startswith("12")) and (linux64 or aarch64 or ppc64le)]
+    sha256: f361f2e45ff863e7eb152f1553580c3bcfb7c0a6b9efea909688fdc519fee4d1  # [(cuda_compiler_version or "").startswith("11") and linux64]
+    sha256: 485968734706eeffcd3adc3b2d2086e59be7ff3ddd907e96f1eb97335beb344a  # [(cuda_compiler_version or "").startswith("12") and linux64]
+    sha256: 4b695e25f8e2bfdaa04f68c379fe2001b6fdb8fe63169780b584f7b49acd0312  # [(cuda_compiler_version or "").startswith("11") and aarch64]
+    sha256: 9ca173c8b58ac5c097a8c69f4900bc9ef0179def721804f1e9f033677445cafc  # [(cuda_compiler_version or "").startswith("12") and aarch64]
+    sha256: 8767174f86211ca3610d91bdf8c6b8145408836a3d14808414297aef3631fd43  # [(cuda_compiler_version or "").startswith("11") and ppc64le]
+    sha256: 06d63f5c3a7a3f3e910259c1bfca3e7fdab72d0378099002941bc0a743f35694  # [(cuda_compiler_version or "").startswith("12") and ppc64le]
+    
+  - url: {{ github }}  # [linux64 or aarch64 or ppc64le]
+    sha256: 6e4a5ad168e8aaa422f338c2a273242d3c9aa22be081a4065f85d75b6eecda7a  # [linux64 or aarch64 or ppc64le]
 
 build:
   number: {{ build_num }}
@@ -88,91 +90,11 @@ outputs:
       build:
       host:
       run:
-        - {{ pin_subpackage("cudensitymat", max_pin="x.x.x") }}
         - {{ pin_subpackage("cutensornet", max_pin="x.x.x") }}
         - {{ pin_subpackage("custatevec", max_pin="x.x.x") }}
     test:
       commands:
         - echo "cuquantum metapackage {{ version }}"
-  
-  - name: cudensitymat
-    version: {{ cudm_version }}
-    build:
-      number: {{ mpi_build_num }}
-      string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ mpi_build_num }}"
-      script: "${RECIPE_DIR}/cudensitymat/cudm-install"
-      run_exports:
-        - {{ pin_subpackage("cudensitymat", max_pin="x") }} {{ mpi_prefix }}_*
-      ignore_run_exports_from:
-        - {{ compiler("cuda") }}
-        - libcublas  # [(cuda_compiler_version or "").startswith("12")]
-        - cuda-cudart-dev  # [(cuda_compiler_version or "").startswith("12")]
-      post-link: post-link
-    requirements:
-      build:
-        - {{ stdlib('c') }}
-        - {{ compiler("c") }}
-        - {{ compiler("cxx") }}
-        - {{ compiler("cuda") }}
-      host:
-        - cutensor >=2.0.2,<3
-        - cuda-version={{ cuda_compiler_version }}
-        - libcublas  # [(cuda_compiler_version or "").startswith("12")]
-        # TODO: remove cudart dependency once statically linked
-        - cuda-cudart-dev  # [(cuda_compiler_version or "").startswith("12")]
-        - {{ mpi }}  # [mpi != "nompi"]
-      run:
-        - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}
-        - {{ pin_compatible("cutensor", max_pin="x") }}
-        - cudatoolkit  # [(cuda_compiler_version or "").startswith("11")]
-        - libcublas  # [(cuda_compiler_version or "").startswith("12")]
-        # TODO: remove cudart dependency once statically linked
-        - cuda-cudart  # [(cuda_compiler_version or "").startswith("12")]
-        - {{ mpi }} * external*  # [mpi == "mpich"]
-        - {{ mpi }}  # [mpi == "openmpi"]
-      run_constrained:
-        # if users also wanna install mpi, we need to ensure the nompi version is not
-        # picked by the solver, we do so by createing a conflict
-        - openmpi <0.a0  # [mpi == "nompi"]
-        - mpich   <0.a0  # [mpi == "nompi"]
-    test:
-      requires:
-        - git
-        - {{ compiler("c") }}
-        - {{ compiler("cxx") }}
-        - {{ compiler("cuda") }}
-        # avoid sysroot_linux exported by dependency causing it to fall back to baseline
-        - {{ stdlib('c') }}
-        # make sure we pick up the version matching the docker,
-        # or the linker would complain
-        - cuda-version {{ cuda_compiler_version }}.*
-      files:
-        - ./common/*
-        - ./cudensitymat/*
-      commands:
-        - export mpi={{ mpi }}
-        #- export mpi="nompi"    # [mpi == "nompi"]
-        #- export mpi="mpich"    # [mpi == "mpich"]
-        #- export mpi="openmpi"  # [mpi == "openmpi"]
-        - ./common/detect-glibc
-        - ./common/validate-glibc
-        - ./cudensitymat/cudm-tests {{ version }}
-    about:
-      home: https://developer.nvidia.com/cuquantum-sdk
-      license: LicenseRef-cuQuantum-Software-License-Agreement
-      license_url: https://docs.nvidia.com/cuda/cuquantum/latest/license.html
-      license_file: LICENSE
-      summary: 'cuDensityMat: A High-Performance Library for accelerating analog quantum dynamics solvers'
-      description: |
-        NVIDIA cuDensityMat is a high-performance library for accelerating analog quantum dynamics solvers,
-        a component of the NVIDIA cuQuantum SDK.
-
-        The packages cuquantum, cudensitymat, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
-        Software License Agreement (EULA). By downloading and using the packages,
-        you accept the terms and conditions of the NVIDIA cuQuantum EULA -
-        https://docs.nvidia.com/cuda/cuquantum/license.html
-      doc_url: https://docs.nvidia.com/cuda/cuquantum/latest/cudensitymat/
-      dev_url: https://github.com/NVIDIA/cuQuantum
   
   - name: cutensornet
     version: {{ cutn_version }}
@@ -247,7 +169,7 @@ outputs:
         NVIDIA cuTensorNet is a high-performance GPU library for tensor network computations,
         a component of the NVIDIA cuQuantum SDK.
 
-        The packages cuquantum, cudensitymat, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+        The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
         Software License Agreement (EULA). By downloading and using the packages,
         you accept the terms and conditions of the NVIDIA cuQuantum EULA -
         https://docs.nvidia.com/cuda/cuquantum/license.html
@@ -260,7 +182,6 @@ outputs:
       number: {{ build_num }}
       string: "h{{ PKG_HASH }}_{{ build_num }}"
       script: "${RECIPE_DIR}/custatevec/cusv-install"
-      skip: true  # [mpi != "nompi"]
       run_exports:
         - {{ pin_subpackage("custatevec", max_pin="x") }}
       ignore_run_exports_from:
@@ -349,13 +270,12 @@ outputs:
         - setuptools
       run:
         - python
-        - numpy  >=1.21
+        - numpy  >=1.21,<2
         - cupy   >=13.0
         - {{ pin_subpackage('custatevec', max_pin='x') }}
         - {{ pin_subpackage('cutensornet', max_pin='x') }}
-        - {{ pin_subpackage('cudensitymat', max_pin='x') }}
         # cuquantum subpackage dependencies should already be enforcing this constraint indirectly
-        #- cuda-version >=11.0.*,<13.a0
+        - cuda-version >=11.0.*,<13.a0
       run_constrained:
         - pytorch >=1.10
         - mpi4py >=3.1.0
@@ -392,11 +312,10 @@ about:
     based on state vector and tensor network methods by orders of magnitude. Two major components of the
     SDK are
 
-      - cuDensityMat: a high-performance library for density matrix computations
       - cuStateVec: a high-performance library for state vector computations
       - cuTensorNet: a high-performance library for tensor network computations
 
-    The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+    The packages cuquantum, custatevec and cutensornet are governed by the NVIDIA cuQuantum
     Software License Agreement (EULA). By downloading and using the packages,
     you accept the terms and conditions of the NVIDIA cuQuantum EULA -
     https://docs.nvidia.com/cuda/cuquantum/license.html
