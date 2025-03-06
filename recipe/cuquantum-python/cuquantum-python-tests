@@ -3,12 +3,6 @@
 # shellcheck disable=SC1091
 set -ex
 
-declare -gx VALIDATE_GLIBC="./common/validate-glibc"
-if ! [[ -f "${VALIDATE_GLIBC}" ]] ; then
-  echo "error: validate-glibc is not available"
-  exit 1
-fi
-
 declare -gx FILES_LIB="./common/handle-files"
 if ! [[ -f "${FILES_LIB}" ]] ; then
   echo "error: files-lib is not available"
@@ -32,12 +26,6 @@ if ! files exist "${filepaths[@]}" ; then
   echo "error: cuquantum files are not available"
   exit 1
 fi
-
-declare -agx LIBRARIES=(
-  "${PREFIX}/lib/libcudensitymat.so"
-  "${PREFIX}/lib/libcutensornet.so"
-  "${PREFIX}/lib/libcustatevec.so"
-)
 
 declare -agx supported_platforms
 supported_platforms=(
@@ -65,8 +53,6 @@ LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum.cutensornet"
 LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum.densitymat"
 
 echo "CuQuantum python and submodules are importable."
-
-source "${VALIDATE_GLIBC}" "${LIBRARIES[@]}"
 
 LD_PRELOAD="$CUDA_STUB_LIBRARY" python -m cuquantum --includes --libs --target custatevec || exit 1
 

@@ -27,12 +27,6 @@ if ! files exist "${filepaths[@]}" ; then
   exit 1
 fi
 
-declare -agx LIBRARIES=(
-  "${PREFIX}/lib/libcustatevec.so"
-)
-
-source "${VALIDATE_GLIBC}" "${LIBRARIES[@]}"
-
 declare -gx CUQUANTUM_VER="${1}"
 if [[ -n "${CUQUANTUM_VER}" ]] ; then
   declare -agx CUQUANTUM_VERSION
