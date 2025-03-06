@@ -11,22 +11,18 @@ Home: https://developer.nvidia.com/cuquantum-sdk
 
 Package license: [LicenseRef-cuQuantum-Software-License-Agreement](https://docs.nvidia.com/cuda/cuquantum/latest/license.html)
 
-Summary: cuQuantum SDK: A High-Performance Library for Accelerating Quantum Information Science
+Summary: cuQuantum SDK: A High-Performance Library for Accelerating Quantum Computing Simulations
 
-Development: https://github.com/NVIDIA/cuQuantum
+NVIDIA cuQuantum SDK is a set of high-performance libraries and tools for accelerating
+quantum computing simulations at both the circuit and device level by orders of magnitude. It consists of three major components:
 
-Documentation: https://docs.nvidia.com/cuda/cuquantum/latest/index.html
+- cuDensityMat: a high-performance library for quantum dynamics equation solvers
+- cuStateVec: a high-performance library for state vector computations
+- cuTensorNet: a high-performance library for tensor network computations
 
-NVIDIA cuQuantum is an SDK of optimized libraries and tools for accelerating quantum computing workflows.
-Using NVIDIA GPU Tensor Core GPUs, developers can use cuQuantum to speed up quantum circuit simulations
-based on state vector and tensor network methods by orders of magnitude. Two major components of the
-SDK are
+In addition to C APIs, cuQuantum also provides Python APIs via cuQuantum Python.'
 
-  - cuDensityMat: a high-performance library for density matrix computations
-  - cuStateVec: a high-performance library for state vector computations
-  - cuTensorNet: a high-performance library for tensor network computations
-
-The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+The packages cuquantum, cudensitymat, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
 Software License Agreement (EULA). By downloading and using the packages,
 you accept the terms and conditions of the NVIDIA cuQuantum EULA -
 https://docs.nvidia.com/cuda/cuquantum/license.html
@@ -39,14 +35,15 @@ Home: https://developer.nvidia.com/cuquantum-sdk
 
 Package license: [LicenseRef-cuQuantum-Software-License-Agreement](https://docs.nvidia.com/cuda/cuquantum/latest/license.html)
 
-Summary: cuDensityMat: A High-Performance Library for accelerating analog quantum dynamics solvers
+Summary: cuDensityMat: A High-Performance Library for composing analog quantum dynamics equation solvers
 
 Development: https://github.com/NVIDIA/cuQuantum
 
 Documentation: https://docs.nvidia.com/cuda/cuquantum/latest/cudensitymat/
 
-NVIDIA cuDensityMat is a high-performance library for accelerating analog quantum dynamics solvers,
-a component of the NVIDIA cuQuantum SDK.
+NVIDIA cuDensityMat is a high-performance library for composing analog quantum dynamics equation solvers.
+cuDensityMat is a component of the NVIDIA cuQuantum SDK.
+In addition to C APIs, cuDensityMat can also be accessed in Python via cuQuantum Python.
 
 The packages cuquantum, cudensitymat, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
 Software License Agreement (EULA). By downloading and using the packages,
@@ -67,8 +64,9 @@ Development: https://github.com/NVIDIA/cuQuantum
 
 Documentation: https://docs.nvidia.com/cuda/cuquantum/latest/cutensornet/
 
-NVIDIA cuTensorNet is a high-performance GPU library for tensor network computations,
-a component of the NVIDIA cuQuantum SDK.
+NVIDIA cuTensorNet is a high-performance library for tensor network computations.
+cuTensorNet is a component of the NVIDIA cuQuantum SDK.
+In addition to C APIs, cuTensorNet can also be accessed in Python via cuQuantum Python.
 
 The packages cuquantum, cudensitymat, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
 Software License Agreement (EULA). By downloading and using the packages,
@@ -89,10 +87,11 @@ Development: https://github.com/NVIDIA/cuQuantum
 
 Documentation: https://docs.nvidia.com/cuda/cuquantum/latest/custatevec/
 
-NVIDIA cuStateVec is a high-performance GPU library dedicated to operations with state vectors
-for expressing quantum algorithms. cuStateVec is a component of the NVIDIA cuQuantum SDK.
+NVIDIA cuStateVec is a high-performance library dedicated to operations for building state vector quantum simulators.
+cuStateVec is a component of the NVIDIA cuQuantum SDK.
+In addition to C APIs, cuStateVec can also be accessed in Python via cuQuantum Python.
 
-The packages cuquantum, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+The packages cuquantum, cudensitymat, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
 Software License Agreement (EULA). By downloading and using the packages,
 you accept the terms and conditions of the NVIDIA cuQuantum EULA -
 https://docs.nvidia.com/cuda/cuquantum/license.html
@@ -105,7 +104,7 @@ Home: https://developer.nvidia.com/cuquantum-sdk
 
 Package license: [BSD-3-Clause](https://docs.nvidia.com/cuda/cuquantum/latest/license.html#nvidia-cuquantum-python)
 
-Summary: cuQuantum Python: Python APIs for NVIDIA cuQuantum SDK
+Summary: cuQuantum Python: A High-Performance Library for Accelerating Quantum Computing Simulations in Python
 
 Development: https://github.com/NVIDIA/cuQuantum
 
