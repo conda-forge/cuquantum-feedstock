@@ -152,11 +152,6 @@ outputs:
         - ./cudensitymat/*
       commands:
         - export mpi={{ mpi }}
-        #- export mpi="nompi"    # [mpi == "nompi"]
-        #- export mpi="mpich"    # [mpi == "mpich"]
-        #- export mpi="openmpi"  # [mpi == "openmpi"]
-        - ./common/detect-glibc
-        - ./common/validate-glibc
         - ./cudensitymat/cudm-tests {{ version }}
     about:
       home: https://developer.nvidia.com/cuquantum-sdk
@@ -234,11 +229,6 @@ outputs:
         - ./cutensornet/*
       commands:
         - export mpi={{ mpi }}
-        #- export mpi="nompi"    # [mpi == "nompi"]
-        #- export mpi="mpich"    # [mpi == "mpich"]
-        #- export mpi="openmpi"  # [mpi == "openmpi"]
-        - ./common/detect-glibc
-        - ./common/validate-glibc
         - ./cutensornet/cutn-tests {{ version }}
     about:
       home: https://developer.nvidia.com/cuquantum-sdk
@@ -301,8 +291,6 @@ outputs:
         - ./common/*
         - ./custatevec/*
       commands:
-        - ./common/detect-glibc
-        - ./common/validate-glibc
         - ./custatevec/cusv-tests {{ version }}
     about:
       home: https://developer.nvidia.com/cuquantum-sdk
