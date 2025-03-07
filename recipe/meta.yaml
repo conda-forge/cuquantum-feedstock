@@ -1,6 +1,6 @@
 {% set package = "cuquantum" %}
 # Make sure the component versions are consistent with the SDK version!
-{% set version =  "24.11.0.21" %}
+{% set version = "24.11.0.21" %}
 {% set cudm_version = "0.0.5" %}
 {% set cusv_version = "1.7.0" %}
 {% set cutn_version = "2.6.0" %}
@@ -117,7 +117,7 @@ outputs:
         - cf-nvidia-tools 1  # [linux]
       host:
         - cutensor >=2.0.2,<3
-        - cuda-version={{ cuda_compiler_version }}
+        - cuda-version {{ cuda_compiler_version }}
         - libcublas  # [(cuda_compiler_version or "").startswith("12")]
         # TODO: remove cudart dependency once statically linked
         - cuda-cudart-dev  # [(cuda_compiler_version or "").startswith("12")]
@@ -343,8 +343,8 @@ outputs:
         - setuptools
       run:
         - python
-        - numpy  >=1.21
-        - cupy   >=13.0
+        - numpy >=1.21
+        - cupy >=13.0
         - {{ pin_subpackage('custatevec', max_pin='x') }}
         - {{ pin_subpackage('cutensornet', max_pin='x') }}
         - {{ pin_subpackage('cudensitymat', max_pin='x') }}
