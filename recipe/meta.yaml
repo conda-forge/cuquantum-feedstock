@@ -317,7 +317,7 @@ outputs:
       number: {{ build_num }}
       skip: true  # [py<310 or py>312]
       # build cuQuantum Python package is CUDA agnostic, serving both CUDA 11/12
-      # only build in the CUDA 11 pipeline
+      # only build in the CUDA 12 pipeline
       # (note: this still uses cuda_compiler_version to calculate hash)
       skip: true  # [not (cuda_compiler_version or "").startswith("12")]
       skip: true  # [mpi != "nompi"]
@@ -394,6 +394,8 @@ about:
     Software License Agreement (EULA). By downloading and using the packages,
     you accept the terms and conditions of the NVIDIA cuQuantum EULA -
     https://docs.nvidia.com/cuda/cuquantum/license.html
+  doc_url: https://docs.nvidia.com/cuda/cuquantum/latest/index.html
+  dev_url: https://github.com/NVIDIA/cuQuantum
 
 extra:
   recipe-maintainers:
