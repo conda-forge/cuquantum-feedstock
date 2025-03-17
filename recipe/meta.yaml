@@ -249,7 +249,6 @@ outputs:
       number: {{ build_num }}
       string: "h{{ PKG_HASH }}_{{ build_num }}"
       script: "${RECIPE_DIR}/custatevec/cusv-install"
-      skip: true  # [mpi != "nompi"]
       run_exports:
         - {{ pin_subpackage("custatevec", max_pin="x") }}
       ignore_run_exports_from:
