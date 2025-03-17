@@ -55,29 +55,6 @@ you accept the terms and conditions of the NVIDIA cuQuantum EULA -
 https://docs.nvidia.com/cuda/cuquantum/license.html
 
 
-About cutensornet
------------------
-
-Home: https://developer.nvidia.com/cuquantum-sdk
-
-Package license: [LicenseRef-cuQuantum-Software-License-Agreement](https://docs.nvidia.com/cuda/cuquantum/latest/license.html)
-
-Summary: cuTensorNet: A High-Performance Library for Tensor Network Computations
-
-Development: https://github.com/NVIDIA/cuQuantum
-
-Documentation: https://docs.nvidia.com/cuda/cuquantum/latest/cutensornet/
-
-NVIDIA cuTensorNet is a high-performance library for tensor network computations.
-cuTensorNet is a component of the NVIDIA cuQuantum SDK.
-In addition to C APIs, cuTensorNet can also be accessed in Python via cuQuantum Python.
-
-The packages cuquantum, cudensitymat, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
-Software License Agreement (EULA). By downloading and using the packages,
-you accept the terms and conditions of the NVIDIA cuQuantum EULA -
-https://docs.nvidia.com/cuda/cuquantum/license.html
-
-
 About custatevec
 ----------------
 
@@ -94,6 +71,29 @@ Documentation: https://docs.nvidia.com/cuda/cuquantum/latest/custatevec/
 NVIDIA cuStateVec is a high-performance library dedicated to operations for building state vector quantum simulators.
 cuStateVec is a component of the NVIDIA cuQuantum SDK.
 In addition to C APIs, cuStateVec can also be accessed in Python via cuQuantum Python.
+
+The packages cuquantum, cudensitymat, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+Software License Agreement (EULA). By downloading and using the packages,
+you accept the terms and conditions of the NVIDIA cuQuantum EULA -
+https://docs.nvidia.com/cuda/cuquantum/license.html
+
+
+About cutensornet
+-----------------
+
+Home: https://developer.nvidia.com/cuquantum-sdk
+
+Package license: [LicenseRef-cuQuantum-Software-License-Agreement](https://docs.nvidia.com/cuda/cuquantum/latest/license.html)
+
+Summary: cuTensorNet: A High-Performance Library for Tensor Network Computations
+
+Development: https://github.com/NVIDIA/cuQuantum
+
+Documentation: https://docs.nvidia.com/cuda/cuquantum/latest/cutensornet/
+
+NVIDIA cuTensorNet is a high-performance library for tensor network computations.
+cuTensorNet is a component of the NVIDIA cuQuantum SDK.
+In addition to C APIs, cuTensorNet can also be accessed in Python via cuQuantum Python.
 
 The packages cuquantum, cudensitymat, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
 Software License Agreement (EULA). By downloading and using the packages,
