@@ -19,6 +19,8 @@ conda clean --all --yes
   from="include/cutensornet" named="*.h*" files move "${PREFIX}/include/cutensornet"
   from="lib" named="*cutensornet.so*" files move "${PREFIX}/lib"
   
+  check-glibc ${PREFIX}/lib/*cutensornet.so*
+  
   if [[ "${mpi}" != "nompi" ]]; then
   #if [[ -f "${PREFIX}/lib/libmpi.so" ]] ; then
     echo " detected mpi lib, building wrappers" 
@@ -53,6 +55,9 @@ conda clean --all --yes
       echo "error: cutensornet communication library not found in expected location"
       exit 1
     fi
+
+    check-glibc ${PREFIX}/lib/libcutensornet_distributed_interface_mpi.so
+    
     # copy activate/deactivate scripts
     mkdir -p "${PREFIX}/etc/conda/activate.d"
     cp "${RECIPE_DIR}/cutensornet/cutn-activate.sh" "${PREFIX}/etc/conda/activate.d/cutn-activate.sh" 

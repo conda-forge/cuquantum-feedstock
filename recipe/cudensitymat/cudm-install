@@ -17,7 +17,9 @@ conda clean --all --yes
   declare -gx from named
   from="include" named="*cudensitymat.h*" files move "${PREFIX}/include"
   from="lib" named="*cudensitymat.so*" files move "${PREFIX}/lib"
-
+  
+  check-glibc ${PREFIX}/lib/*cudensitymat.so*
+  
   if [[ "${mpi}" != "nompi" ]]; then
   #if [[ -f "${PREFIX}/lib/libmpi.so" ]] ; then
     echo " mpi lib detected, building distributed interfaces" 
@@ -48,8 +50,11 @@ conda clean --all --yes
     fi
     echo "compile_command[@]"
     "${compile_command[@]}"
+    
+    check-glibc ${PREFIX}/lib/libcudensitymat_distributed_interface_mpi.so
+  
     if ! [[ -f "${PREFIX}/lib/libcudensitymat_distributed_interface_mpi.so" ]] ; then
-      echo "error: cutensornet comm lib not in expected place"
+      echo "error: cudensitymat comm lib not in expected place"
       exit 1
     fi
     # copy activate/deactivate scripts

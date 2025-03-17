@@ -3,12 +3,6 @@
 # shellcheck disable=SC1091
 set -ex
 
-declare -gx VALIDATE_GLIBC="./common/validate-glibc"
-if ! [[ -f "${VALIDATE_GLIBC}" ]] ; then
-  echo "error: validate-glibc is not available"
-  exit 1
-fi
-
 declare -gx FILES_LIB="./common/handle-files"
 if ! [[ -f "${FILES_LIB}" ]] ; then
   echo "error: files-lib is not available"
@@ -27,20 +21,14 @@ if ! files exist "${filepaths[@]}" ; then
   exit 1
 fi
 
-declare -agx LIBRARIES=(
-  "${PREFIX}/lib/libcudensitymat.so"
-)
 
 declare -gx LINK_MPI=""
 declare -gx MPI_LIBRARY EXTRA_LIBS=""
 if [[ -f "${PREFIX}/lib/libmpi.so" ]] ; then
   MPI_LIBRARY="${PREFIX}/lib/libmpi.so"
-  LIBRARIES+=("${MPI_LIBRARY}")
   EXTRA_LIBS="${PREFIX}/lib/libmpi.so"
   LINK_MPI="-lmpi"
 fi
-
-source "${VALIDATE_GLIBC}" "${LIBRARIES[@]}"
 
 declare -gx CUQUANTUM_VER="${1}"
 if [[ -n "${CUQUANTUM_VER}" ]] ; then
