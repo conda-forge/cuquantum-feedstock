@@ -1,9 +1,9 @@
 {% set package = "cuquantum" %}
 # Make sure the component versions are consistent with the SDK version!
 {% set version = "25.06.0.10" %}
-{% set cudm_version = "0.1.0" %}
-{% set cusv_version = "1.8.0" %}
-{% set cutn_version = "2.7.0" %}
+{% set cudm_version = "0.2.0" %}
+{% set cusv_version = "1.9.0" %}
+{% set cutn_version = "2.8.0" %}
 
 {% set sdk_version = version.split(".") %}
 {% set sdk_year  = sdk_version[0] | int %}
@@ -116,12 +116,14 @@ outputs:
         - cf-nvidia-tools 1  # [linux]
       host:
         - cutensor >=2.2.0,<3
+        - {{ pin_subpackage('cutensornet', max_pin='x') }}
         - cuda-version {{ cuda_compiler_version }}
         - libcublas  # [(cuda_compiler_version or "").startswith("12")]
         - {{ mpi }}  # [mpi != "nompi"]
       run:
         - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}
         - {{ pin_compatible("cutensor", max_pin="x") }}
+        - {{ pin_subpackage('cutensornet', max_pin='x') }}
         - cudatoolkit  # [(cuda_compiler_version or "").startswith("11")]
         - libcublas  # [(cuda_compiler_version or "").startswith("12")]
         - {{ mpi }} * external*  # [mpi == "mpich"]
@@ -309,7 +311,7 @@ outputs:
     version: {{ ".".join(sdk_version[:3]) }}
     build:
       number: {{ build_num }}
-      skip: true  # [py<310 or py>312]
+      skip: true  # [py<311 or py>313]
       # build cuQuantum Python package is CUDA agnostic, serving both CUDA 11/12
       # only build in the CUDA 12 pipeline
       # (note: this still uses cuda_compiler_version to calculate hash)
@@ -327,11 +329,11 @@ outputs:
         - {{ compiler('cuda') }}
         - cross-python_{{ target_platform }}  # [build_platform != target_platform]
         - python                              # [build_platform != target_platform]
-        - cython <3                           # [build_platform != target_platform]
+        - cython <4                           # [build_platform != target_platform]
       host:
         - python
         - pip
-        - cython <3
+        - cython <4
         - cuquantum ={{ version }}
         - packaging
         - setuptools
