@@ -1,7 +1,7 @@
 c_compiler:
 - gcc
 c_compiler_version:
-- '13'
+- '11'
 c_stdlib:
 - sysroot
 c_stdlib_version:
@@ -13,17 +13,17 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cuda_compiler:
-- cuda-nvcc
+- nvcc
 cuda_compiler_version:
-- '12.6'
+- '11.8'
 cutensor:
 - '2'
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '13'
+- '11'
 docker_image:
-- quay.io/condaforge/linux-anvil-x86_64:alma9
+- quay.io/condaforge/linux-anvil-x86_64-cuda11.8:ubi8
 mpi:
 - mpich
 mpich:
@@ -46,3 +46,5 @@ zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
   - cuda_compiler_version
+  - cuda_compiler
+  - docker_image
