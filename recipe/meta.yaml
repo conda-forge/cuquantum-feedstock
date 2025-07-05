@@ -113,10 +113,11 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
+        - {{ mpi }} * external*  # [mpi == "mpich"]
+        - {{ mpi }}  # [mpi == "openmpi"]
         - cf-nvidia-tools 1  # [linux]
       host:
         - cutensor >=2.2.0,<3
-        - {{ pin_subpackage('cutensornet', max_pin='x') }}
         - cuda-version {{ cuda_compiler_version }}
         - libcublas  # [(cuda_compiler_version or "").startswith("12")]
         - {{ mpi }}  # [mpi != "nompi"]
