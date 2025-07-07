@@ -344,7 +344,7 @@ outputs:
         - cupy >=13.0
         - {{ pin_subpackage('custatevec', max_pin='x') }}
         - {{ pin_subpackage('cutensornet', max_pin='x') }}
-        - {{ pin_subpackage('cudensitymat', max_pin='x') }}
+        - {{ pin_subpackage('cudensitymat', max_pin='x.x') }}
         # cuquantum subpackage dependencies should already be enforcing this constraint indirectly
         #- cuda-version >=11.0.*,<13.a0
       run_constrained:
