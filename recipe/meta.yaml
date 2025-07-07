@@ -98,6 +98,8 @@ outputs:
   - name: cudensitymat
     version: {{ cudm_version }}
     build:
+      missing_dso_whitelist:
+        - "*libcutensornet*"  # it is a subpackage in this recipe referenced by this output
       number: {{ mpi_build_num }}
       string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ mpi_build_num }}"
       script: "${RECIPE_DIR}/cudensitymat/cudm-install"
@@ -120,6 +122,9 @@ outputs:
         - cutensor >=2.2.0,<3
         - cuda-version {{ cuda_compiler_version }}
         - libcublas  # [(cuda_compiler_version or "").startswith("12")]
+        - libcublas  # [(cuda_compiler_version or "").startswith("12")]
+        - libcusolver  # [(cuda_compiler_version or "").startswith("12")]
+        - libcusparse  # [(cuda_compiler_version or "").startswith("12")]
         - {{ mpi }}  # [mpi != "nompi"]
       run:
         - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}
@@ -127,6 +132,9 @@ outputs:
         - {{ pin_subpackage('cutensornet', max_pin='x') }}
         - cudatoolkit  # [(cuda_compiler_version or "").startswith("11")]
         - libcublas  # [(cuda_compiler_version or "").startswith("12")]
+        - libcusolver  # [(cuda_compiler_version or "").startswith("12")]
+        - libcusparse  # [(cuda_compiler_version or "").startswith("12")]
+        - libnvjitlink  # [(cuda_compiler_version or "").startswith("12")]
         - {{ mpi }} * external*  # [mpi == "mpich"]
         - {{ mpi }}  # [mpi == "openmpi"]
       run_constrained:
