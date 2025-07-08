@@ -122,7 +122,6 @@ outputs:
         - cutensor >=2.2.0,<3
         - cuda-version {{ cuda_compiler_version }}
         - libcublas  # [(cuda_compiler_version or "").startswith("12")]
-        - libcublas  # [(cuda_compiler_version or "").startswith("12")]
         - libcusolver  # [(cuda_compiler_version or "").startswith("12")]
         - libcusparse  # [(cuda_compiler_version or "").startswith("12")]
         - {{ mpi }}  # [mpi != "nompi"]
