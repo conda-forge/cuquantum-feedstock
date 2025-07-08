@@ -1,9 +1,9 @@
 {% set package = "cuquantum" %}
 # Make sure the component versions are consistent with the SDK version!
-{% set version = "25.03.0.11" %}
-{% set cudm_version = "0.1.0" %}
-{% set cusv_version = "1.8.0" %}
-{% set cutn_version = "2.7.0" %}
+{% set version = "25.06.0.10" %}
+{% set cudm_version = "0.2.0" %}
+{% set cusv_version = "1.9.0" %}
+{% set cutn_version = "2.8.0" %}
 
 {% set sdk_version = version.split(".") %}
 {% set sdk_year  = sdk_version[0] | int %}
@@ -58,13 +58,13 @@ package:
 
 source:
   - url: {{ devzone }}  # [((cuda_compiler_version or "").startswith("11") or (cuda_compiler_version or "").startswith("12")) and (linux64 or aarch64)]
-    sha256: 6c022ff6235fa92f29ca9729aaba17525785c82d4ac920baec31a586e4df4502  # [(cuda_compiler_version or "").startswith("11") and linux64]
-    sha256: aeabd01e8b43055869f151eca82f70f84c890f559f85aacc0093f949973e6926  # [(cuda_compiler_version or "").startswith("12") and linux64]
-    sha256: a9efea4f37619fbc6136b800460eae83bb1ed14eab7bbeaf0c1587f798081e71  # [(cuda_compiler_version or "").startswith("11") and aarch64]
-    sha256: b2714c1edd276272aa83d94c19eb77d84a138eda8b22638352f262223a087786  # [(cuda_compiler_version or "").startswith("12") and aarch64]
+    sha256: 31c20ce343e45f6d76e86dc7b711b26a4ce0eb5db33d03c27ef0ac4f19867fad  # [(cuda_compiler_version or "").startswith("11") and linux64]
+    sha256: 2bb36f9691c65d5327b9eb52ee3bd14e8c5cb6d6f982927b87e9219f1ce65a5d  # [(cuda_compiler_version or "").startswith("12") and linux64]
+    sha256: 6956f9f44dfaa484251f5ba5d96efb6eed44def7bf68b05c1da8de101c828759  # [(cuda_compiler_version or "").startswith("11") and aarch64]
+    sha256: f3975d7f11fc97af3708775767357fe64a2d306b9cc3c76cba4615b54964459e  # [(cuda_compiler_version or "").startswith("12") and aarch64]
 
   - url: {{ github }}  # [linux64 or aarch64]
-    sha256: e4d188e11bda32ba894ef4597af30ea16b81c5991f5b338c68f0c0cf42d3ee9c  # [linux64 or aarch64]
+    sha256: 6a1406915e43bb455e9bfa8f08e5137a3ec4612e01b2080e7815186588c7ea62  # [linux64 or aarch64]
 
 build:
   number: {{ build_num }}
@@ -98,6 +98,8 @@ outputs:
   - name: cudensitymat
     version: {{ cudm_version }}
     build:
+      missing_dso_whitelist:
+        - "*libcutensornet*"  # it is a subpackage in this recipe referenced by this output
       number: {{ mpi_build_num }}
       string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ mpi_build_num }}"
       script: "${RECIPE_DIR}/cudensitymat/cudm-install"
@@ -113,17 +115,25 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
+        - {{ mpi }} * external*  # [mpi == "mpich"]
+        - {{ mpi }}  # [mpi == "openmpi"]
         - cf-nvidia-tools 1  # [linux]
       host:
         - cutensor >=2.2.0,<3
         - cuda-version {{ cuda_compiler_version }}
         - libcublas  # [(cuda_compiler_version or "").startswith("12")]
+        - libcusolver  # [(cuda_compiler_version or "").startswith("12")]
+        - libcusparse  # [(cuda_compiler_version or "").startswith("12")]
         - {{ mpi }}  # [mpi != "nompi"]
       run:
         - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}
         - {{ pin_compatible("cutensor", max_pin="x") }}
+        - {{ pin_subpackage('cutensornet', max_pin='x') }}
         - cudatoolkit  # [(cuda_compiler_version or "").startswith("11")]
         - libcublas  # [(cuda_compiler_version or "").startswith("12")]
+        - libcusolver  # [(cuda_compiler_version or "").startswith("12")]
+        - libcusparse  # [(cuda_compiler_version or "").startswith("12")]
+        - libnvjitlink  # [(cuda_compiler_version or "").startswith("12")]
         - {{ mpi }} * external*  # [mpi == "mpich"]
         - {{ mpi }}  # [mpi == "openmpi"]
       run_constrained:
@@ -309,7 +319,7 @@ outputs:
     version: {{ ".".join(sdk_version[:3]) }}
     build:
       number: {{ build_num }}
-      skip: true  # [py<310 or py>312]
+      skip: true  # [py<311 or py>313]
       # build cuQuantum Python package is CUDA agnostic, serving both CUDA 11/12
       # only build in the CUDA 12 pipeline
       # (note: this still uses cuda_compiler_version to calculate hash)
@@ -327,11 +337,11 @@ outputs:
         - {{ compiler('cuda') }}
         - cross-python_{{ target_platform }}  # [build_platform != target_platform]
         - python                              # [build_platform != target_platform]
-        - cython <3                           # [build_platform != target_platform]
+        - cython <4                           # [build_platform != target_platform]
       host:
         - python
         - pip
-        - cython <3
+        - cython <4
         - cuquantum ={{ version }}
         - packaging
         - setuptools
@@ -341,7 +351,7 @@ outputs:
         - cupy >=13.0
         - {{ pin_subpackage('custatevec', max_pin='x') }}
         - {{ pin_subpackage('cutensornet', max_pin='x') }}
-        - {{ pin_subpackage('cudensitymat', max_pin='x') }}
+        - {{ pin_subpackage('cudensitymat', max_pin='x.x') }}
         # cuquantum subpackage dependencies should already be enforcing this constraint indirectly
         #- cuda-version >=11.0.*,<13.a0
       run_constrained:

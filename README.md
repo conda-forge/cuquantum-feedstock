@@ -55,6 +55,23 @@ you accept the terms and conditions of the NVIDIA cuQuantum EULA -
 https://docs.nvidia.com/cuda/cuquantum/license.html
 
 
+About cuquantum-python
+----------------------
+
+Home: https://developer.nvidia.com/cuquantum-sdk
+
+Package license: [BSD-3-Clause](https://docs.nvidia.com/cuda/cuquantum/latest/license.html#nvidia-cuquantum-python)
+
+Summary: cuQuantum Python: A High-Performance Library for Accelerating Quantum Computing Simulations in Python
+
+Development: https://github.com/NVIDIA/cuQuantum
+
+Documentation: https://docs.nvidia.com/cuda/cuquantum/latest/python/
+
+NVIDIA cuQuantum Python provides Python bindings and high-level object-oriented
+models for accessing the full functionalities of NVIDIA cuQuantum SDK from Python.
+
+
 About custatevec
 ----------------
 
@@ -99,23 +116,6 @@ The packages cuquantum, cudensitymat, custatevec, and cutensornet are governed b
 Software License Agreement (EULA). By downloading and using the packages,
 you accept the terms and conditions of the NVIDIA cuQuantum EULA -
 https://docs.nvidia.com/cuda/cuquantum/license.html
-
-
-About cuquantum-python
-----------------------
-
-Home: https://developer.nvidia.com/cuquantum-sdk
-
-Package license: [BSD-3-Clause](https://docs.nvidia.com/cuda/cuquantum/latest/license.html#nvidia-cuquantum-python)
-
-Summary: cuQuantum Python: A High-Performance Library for Accelerating Quantum Computing Simulations in Python
-
-Development: https://github.com/NVIDIA/cuQuantum
-
-Documentation: https://docs.nvidia.com/cuda/cuquantum/latest/python/
-
-NVIDIA cuQuantum Python provides Python bindings and high-level object-oriented
-models for accessing the full functionalities of NVIDIA cuQuantum SDK from Python.
 
 
 Current build status
