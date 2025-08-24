@@ -50,7 +50,7 @@ if [[ -n "${CUQUANTUM_VER}" ]] ; then
       if [[ "${example}" != *"mpi"* ]] ; then
         echo "${example}"
         compile_command=(
-          "${NVCC:-"nvcc"}" "${NVCC_FLAGS:-"--verbose"}" "--std=c++11"
+          "${NVCC:-"nvcc"}" "${NVCC_FLAGS:-"--verbose"}" "--std=c++17"
           "-I${PREFIX}/include" "-L${PREFIX}/lib"
           "-lcutensornet" "-lcutensor"
           "${example}" "-o" "${example}.out"
