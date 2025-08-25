@@ -1,5 +1,6 @@
 migrator_ts: 1738229377
 __migrator:
+  use_local: true
   kind:
     version
   migration_number:
