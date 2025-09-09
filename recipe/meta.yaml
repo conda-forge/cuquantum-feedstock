@@ -88,8 +88,8 @@ outputs:
       build:
       host:
       run:
-        # - {{ pin_subpackage("cudensitymat", max_pin="x.x.x") }}
-        # - {{ pin_subpackage("cutensornet", max_pin="x.x.x") }}
+        - {{ pin_subpackage("cudensitymat", max_pin="x.x.x") }}
+        - {{ pin_subpackage("cutensornet", max_pin="x.x.x") }}
         - {{ pin_subpackage("custatevec", max_pin="x.x.x") }}
     test:
       commands:
@@ -223,6 +223,7 @@ outputs:
     test:
       requires:
         - git
+        - libcublas-dev
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
