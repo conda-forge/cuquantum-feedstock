@@ -88,8 +88,8 @@ outputs:
       build:
       host:
       run:
-        - {{ pin_subpackage("cudensitymat", max_pin="x.x.x") }}
-        - {{ pin_subpackage("cutensornet", max_pin="x.x.x") }}
+        # - {{ pin_subpackage("cudensitymat", max_pin="x.x.x") }}
+        # - {{ pin_subpackage("cutensornet", max_pin="x.x.x") }}
         - {{ pin_subpackage("custatevec", max_pin="x.x.x") }}
     test:
       commands:
@@ -266,7 +266,7 @@ outputs:
         - {{ pin_subpackage("custatevec", max_pin="x") }}
       ignore_run_exports_from:
         - {{ compiler("cuda") }}
-        - libcublas  # [(cuda_compiler_version or "").startswith("12")]
+        - libcublas
       post-link: post-link
     requirements:
       build:
@@ -277,9 +277,11 @@ outputs:
         - cf-nvidia-tools 1  # [linux]
       host:
         - cuda-version {{ cuda_compiler_version }}
+        - cuda-nvml-dev
         - libcublas
       run:
-        - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}  
+        - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}
+        - cuda-nvml-dev
         - libcublas
     test:
       requires:
@@ -362,7 +364,7 @@ outputs:
         # we don't have to pin Qiskit or Cirq here because their versions are fairly recent on conda-forge
     test:
       requires:
-        - cuda-driver-dev  # [linux and (cuda_compiler_version or "").startswith("12")]
+        - cuda-driver-dev
       files:
         - ./common/*
         - ./cuquantum-python/*

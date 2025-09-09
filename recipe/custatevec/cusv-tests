@@ -42,8 +42,8 @@ if [[ -n "${CUQUANTUM_VER}" ]] ; then
         echo "${example}"
         compile_command=(
           "${NVCC:-"nvcc"}" "${NVCC_FLAGS:-"--verbose"}" "--std=c++17"
-          "-I${PREFIX}/include" "-L${PREFIX}/lib"
-          "-lcustatevec" "${example}" "-o" "${example}.out"
+          "-I${PREFIX}/include" "-L${PREFIX}/lib" "-L${PREFIX}/lib/stubs"
+          "-lcustatevec" "-lnvidia-ml" "${example}" "-o" "${example}.out"
         )  
         echo "${compile_command[@]}"
         "${compile_command[@]}"
