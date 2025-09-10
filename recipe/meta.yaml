@@ -216,8 +216,8 @@ outputs:
         - {{ mpi }} * external*  # [mpi == "mpich"]
         - {{ mpi }}              # [mpi == "openmpi"]
       run_constrained:
-        # if users also wanna install mpi, we need to ensure the nompi version is not
-        # picked by the solver, we do so by createing a conflict
+        # if users also want to install mpi, we need to ensure the nompi version is not
+        # picked by the solver, we do so by creating a conflict
         - openmpi <0.a0  # [mpi == "nompi"]
         - mpich   <0.a0  # [mpi == "nompi"]
     test:
@@ -284,6 +284,8 @@ outputs:
         - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}
         - cuda-nvml-dev
         - libcublas
+      run_constrained:
+        - __cuda >=12
     test:
       requires:
         - git
@@ -301,6 +303,8 @@ outputs:
         - ./custatevec/*
       commands:
         - ./custatevec/cusv-tests {{ version }}
+      missing_dso_whitelist:
+        - libnvidia-ml.so
     about:
       home: https://developer.nvidia.com/cuquantum-sdk
       license: LicenseRef-cuQuantum-Software-License-Agreement
