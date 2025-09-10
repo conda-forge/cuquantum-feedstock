@@ -48,9 +48,9 @@ done
 
 
 LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum"
-LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum.custatevec"
-LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum.cutensornet"
-LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum.densitymat"
+LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum.bindings.custatevec"
+LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum.bindings.cutensornet"
+LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum.bindings.cudensitymat"
 
 echo "CuQuantum python and submodules are importable."
 
