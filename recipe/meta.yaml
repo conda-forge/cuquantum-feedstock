@@ -354,7 +354,7 @@ outputs:
         - python
         - numpy >=1.26
         - cupy >=13.0
-        - {{ pin_compatible('nvmath-python', max_pin='x.x' }}
+        - {{ pin_compatible('nvmath-python', max_pin='x.x') }}
         - {{ pin_subpackage('custatevec', max_pin='x') }}
         - {{ pin_subpackage('cutensornet', max_pin='x') }}
         - {{ pin_subpackage('cudensitymat', max_pin='x.x') }}
