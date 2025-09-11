@@ -269,6 +269,8 @@ outputs:
         - {{ compiler("cuda") }}
         - libcublas
       post-link: post-link
+      missing_dso_whitelist:
+        - libnvidia-ml.so
     requirements:
       build:
         - {{ stdlib('c') }}
@@ -303,8 +305,6 @@ outputs:
         - ./custatevec/*
       commands:
         - ./custatevec/cusv-tests {{ version }}
-      missing_dso_whitelist:
-        - libnvidia-ml.so
     about:
       home: https://developer.nvidia.com/cuquantum-sdk
       license: LicenseRef-cuQuantum-Software-License-Agreement
@@ -328,7 +328,7 @@ outputs:
     version: {{ ".".join(sdk_version[:3]) }}
     build:
       number: {{ build_num }}
-      skip: true  # [py<311 or py>313]
+      skip: true  # [py<312 or py>312]
       # build cuQuantum Python package is CUDA agnostic, serving both CUDA 13/12
       # only build in the CUDA 12 pipeline
       # (note: this still uses cuda_compiler_version to calculate hash)
@@ -338,6 +338,8 @@ outputs:
       ignore_run_exports_from:
         # let cuquantum handle the CUDA deps
         - {{ compiler('cuda') }}
+      missing_dso_whitelist:
+        - libnvidia-ml.so
     requirements:
       build:
         - {{ stdlib('c') }}
@@ -364,6 +366,7 @@ outputs:
         - {{ pin_subpackage('cudensitymat', max_pin='x.x') }}
         # cuquantum subpackage dependencies should already be enforcing this constraint indirectly
       run_constrained:
+        - __cuda >=12
         - pytorch >=1.10
         # mpi4py version constraint due to https://github.com/mpi4py/mpi4py/issues/609
         - mpi4py >=4.0.3
