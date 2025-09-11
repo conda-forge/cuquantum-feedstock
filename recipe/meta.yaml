@@ -328,7 +328,7 @@ outputs:
     version: {{ ".".join(sdk_version[:3]) }}
     build:
       number: {{ build_num }}
-      skip: true  # [py<312 or py>312]
+      skip: true  # [py<311 or py>313]
       # build cuQuantum Python package is CUDA agnostic, serving both CUDA 13/12
       # only build in the CUDA 12 pipeline
       # (note: this still uses cuda_compiler_version to calculate hash)
