@@ -109,7 +109,6 @@ outputs:
         - {{ compiler("cuda") }}
         - libcublas
         - libcusolver
-        - libcusparse
         - libcurand
       post-link: post-link
     requirements:
@@ -126,7 +125,6 @@ outputs:
         - cuda-version {{ cuda_compiler_version }}
         - libcublas
         - libcusolver
-        - libcusparse
         - libcurand
         - {{ mpi }}  # [mpi != "nompi"]
       run:
@@ -135,7 +133,6 @@ outputs:
         - {{ pin_subpackage('cutensornet', max_pin='x') }}
         - libcublas
         - libcusolver
-        - libcusparse
         - libnvjitlink
         - libcurand
         - {{ mpi }} * external*  # [mpi == "mpich"]
