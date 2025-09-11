@@ -35,8 +35,8 @@ supported_platforms=(
 
 declare -Agx cuda_stub_library
 cuda_stub_library=(
-  ["linux-64"]="${PREFIX}/targets/x86_64-linux/lib/stubs/libcuda.so"
-  ["linux-aarch64"]="${PREFIX}/targets/sbsa-linux/lib/stubs/libcuda.so"
+  ["linux-64"]="${PREFIX}/targets/x86_64-linux/lib/stubs/libcuda.so:${PREFIX}/targets/x86_64-linux/lib/stubs/libnvidia-ml.so.1"
+  ["linux-aarch64"]="${PREFIX}/targets/sbsa-linux/lib/stubs/libcuda.so:${PREFIX}/targets/sbsa-linux/lib/stubs/libnvidia-ml.so.1"
 )
 
 declare -gx CUDA_STUB_LIBRARY
