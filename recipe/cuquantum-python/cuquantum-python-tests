@@ -41,27 +41,25 @@ cuda_stub_library=(
 
 declare -gx CUDA_STUB_LIBRARY
 declare platform ; for platform in "${supported_platforms[@]}" ; do
-  if [[ "${target_platform}" == "${platform}" ]] && ["${cuda_compiler_version}" != "11.8"] ; then
+  if [[ "${target_platform}" == "${platform}" ]] ; then
     CUDA_STUB_LIBRARY="${cuda_stub_library[${platform}]}"
   fi
 done
 
 
 LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum"
-LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum.custatevec"
-LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum.cutensornet"
-LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum.densitymat"
+LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum.bindings.custatevec"
+LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum.bindings.cutensornet"
+LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum.bindings.cudensitymat"
 
-echo "CuQuantum python and submodules are importable."
+echo "cuQuantum Python and submodules are importable."
 
-LD_PRELOAD="$CUDA_STUB_LIBRARY" python -m cuquantum --includes --libs --target custatevec || exit 1
+# TODO: uncomment this out when missing libnvidia-ml.so is fixed
+# LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -m cuquantum --includes --libs --target custatevec || exit 1
+# echo "cuQuantum Python custatevec module is functional"
 
-echo "CuQuantum python custatevec module is functional"
+LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -m cuquantum --includes --libs --target cutensornet || exit 1
+echo "cuQuantum Python cutensornet module is functional"
 
-LD_PRELOAD="$CUDA_STUB_LIBRARY" python -m cuquantum --includes --libs --target cutensornet || exit 1
-
-echo "CuQuantum python cutensornet module is functional"
-
-LD_PRELOAD="$CUDA_STUB_LIBRARY" python -m cuquantum --includes --libs --target cudensitymat || exit 1
-
-echo "CuQuantum python cudensitymat module is functional"
+LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -m cuquantum --includes --libs --target cudensitymat || exit 1
+echo "cuQuantum Python cudensitymat module is functional"

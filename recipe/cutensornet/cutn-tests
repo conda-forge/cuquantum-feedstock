@@ -52,7 +52,7 @@ if [[ -n "${CUQUANTUM_VER}" ]] ; then
         compile_command=(
           "${NVCC:-"nvcc"}" "${NVCC_FLAGS:-"--verbose"}" "--std=c++17"
           "-I${PREFIX}/include" "-L${PREFIX}/lib"
-          "-lcutensornet" "-lcutensor"
+          "-lcutensornet" "-lcutensor" "-lcublas"
           "${example}" "-o" "${example}.out"
         ) 
         echo "${compile_command[@]}"
