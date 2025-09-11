@@ -59,9 +59,7 @@ echo "cuQuantum Python and submodules are importable."
 # echo "cuQuantum Python custatevec module is functional"
 
 LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -m cuquantum --includes --libs --target cutensornet || exit 1
-
 echo "cuQuantum Python cutensornet module is functional"
 
 LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -m cuquantum --includes --libs --target cudensitymat || exit 1
-
 echo "cuQuantum Python cudensitymat module is functional"
