@@ -1,9 +1,9 @@
 {% set package = "cuquantum" %}
 # Make sure the component versions are consistent with the SDK version!
-{% set version = "25.09.0.7" %}
-{% set cudm_version = "0.3.0" %}
-{% set cusv_version = "1.10.0" %}
-{% set cutn_version = "2.9.0" %}
+{% set version = "25.09.1.12" %}
+{% set cudm_version = "0.3.1" %}
+{% set cusv_version = "1.10.1" %}
+{% set cutn_version = "2.9.1" %}
 
 {% set sdk_version = version.split(".") %}
 {% set sdk_year  = sdk_version[0] | int %}
@@ -58,10 +58,10 @@ package:
 
 source:
   - url: {{ devzone }}  # [((cuda_compiler_version or "").startswith("12") or (cuda_compiler_version or "").startswith("13")) and (linux64 or aarch64)]
-    sha256: fec8fcceeb9b62f2dff37834a9cd44c6ab05486dec0ebc5ae3452dd8d6390ea0  # [(cuda_compiler_version or "").startswith("12") and linux64]
-    sha256: 3f1e706c0ee582341ec4f103d37c92d90ef16d1cfac42f502c44b2feb6861dd9  # [(cuda_compiler_version or "").startswith("13") and linux64]
-    sha256: b63237e122a32f2576118297c291597815c9c3573daf5c9b4592ada7af13fc17  # [(cuda_compiler_version or "").startswith("12") and aarch64]
-    sha256: 629d3e6749ac49e96de4469477d3b0172581896c7273890bc355420b344fac87  # [(cuda_compiler_version or "").startswith("13") and aarch64]
+    sha256: da4428fb21f0c8563f38eab8525682de2727a03f5a330c20514f784c23cc219b  # [(cuda_compiler_version or "").startswith("12") and linux64]
+    sha256: f2e92b0fec7d91b2b44d2663ea17f58f47d295166faa71b1dd01d2de9530032c  # [(cuda_compiler_version or "").startswith("13") and linux64]
+    sha256: 77e9e6e88c3d2fb7e3e35f7a9a24b08eec3e97790d1064a75ccc15c67b207f48  # [(cuda_compiler_version or "").startswith("12") and aarch64]
+    sha256: 3df1a5cf0fbe37fc293c0affe361f1ced364bd88928dd279781b671eab7e701c  # [(cuda_compiler_version or "").startswith("13") and aarch64]
 
   - url: {{ github }}  # [linux64 or aarch64]
     sha256: 29cb623539f3a84bf9333aac0db03718aba242cefdbb527e81cf3f10f01d08e7  # [linux64 or aarch64]
