@@ -20,6 +20,18 @@ jobs:
         CONFIG: linux_64_c_stdlib_version2.28cuda_compiler_version12.9mpiopenmpi
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64:alma9
+      linux_64_c_stdlib_version2.28cuda_compiler_version13.0mpimpich:
+        CONFIG: linux_64_c_stdlib_version2.28cuda_compiler_version13.0mpimpich
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64:alma9
+      linux_64_c_stdlib_version2.28cuda_compiler_version13.0mpinompi:
+        CONFIG: linux_64_c_stdlib_version2.28cuda_compiler_version13.0mpinompi
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64:alma9
+      linux_64_c_stdlib_version2.28cuda_compiler_version13.0mpiopenmpi:
+        CONFIG: linux_64_c_stdlib_version2.28cuda_compiler_version13.0mpiopenmpi
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64:alma9
       linux_aarch64_c_stdlib_version2.28cuda_compiler_version12.9mpimpich:
         CONFIG: linux_aarch64_c_stdlib_version2.28cuda_compiler_version12.9mpimpich
         UPLOAD_PACKAGES: 'True'
@@ -30,6 +42,18 @@ jobs:
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64:alma9
       linux_aarch64_c_stdlib_version2.28cuda_compiler_version12.9mpiopenmpi:
         CONFIG: linux_aarch64_c_stdlib_version2.28cuda_compiler_version12.9mpiopenmpi
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64:alma9
+      linux_aarch64_c_stdlib_version2.28cuda_compiler_version13.0mpimpich:
+        CONFIG: linux_aarch64_c_stdlib_version2.28cuda_compiler_version13.0mpimpich
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64:alma9
+      linux_aarch64_c_stdlib_version2.28cuda_compiler_version13.0mpinompi:
+        CONFIG: linux_aarch64_c_stdlib_version2.28cuda_compiler_version13.0mpinompi
+        UPLOAD_PACKAGES: 'True'
+        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64:alma9
+      linux_aarch64_c_stdlib_version2.28cuda_compiler_version13.0mpiopenmpi:
+        CONFIG: linux_aarch64_c_stdlib_version2.28cuda_compiler_version13.0mpiopenmpi
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-aarch64:alma9
   timeoutInMinutes: 360
