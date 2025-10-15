@@ -357,8 +357,8 @@ outputs:
         - python
         - numpy >=1.26
         - cupy >=13.0
-        - cuda-bindings>=12.9.1 <13.0.0 # [(cuda_compiler_version or "").startswith("12")]
-        - cuda-bindings>=13.0.1 <14.0.0 # [(cuda_compiler_version or "").startswith("13")]
+        - cuda-bindings >=12.9.1,<13.0.0  # [(cuda_compiler_version or "").startswith("12")]
+        - cuda-bindings >=13.0.1,<14.0.0  # [(cuda_compiler_version or "").startswith("13")]
         - {{ pin_compatible('nvmath-python=*=core*', max_pin='x.x') }}
         - {{ pin_subpackage('custatevec', max_pin='x') }}
         - {{ pin_subpackage('cutensornet', max_pin='x') }}
