@@ -22,7 +22,7 @@
 {% endif %}
 
 
-{% set build_num = 0 %}
+{% set build_num = 1 %}
 # prioritize nompi variant via build number
 {% set build_num_nompi_increment = 100 %}
 
