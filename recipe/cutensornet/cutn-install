@@ -30,25 +30,12 @@ conda clean --all --yes
       exit 1
     fi
     declare -a compile_command
-    if [[ "${cuda_compiler_version}" == "11.8" ]]; then
-      compile_command=(
-          "${GCC}" "-shared" "-std=c11" "-fPIC"
-          "-I${CUDA_PATH}/include" "-I${PREFIX}/include"
-          "distributed_interfaces/cutensornet_distributed_interface_mpi.c"
-          "-L${PREFIX}/lib" "-lmpi"
-          "-o" "${PREFIX}/lib/libcutensornet_distributed_interface_mpi.so"
-        )
-    elif [[ "${cuda_compiler_version}" == 12.* ]]; then
-      compile_command=(
-          "${GCC}" "-shared" "-std=c11" "-fPIC" ${CFLAGS} "-I${PREFIX}/include"
-          "distributed_interfaces/cutensornet_distributed_interface_mpi.c"
-          "-L${PREFIX}/lib" "-lmpi"
-          "-o" "${PREFIX}/lib/libcutensornet_distributed_interface_mpi.so"
-        )
-    else
-      echo "error: incompatible cuda version"
-      exit 1
-    fi
+    compile_command=(
+        "${GCC}" "-shared" "-std=c11" "-fPIC" ${CFLAGS} "-I${PREFIX}/include"
+        "distributed_interfaces/cutensornet_distributed_interface_mpi.c"
+        "-L${PREFIX}/lib" "-lmpi"
+        "-o" "${PREFIX}/lib/libcutensornet_distributed_interface_mpi.so"
+      )
     echo "compile_command[@]"
     "${compile_command[@]}"
     if ! [[ -f "${PREFIX}/lib/libcutensornet_distributed_interface_mpi.so" ]] ; then
