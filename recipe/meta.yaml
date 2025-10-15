@@ -64,7 +64,7 @@ source:
     sha256: 3df1a5cf0fbe37fc293c0affe361f1ced364bd88928dd279781b671eab7e701c  # [(cuda_compiler_version or "").startswith("13") and aarch64]
 
   - url: {{ github }}  # [linux64 or aarch64]
-    sha256: 29cb623539f3a84bf9333aac0db03718aba242cefdbb527e81cf3f10f01d08e7  # [linux64 or aarch64]
+    sha256: 7272c80ccd0b983b1d0740a1f5d5d56ad6c6fc8e3e2c4ec30f160526a468afb6  # [linux64 or aarch64]
 
 build:
   number: {{ build_num }}
