@@ -1,9 +1,11 @@
 {% set package = "cuquantum" %}
 # Make sure the component versions are consistent with the SDK version!
-{% set version = "25.09.1.12" %}
-{% set cudm_version = "0.3.1" %}
-{% set cusv_version = "1.10.1" %}
-{% set cutn_version = "2.9.1" %}
+{% set version = "25.11.0.7" %}
+{% set cudm_version = "0.3.2" %}
+{% set cusv_version = "1.11.0" %}
+{% set cutn_version = "2.10.0" %}
+{% set cupp_version = "0.1.0" %}
+{% set cust_version = "0.1.0" %}
 
 {% set sdk_version = version.split(".") %}
 {% set sdk_year  = sdk_version[0] | int %}
@@ -58,13 +60,13 @@ package:
 
 source:
   - url: {{ devzone }}  # [((cuda_compiler_version or "").startswith("12") or (cuda_compiler_version or "").startswith("13")) and (linux64 or aarch64)]
-    sha256: da4428fb21f0c8563f38eab8525682de2727a03f5a330c20514f784c23cc219b  # [(cuda_compiler_version or "").startswith("12") and linux64]
-    sha256: f2e92b0fec7d91b2b44d2663ea17f58f47d295166faa71b1dd01d2de9530032c  # [(cuda_compiler_version or "").startswith("13") and linux64]
-    sha256: 77e9e6e88c3d2fb7e3e35f7a9a24b08eec3e97790d1064a75ccc15c67b207f48  # [(cuda_compiler_version or "").startswith("12") and aarch64]
-    sha256: 3df1a5cf0fbe37fc293c0affe361f1ced364bd88928dd279781b671eab7e701c  # [(cuda_compiler_version or "").startswith("13") and aarch64]
+    sha256: db0b6b44a5ae92f00e944eeda6a2ff8817531237a104d255fe38eb0d9c3a8fb9  # [(cuda_compiler_version or "").startswith("12") and linux64]
+    sha256: 644996606142335720eea82cf48bf62cf9f601dde88386bce9bba1dc1d151db5  # [(cuda_compiler_version or "").startswith("13") and linux64]
+    sha256: a1c95f9f52d534e0a18fc2f3a3e8c84722f5a26d6fa888a64527648809242bd6  # [(cuda_compiler_version or "").startswith("12") and aarch64]
+    sha256: 9bb6d88d1b0e51e479b5b05e764c1f8fdb3f8986439c9827f32d98d650e84da1  # [(cuda_compiler_version or "").startswith("13") and aarch64]
 
   - url: {{ github }}  # [linux64 or aarch64]
-    sha256: 7272c80ccd0b983b1d0740a1f5d5d56ad6c6fc8e3e2c4ec30f160526a468afb6  # [linux64 or aarch64]
+    sha256: aa765f46eb2696bb2dda52a1f9a9a048b41a5979e9449608f65d0ede5fca9276  # [linux64 or aarch64]
 
 build:
   number: {{ build_num }}
@@ -90,6 +92,8 @@ outputs:
       run:
         - {{ pin_subpackage("cudensitymat", max_pin="x.x.x") }}
         - {{ pin_subpackage("cutensornet", max_pin="x.x.x") }}
+        - {{ pin_subpackage("cupauliprop", max_pin="x.x.x") }}
+        - {{ pin_subpackage("custabilizer", max_pin="x.x.x") }}
         - {{ pin_subpackage("custatevec", max_pin="x.x.x") }}
     test:
       commands:
@@ -176,7 +180,93 @@ outputs:
         https://docs.nvidia.com/cuda/cuquantum/license.html
       doc_url: https://docs.nvidia.com/cuda/cuquantum/latest/cudensitymat/
       dev_url: https://github.com/NVIDIA/cuQuantum
-  
+
+  - name: cupauliprop
+    version: {{ cupp_version }}
+    build:
+      number: {{ build_num }}
+      string: "h{{ PKG_HASH }}_{{ build_num }}"
+      script: "${RECIPE_DIR}/cupauliprop/cupp-install"
+      run_exports:
+        - {{ pin_subpackage("cupauliprop", max_pin="x") }}
+      ignore_run_exports_from:
+        - {{ compiler("cuda") }}
+      post-link: post-link
+    requirements:
+      build:
+        - {{ stdlib('c') }}
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+        - {{ compiler("cuda") }}
+        - cf-nvidia-tools 1  # [linux]
+      host:
+        - cuda-version {{ cuda_compiler_version }}
+      run:
+        - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}
+      run_constrained:
+        - __cuda >=12
+    test:
+      requires:
+        - git
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+        - {{ compiler("cuda") }}
+        # avoid sysroot_linux exported by dependency causing it to fall back to baseline
+        - {{ stdlib('c') }}
+        # make sure we pick up the version matching the docker,
+        # or the linker would complain
+        ## seems unnecessary?
+        - cuda-version {{ cuda_compiler_version }}.*
+      files:
+        - ./common/*
+        - ./cupauliprop/*
+      commands:
+        - ./cupauliprop/cupp-tests {{ version }}
+    about:
+
+  - name: custabilizer
+    version: {{ cust_version }}
+    build:
+      number: {{ build_num }}
+      string: "h{{ PKG_HASH }}_{{ build_num }}"
+      script: "${RECIPE_DIR}/custabilizer/cust-install"
+      run_exports:
+        - {{ pin_subpackage("custabilizer", max_pin="x") }}
+      ignore_run_exports_from:
+        - {{ compiler("cuda") }}
+      post-link: post-link
+    requirements:
+      build:
+        - {{ stdlib('c') }}
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+        - {{ compiler("cuda") }}
+        - cf-nvidia-tools 1  # [linux]
+      host:
+        - cuda-version {{ cuda_compiler_version }}
+      run:
+        - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}
+      run_constrained:
+        - __cuda >=12
+    test:
+      requires:
+        - git
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
+        - {{ compiler("cuda") }}
+        # avoid sysroot_linux exported by dependency causing it to fall back to baseline
+        - {{ stdlib('c') }}
+        # make sure we pick up the version matching the docker,
+        # or the linker would complain
+        ## seems unnecessary?
+        - cuda-version {{ cuda_compiler_version }}.*
+      files:
+        - ./common/*
+        - ./custabilizer/*
+      commands:
+        - ./custabilizer/cust-tests {{ version }}
+    about:
+
   - name: cutensornet
     version: {{ cutn_version }}
     build:
@@ -363,6 +453,8 @@ outputs:
         - {{ pin_subpackage('custatevec', max_pin='x') }}
         - {{ pin_subpackage('cutensornet', max_pin='x') }}
         - {{ pin_subpackage('cudensitymat', max_pin='x.x') }}
+        - {{ pin_subpackage('cupauliprop', max_pin='x.x') }}
+        - {{ pin_subpackage('custabilizer', max_pin='x.x') }}
         # cuquantum subpackage dependencies should already be enforcing this constraint indirectly
       run_constrained:
         - __cuda >=12
