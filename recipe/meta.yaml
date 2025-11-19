@@ -525,6 +525,8 @@ about:
     quantum computing simulations at both the circuit and device level by orders of magnitude. It consists of three major components:
     
     - cuDensityMat: a high-performance library for quantum dynamics equation solvers
+    - cuStabilizer: a high-performance library for GPU-accelerated simulation of noisy Clifford quantum circuits
+    - cuPauliProp: a high-performance library providing primitives for algorithms based on Pauli propagation
     - cuStateVec: a high-performance library for state vector quantum simulators
     - cuTensorNet: a high-performance library for tensor network computations
     
