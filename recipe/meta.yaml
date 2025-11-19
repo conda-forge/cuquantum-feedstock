@@ -292,7 +292,7 @@ outputs:
         Software License Agreement (EULA). By downloading and using the packages,
         you accept the terms and conditions of the NVIDIA cuQuantum EULA -
         https://docs.nvidia.com/cuda/cuquantum/license.html
-      doc_url: https://docs.nvidia.com/cuda/cuquantum/latest/cupauliprop/
+      doc_url: https://docs.nvidia.com/cuda/cuquantum/latest/custabilizer/
       dev_url: https://github.com/NVIDIA/cuQuantum
 
   - name: cutensornet
