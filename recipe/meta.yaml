@@ -174,7 +174,7 @@ outputs:
         cuDensityMat is a component of the NVIDIA cuQuantum SDK.
         In addition to C APIs, cuDensityMat can also be accessed in Python via cuQuantum Python.
 
-        The packages cuquantum, cudensitymat, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+        The packages cuquantum, cudensitymat, cupauliprop, custabilizer, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
         Software License Agreement (EULA). By downloading and using the packages,
         you accept the terms and conditions of the NVIDIA cuQuantum EULA -
         https://docs.nvidia.com/cuda/cuquantum/license.html
@@ -223,6 +223,22 @@ outputs:
       commands:
         - ./cupauliprop/cupp-tests {{ version }}
     about:
+      home: https://developer.nvidia.com/cuquantum-sdk
+      license: LicenseRef-cuQuantum-Software-License-Agreement
+      license_url: https://docs.nvidia.com/cuda/cuquantum/latest/license.html
+      license_file: LICENSE
+      summary: 'cuPauliProp: A high-performance library providing primitives for algorithms based on Pauli propagation'
+      description: |
+        NVIDIA cuPauliProp is a high-performance library providing primitives for algorithms based on Pauli propagation.
+        cuPauliprop is a component of the `NVIDIA cuQuantum SDK.
+        In addition to C APIs, cuPauliProp can also be accessed in Python via cuQuantum Python.
+
+        The packages cuquantum, cudensitymat, cupauliprop, custabilizer, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+        Software License Agreement (EULA). By downloading and using the packages,
+        you accept the terms and conditions of the NVIDIA cuQuantum EULA -
+        https://docs.nvidia.com/cuda/cuquantum/license.html
+      doc_url: https://docs.nvidia.com/cuda/cuquantum/latest/cupauliprop/
+      dev_url: https://github.com/NVIDIA/cuQuantum
 
   - name: custabilizer
     version: {{ cust_version }}
@@ -266,6 +282,22 @@ outputs:
       commands:
         - ./custabilizer/cust-tests {{ version }}
     about:
+      home: https://developer.nvidia.com/cuquantum-sdk
+      license: LicenseRef-cuQuantum-Software-License-Agreement
+      license_url: https://docs.nvidia.com/cuda/cuquantum/latest/license.html
+      license_file: LICENSE
+      summary: 'cuStabilizer: A high-performance library for GPU-accelerated simulation of noisy Clifford quantum circuits'
+      description: |
+        NVIDIA cuStabilizer is a high-performance library for GPU-accelerated simulation of noisy Clifford quantum circuits.
+        cuStabilizer is a component of the `NVIDIA cuQuantum SDK.
+        In addition to C APIs, cuStabilizer can also be accessed in Python via cuQuantum Python.
+
+        The packages cuquantum, cudensitymat, cupauliprop, custabilizer, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+        Software License Agreement (EULA). By downloading and using the packages,
+        you accept the terms and conditions of the NVIDIA cuQuantum EULA -
+        https://docs.nvidia.com/cuda/cuquantum/license.html
+      doc_url: https://docs.nvidia.com/cuda/cuquantum/latest/cupauliprop/
+      dev_url: https://github.com/NVIDIA/cuQuantum
 
   - name: cutensornet
     version: {{ cutn_version }}
@@ -337,7 +369,7 @@ outputs:
         cuTensorNet is a component of the NVIDIA cuQuantum SDK.
         In addition to C APIs, cuTensorNet can also be accessed in Python via cuQuantum Python.
 
-        The packages cuquantum, cudensitymat, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+        The packages cuquantum, cudensitymat, cupauliprop, custabilizer, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
         Software License Agreement (EULA). By downloading and using the packages,
         you accept the terms and conditions of the NVIDIA cuQuantum EULA -
         https://docs.nvidia.com/cuda/cuquantum/license.html
@@ -403,7 +435,7 @@ outputs:
         cuStateVec is a component of the NVIDIA cuQuantum SDK.
         In addition to C APIs, cuStateVec can also be accessed in Python via cuQuantum Python.
         
-        The packages cuquantum, cudensitymat, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+        The packages cuquantum, cudensitymat, cupauliprop, custabilizer, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
         Software License Agreement (EULA). By downloading and using the packages,
         you accept the terms and conditions of the NVIDIA cuQuantum EULA -
         https://docs.nvidia.com/cuda/cuquantum/license.html
@@ -498,7 +530,7 @@ about:
     
     In addition to C APIs, cuQuantum also provides Python APIs via cuQuantum Python.
     
-    The packages cuquantum, cudensitymat, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
+    The packages cuquantum, cudensitymat, cupauliprop, custabilizer, custatevec, and cutensornet are governed by the NVIDIA cuQuantum
     Software License Agreement (EULA). By downloading and using the packages,
     you accept the terms and conditions of the NVIDIA cuQuantum EULA -
     https://docs.nvidia.com/cuda/cuquantum/license.html
