@@ -260,8 +260,6 @@ outputs:
         - cuda-version {{ cuda_compiler_version }}
       run:
         - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}
-      run_constrained:
-        - __cuda >=12
     test:
       requires:
         - git
