@@ -30,6 +30,11 @@ if [[ -f "${PREFIX}/lib/libmpi.so" ]] ; then
   LINK_MPI="-lmpi"
 fi
 
+declare -gx LINK_NCCL=""
+if ls "${PREFIX}/lib/libnccl.so"* >/dev/null 2>&1 ; then
+  LINK_NCCL="-lnccl"
+fi
+
 declare -gx CUQUANTUM_VER="${1}"
 if [[ -n "${CUQUANTUM_VER}" ]] ; then
   declare -agx CUQUANTUM_VERSION
@@ -47,18 +52,45 @@ if [[ -n "${CUQUANTUM_VER}" ]] ; then
     declare -a compile_command
     export LD_LIBRARY_PATH="${PREFIX}/lib"
     declare example ; for example in "${examples[@]}" ; do
-      if [[ "${example}" != *"mpi"* ]] ; then
+      if [[ "${example}" != *"mpi"* && "${example}" != *"nccl"* ]] ; then
         echo "${example}"
         compile_command=(
           "${NVCC:-"nvcc"}" "${NVCC_FLAGS:-"--verbose"}" "--std=c++17"
           "-I${PREFIX}/include" "-L${PREFIX}/lib"
           "-lcudensitymat" "-lcutensornet" "-lcutensor"
           "${example}" "-o" "${example}.out"
-        )  
+        )
         echo "${compile_command[@]}"
         "${compile_command[@]}"
       fi
     done
+
+    if [[ "${mpi}" != "nompi" ]] ; then
+      declare example ; for example in "${examples[@]}" ; do
+        if [[ "${example}" == *"mpi"* && "${example}" != *"nccl"* ]] ; then
+          echo "${example}"
+          compile_command=(
+            "${NVCC:-"nvcc"}" "${NVCC_FLAGS:-"--verbose"}" "--std=c++17"
+            "-I${PREFIX}/include" "-L${PREFIX}/lib"
+            "-lcudensitymat" "-lcutensornet" "-lcutensor" "${LINK_MPI}"
+            "${example}" "-o" "${example}.out"
+          )
+          echo "${compile_command[@]}"
+          "${compile_command[@]}"
+        fi
+        if [[ "${example}" == *"nccl"* ]] ; then
+          echo "${example}"
+          compile_command=(
+            "${NVCC:-"nvcc"}" "${NVCC_FLAGS:-"--verbose"}" "--std=c++17"
+            "-I${PREFIX}/include" "-L${PREFIX}/lib"
+            "-lcudensitymat" "-lcutensornet" "-lcutensor" "${LINK_NCCL}"
+            "${example}" "-o" "${example}.out"
+          )
+          echo "${compile_command[@]}"
+          "${compile_command[@]}"
+        fi
+      done
+    fi
   )}
 fi
 
@@ -66,6 +98,10 @@ fi
 if [[ "${mpi}" != "nompi" ]] ; then
   if ! [[ -f "${CUDENSITYMAT_COMM_LIB}" ]]; then
     echo "error: cudensitymat distributed interface not set in an MPI build"
+    exit 1
+  fi
+  if ! [[ -f "${PREFIX}/lib/libcudensitymat_distributed_interface_nccl.so" ]]; then
+    echo "error: cudensitymat nccl distributed interface not found in an MPI build"
     exit 1
   fi
 fi

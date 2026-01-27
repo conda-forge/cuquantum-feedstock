@@ -44,6 +44,35 @@ conda clean --all --yes
       echo "error: cudensitymat comm lib not in expected place"
       exit 1
     fi
+    # build the nccl wrapper lib
+    if ! [[ -f "distributed_interfaces/cudensitymat_distributed_interface_nccl.c" ]] ; then
+      echo " error: nccl distributed interface source not found in expected location "
+      exit 1
+    fi
+    if ! [[ -f "${PREFIX}/include/nccl.h" ]] ; then
+      echo " error: nccl headers not found in ${PREFIX}/include "
+      exit 1
+    fi
+    if ! ls "${PREFIX}/lib/libnccl.so"* >/dev/null 2>&1 ; then
+      echo " error: nccl library not found in ${PREFIX}/lib "
+      exit 1
+    fi
+    declare -a nccl_compile_command
+    nccl_compile_command=(
+        "${NVCC:-"nvcc"}" "-shared" "-Xcompiler" "-fPIC" ${CFLAGS} "-I${PREFIX}/include"
+        "distributed_interfaces/cudensitymat_distributed_interface_nccl.c"
+        "-L${PREFIX}/lib" "-lnccl" "-lcudart"
+        "-o" "${PREFIX}/lib/libcudensitymat_distributed_interface_nccl.so"
+      )
+    echo "nccl_compile_command[@]"
+    "${nccl_compile_command[@]}"
+
+    check-glibc ${PREFIX}/lib/libcudensitymat_distributed_interface_nccl.so
+
+    if ! [[ -f "${PREFIX}/lib/libcudensitymat_distributed_interface_nccl.so" ]] ; then
+      echo "error: cudensitymat nccl comm lib not in expected place"
+      exit 1
+    fi
     # copy activate/deactivate scripts
     mkdir -p "${PREFIX}/etc/conda/activate.d"
     cp "${RECIPE_DIR}/cudensitymat/cudm-activate.sh" "${PREFIX}/etc/conda/activate.d/cudm-activate.sh" 

@@ -1,11 +1,11 @@
 {% set package = "cuquantum" %}
 # Make sure the component versions are consistent with the SDK version!
-{% set version = "25.11.1.11" %}
-{% set cudm_version = "0.3.2" %}
-{% set cusv_version = "1.11.0" %}
-{% set cutn_version = "2.10.1" %}
-{% set cupp_version = "0.1.0" %}
-{% set cust_version = "0.1.0" %}
+{% set version = "26.01.0.4" %}
+{% set cudm_version = "0.4.0" %}
+{% set cusv_version = "1.12.0" %}
+{% set cutn_version = "2.11.0" %}
+{% set cupp_version = "0.2.0" %}
+{% set cust_version = "0.2.0" %}
 
 {% set sdk_version = version.split(".") %}
 {% set sdk_year  = sdk_version[0] | int %}
@@ -60,13 +60,13 @@ package:
 
 source:
   - url: {{ devzone }}  # [((cuda_compiler_version or "").startswith("12") or (cuda_compiler_version or "").startswith("13")) and (linux64 or aarch64)]
-    sha256: 77138174ece7a9a9108e2d44b8ea1e1f2e29874544ea940e13c0d607ad15a358  # [(cuda_compiler_version or "").startswith("12") and linux64]
-    sha256: dfc063a88547636b316b9682a6834c5fbd2dfd7e823c5fc58857c4251d2ab3c2  # [(cuda_compiler_version or "").startswith("13") and linux64]
-    sha256: 3d3cb33268d97cbe48eea426ea44238ed55c622279fd694f0cf32e47c4564454  # [(cuda_compiler_version or "").startswith("12") and aarch64]
-    sha256: 14a44b09d384c27dd36eae9d9858c90140e6422bbd80bda1041ded96ec3c7223  # [(cuda_compiler_version or "").startswith("13") and aarch64]
+    sha256: a6120312154f51bddfa50edc9a11d239ed8a2630b893fccf953a73780d656134  # [(cuda_compiler_version or "").startswith("12") and linux64]
+    sha256: 64781007659513442344f9c9e4e04ead717c991798ccec716808699b99a95d93  # [(cuda_compiler_version or "").startswith("13") and linux64]
+    sha256: 1ec3b95b4788a5e7e7d935d25e0cb7f28db8085ecdf851371581bca66be01576  # [(cuda_compiler_version or "").startswith("12") and aarch64]
+    sha256: 43dc4eee6c7dc2564dc36396bc7cb0775e631c28052c470ebb20fdbf1dd426c1  # [(cuda_compiler_version or "").startswith("13") and aarch64]
 
   - url: {{ github }}  # [linux64 or aarch64]
-    sha256: 3326cb3f7de51d7c2f57361044b6e979ca258e44a2edd944cbe446c2a6388a63  # [linux64 or aarch64]
+    sha256: 3cba5b907af9ba2609b813087254fa8f4f7cad8a39c8ab4a49cff90d6f458b04  # [linux64 or aarch64]
 
 build:
   number: {{ build_num }}
@@ -131,6 +131,7 @@ outputs:
         - libcusolver
         - libcurand
         - {{ mpi }}  # [mpi != "nompi"]
+        - nccl  # [mpi != "nompi"]
       run:
         - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}
         - {{ pin_compatible("cutensor", max_pin="x") }}
@@ -141,6 +142,7 @@ outputs:
         - libcurand
         - {{ mpi }} * external*  # [mpi == "mpich"]
         - {{ mpi }}  # [mpi == "openmpi"]
+        - nccl  # [mpi != "nompi"]
       run_constrained:
         # if users also wanna install mpi, we need to ensure the nompi version is not
         # picked by the solver, we do so by createing a conflict
