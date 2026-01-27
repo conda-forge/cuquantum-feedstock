@@ -121,7 +121,7 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
-        - {{ mpi }} *external*  # [mpi == "mpich"]
+        - {{ mpi }} * *external*  # [mpi == "mpich"]
         - {{ mpi }}  # [mpi == "openmpi"]
         - cf-nvidia-tools 1  # [linux]
       host:
@@ -316,7 +316,7 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
-        - {{ mpi }} * external*  # [mpi == "mpich"]
+        - {{ mpi }} * *external*  # [mpi == "mpich"]
         - {{ mpi }}              # [mpi == "openmpi"]
         - cf-nvidia-tools 1  # [linux]
       host:
@@ -330,7 +330,7 @@ outputs:
         - {{ pin_compatible("cutensor", max_pin="x") }}
         - libcublas
         - libcusolver
-        - {{ mpi }} * external*  # [mpi == "mpich"]
+        - {{ mpi }} * *external*  # [mpi == "mpich"]
         - {{ mpi }}              # [mpi == "openmpi"]
       run_constrained:
         # if users also want to install mpi, we need to ensure the nompi version is not
