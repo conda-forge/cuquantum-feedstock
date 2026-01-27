@@ -14,7 +14,6 @@
 {% set sdk_build = sdk_version[3] | int %}
 
 {% set cuda_compiler_version = cuda_compiler_version | default("None") %}
-{% set mpi_type = mpi_type | default("conda") %}
 {% if "." in (cuda_compiler_version | string) %}
   {% set cuda_version = cuda_compiler_version.split(".") %}
   {% set cuda_major = cuda_version[0] | int %}
@@ -115,7 +114,6 @@ outputs:
         - libcublas
         - libcusolver
         - libcurand
-        - {{ mpi }}  # [mpi_type == "external"]
       post-link: post-link
     requirements:
       build:
@@ -123,7 +121,8 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
-        - {{ mpi }}  # [mpi != "nompi" and mpi_type != "external"]
+        - {{ mpi }} *external*  # [mpi == "mpich"]
+        - {{ mpi }}  # [mpi == "openmpi"]
         - cf-nvidia-tools 1  # [linux]
       host:
         - cutensor >=2.3.1,<3
@@ -141,17 +140,14 @@ outputs:
         - libcusolver
         - libnvjitlink
         - libcurand
-        - mpi 1.0.* {{ mpi }}  # [mpi != "nompi"]
-        - {{ mpi }}  # [mpi != "nompi" and mpi_type != "external"]
+        - {{ mpi }} * *external*  # [mpi == "mpich"]
+        - {{ mpi }}  # [mpi == "openmpi"]
         - nccl  # [mpi != "nompi"]
       run_constrained:
         # if users also wanna install mpi, we need to ensure the nompi version is not
         # picked by the solver, we do so by createing a conflict
         - openmpi <0.a0  # [mpi == "nompi"]
         - mpich   <0.a0  # [mpi == "nompi"]
-        # prevent pulling conda MPI when using external MPI runtime
-        - mpich   <0.a0  # [mpi == "mpich" and mpi_type == "external"]
-        - openmpi <0.a0  # [mpi == "openmpi" and mpi_type == "external"]
     test:
       requires:
         - git
@@ -313,7 +309,6 @@ outputs:
         - {{ compiler("cuda") }}
         - libcublas
         - libcusolver
-        - {{ mpi }}  # [mpi_type == "external"]
       post-link: post-link
     requirements:
       build:
@@ -321,7 +316,8 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
-        - {{ mpi }}  # [mpi != "nompi" and mpi_type != "external"]
+        - {{ mpi }} * external*  # [mpi == "mpich"]
+        - {{ mpi }}              # [mpi == "openmpi"]
         - cf-nvidia-tools 1  # [linux]
       host:
         - cutensor >=2.3.1,<3
@@ -334,16 +330,13 @@ outputs:
         - {{ pin_compatible("cutensor", max_pin="x") }}
         - libcublas
         - libcusolver
-        - mpi 1.0.* {{ mpi }}  # [mpi != "nompi"]
-        - {{ mpi }}  # [mpi != "nompi" and mpi_type != "external"]
+        - {{ mpi }} * external*  # [mpi == "mpich"]
+        - {{ mpi }}              # [mpi == "openmpi"]
       run_constrained:
         # if users also want to install mpi, we need to ensure the nompi version is not
         # picked by the solver, we do so by creating a conflict
         - openmpi <0.a0  # [mpi == "nompi"]
         - mpich   <0.a0  # [mpi == "nompi"]
-        # prevent pulling conda MPI when using external MPI runtime
-        - mpich   <0.a0  # [mpi == "mpich" and mpi_type == "external"]
-        - openmpi <0.a0  # [mpi == "openmpi" and mpi_type == "external"]
     test:
       requires:
         - git
@@ -424,7 +417,6 @@ outputs:
         # or the linker would complain
         ## seems unnecessary?
         - cuda-version {{ cuda_compiler_version }}.*
-        - {{ mpi }}  # [mpi != "nompi" and mpi_type != "external"]
       files:
         - ./common/*
         - ./custatevec/*

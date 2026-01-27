@@ -65,7 +65,7 @@ if [[ -n "${CUQUANTUM_VER}" ]] ; then
       fi
     done
 
-if [[ "${mpi}" != "nompi" && "${mpi_type}" != "external" && -n "${LINK_MPI}" ]] ; then
+if [[ "${mpi}" != "nompi" ]] ; then
       declare example ; for example in "${examples[@]}" ; do
         if [[ "${example}" == *"mpi"* && "${example}" != *"nccl"* ]] ; then
           echo "${example}"
@@ -90,14 +90,14 @@ if [[ "${mpi}" != "nompi" && "${mpi_type}" != "external" && -n "${LINK_MPI}" ]] 
           "${compile_command[@]}"
         fi
       done
-elif [[ "${mpi}" != "nompi" && "${mpi_type}" == "external" ]] ; then
+elif [[ "${mpi}" != "nompi"]] ; then
   echo "external mpi variant; skipping mpi examples"
     fi
   )}
 fi
 
 # check for existence of distributed interface library if this is an MPI build
-if [[ "${mpi}" != "nompi" && "${mpi_type}" != "external" && -f "${PREFIX}/lib/libmpi.so" ]] ; then
+if [[ "${mpi}" != "nompi" ]] ; then
   if ! [[ -f "${CUDENSITYMAT_COMM_LIB}" ]]; then
     echo "error: cudensitymat distributed interface not set in an MPI build"
     exit 1
