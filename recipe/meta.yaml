@@ -115,6 +115,7 @@ outputs:
         - libcublas
         - libcusolver
         - libcurand
+        - {{ mpi }}  # [mpi_type == "external"]
       post-link: post-link
     requirements:
       build:
@@ -312,6 +313,7 @@ outputs:
         - {{ compiler("cuda") }}
         - libcublas
         - libcusolver
+        - {{ mpi }}  # [mpi_type == "external"]
       post-link: post-link
     requirements:
       build:
