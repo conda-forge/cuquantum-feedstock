@@ -184,87 +184,87 @@ Current build status
         <table>
           <thead><tr><th>Variant</th><th>Status</th></tr></thead>
           <tbody><tr>
-              <td>linux_64_c_stdlib_version2.28cuda_compiler_version12.9mpimpich</td>
+              <td>linux_64_c_stdlib_version2.28cuda_compiler_version12.9mpimpichmpi_typeexternal</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_c_stdlib_version2.28cuda_compiler_version12.9mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_c_stdlib_version2.28cuda_compiler_version12.9mpimpichmpi_typeexternal" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_c_stdlib_version2.28cuda_compiler_version12.9mpinompi</td>
+              <td>linux_64_c_stdlib_version2.28cuda_compiler_version12.9mpinompimpi_typeconda</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_c_stdlib_version2.28cuda_compiler_version12.9mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_c_stdlib_version2.28cuda_compiler_version12.9mpinompimpi_typeconda" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_c_stdlib_version2.28cuda_compiler_version12.9mpiopenmpi</td>
+              <td>linux_64_c_stdlib_version2.28cuda_compiler_version12.9mpiopenmpimpi_typeconda</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_c_stdlib_version2.28cuda_compiler_version12.9mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_c_stdlib_version2.28cuda_compiler_version12.9mpiopenmpimpi_typeconda" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_c_stdlib_version2.28cuda_compiler_version13.0mpimpich</td>
+              <td>linux_64_c_stdlib_version2.28cuda_compiler_version13.0mpimpichmpi_typeexternal</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_c_stdlib_version2.28cuda_compiler_version13.0mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_c_stdlib_version2.28cuda_compiler_version13.0mpimpichmpi_typeexternal" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_c_stdlib_version2.28cuda_compiler_version13.0mpinompi</td>
+              <td>linux_64_c_stdlib_version2.28cuda_compiler_version13.0mpinompimpi_typeconda</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_c_stdlib_version2.28cuda_compiler_version13.0mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_c_stdlib_version2.28cuda_compiler_version13.0mpinompimpi_typeconda" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_c_stdlib_version2.28cuda_compiler_version13.0mpiopenmpi</td>
+              <td>linux_64_c_stdlib_version2.28cuda_compiler_version13.0mpiopenmpimpi_typeconda</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_c_stdlib_version2.28cuda_compiler_version13.0mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_c_stdlib_version2.28cuda_compiler_version13.0mpiopenmpimpi_typeconda" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_c_stdlib_version2.28cuda_compiler_version12.9mpimpich</td>
+              <td>linux_aarch64_c_stdlib_version2.28cuda_compiler_version12.9mpimpichmpi_typeexternal</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_c_stdlib_version2.28cuda_compiler_version12.9mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_c_stdlib_version2.28cuda_compiler_version12.9mpimpichmpi_typeexternal" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_c_stdlib_version2.28cuda_compiler_version12.9mpinompi</td>
+              <td>linux_aarch64_c_stdlib_version2.28cuda_compiler_version12.9mpinompimpi_typeconda</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_c_stdlib_version2.28cuda_compiler_version12.9mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_c_stdlib_version2.28cuda_compiler_version12.9mpinompimpi_typeconda" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_c_stdlib_version2.28cuda_compiler_version12.9mpiopenmpi</td>
+              <td>linux_aarch64_c_stdlib_version2.28cuda_compiler_version12.9mpiopenmpimpi_typeconda</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_c_stdlib_version2.28cuda_compiler_version12.9mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_c_stdlib_version2.28cuda_compiler_version12.9mpiopenmpimpi_typeconda" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_c_stdlib_version2.28cuda_compiler_version13.0mpimpich</td>
+              <td>linux_aarch64_c_stdlib_version2.28cuda_compiler_version13.0mpimpichmpi_typeexternal</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_c_stdlib_version2.28cuda_compiler_version13.0mpimpich" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_c_stdlib_version2.28cuda_compiler_version13.0mpimpichmpi_typeexternal" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_c_stdlib_version2.28cuda_compiler_version13.0mpinompi</td>
+              <td>linux_aarch64_c_stdlib_version2.28cuda_compiler_version13.0mpinompimpi_typeconda</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_c_stdlib_version2.28cuda_compiler_version13.0mpinompi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_c_stdlib_version2.28cuda_compiler_version13.0mpinompimpi_typeconda" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_aarch64_c_stdlib_version2.28cuda_compiler_version13.0mpiopenmpi</td>
+              <td>linux_aarch64_c_stdlib_version2.28cuda_compiler_version13.0mpiopenmpimpi_typeconda</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_c_stdlib_version2.28cuda_compiler_version13.0mpiopenmpi" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_c_stdlib_version2.28cuda_compiler_version13.0mpiopenmpimpi_typeconda" alt="variant">
                 </a>
               </td>
             </tr>
