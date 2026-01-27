@@ -467,19 +467,19 @@ outputs:
         - {{ compiler('cuda') }}
         - cross-python_{{ target_platform }}  # [build_platform != target_platform]
         - python                              # [build_platform != target_platform]
-        - cython <4                           # [build_platform != target_platform]
+        - cython >=3.0.4,!=3.1.0,!=3.1.1      # [build_platform != target_platform]
       host:
         - python
         - pip
-        - cython <4
+        - cython >=3.0.4,!=3.1.0,!=3.1.1
         - packaging
-        - setuptools
+        - setuptools >=77.0.3
       run:
         - python
-        - numpy >=1.26
+        - numpy >=1.21,<3.0
         - cupy >=13.0
-        - nvmath-python >=0.6,<0.7=*core*
-        - cuda-bindings >=12.9.1,<14.0.0,!=13.0.0
+        - nvmath-python ==0.7.0
+        - cuda-bindings >=12.9.4,<14.0.0,!=13.0.0
         - {{ pin_subpackage('custatevec', max_pin='x') }}
         - {{ pin_subpackage('cutensornet', max_pin='x') }}
         - {{ pin_subpackage('cudensitymat', max_pin='x.x') }}
