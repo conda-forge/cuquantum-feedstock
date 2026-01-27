@@ -57,9 +57,19 @@ conda clean --all --yes
       echo " error: nccl library not found in ${PREFIX}/lib "
       exit 1
     fi
+    declare -a filtered_cflags
+    for flag in ${CFLAGS}; do
+      case "${flag}" in
+        -march=*|-mtune=*)
+          ;;
+        *)
+          filtered_cflags+=("${flag}")
+          ;;
+      esac
+    done
     declare -a nccl_compile_command
     nccl_compile_command=(
-        "${NVCC:-"nvcc"}" "-shared" "-Xcompiler" "-fPIC" ${CFLAGS} "-I${PREFIX}/include"
+        "${NVCC:-"nvcc"}" "-shared" "-Xcompiler" "-fPIC" "${filtered_cflags[@]}" "-I${PREFIX}/include"
         "distributed_interfaces/cudensitymat_distributed_interface_nccl.c"
         "-L${PREFIX}/lib" "-lnccl" "-lcudart"
         "-o" "${PREFIX}/lib/libcudensitymat_distributed_interface_nccl.so"
@@ -79,7 +89,7 @@ conda clean --all --yes
     mkdir -p "${PREFIX}/etc/conda/deactivate.d"
     cp "${RECIPE_DIR}/cudensitymat/cudm-deactivate.sh" "${PREFIX}/etc/conda/deactivate.d/cudm-deactivate.sh"
   else
-    echo " No mpi lib detected, not building distributed interfaces."
+    echo " No mpi lib detected in prefix, not building distributed interfaces."
   fi
   
 )}
