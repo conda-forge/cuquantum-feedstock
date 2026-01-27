@@ -158,6 +158,7 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
+        - {{ mpi }}  # [mpi != "nompi" and mpi_type == "external"]
         # avoid sysroot_linux exported by dependency causing it to fall back to baseline
         - {{ stdlib('c') }}
         # make sure we pick up the version matching the docker,
@@ -351,6 +352,7 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
+        - {{ mpi }}  # [mpi != "nompi" and mpi_type != "external"]
         # avoid sysroot_linux exported by dependency causing it to fall back to baseline
         - {{ stdlib('c') }}
         # make sure we pick up the version matching the docker,
@@ -424,6 +426,7 @@ outputs:
         # or the linker would complain
         ## seems unnecessary?
         - cuda-version {{ cuda_compiler_version }}.*
+        - {{ mpi }}  # [mpi != "nompi" and mpi_type == "external"]
       files:
         - ./common/*
         - ./custatevec/*
