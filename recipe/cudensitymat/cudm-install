@@ -57,19 +57,9 @@ conda clean --all --yes
       echo " error: nccl library not found in ${PREFIX}/lib "
       exit 1
     fi
-    declare -a filtered_cflags
-    for flag in ${CFLAGS}; do
-      case "${flag}" in
-        -march=*|-mtune=*)
-          ;;
-        *)
-          filtered_cflags+=("${flag}")
-          ;;
-      esac
-    done
     declare -a nccl_compile_command
     nccl_compile_command=(
-        "${NVCC:-"nvcc"}" "-shared" "-Xcompiler" "-fPIC" "${filtered_cflags[@]}" "-I${PREFIX}/include"
+        "${NVCC:-"nvcc"}" "-shared" "-Xcompiler" "-fPIC" ${NVCC_FLAGS:-} "-I${PREFIX}/include"
         "distributed_interfaces/cudensitymat_distributed_interface_nccl.c"
         "-L${PREFIX}/lib" "-lnccl" "-lcudart"
         "-o" "${PREFIX}/lib/libcudensitymat_distributed_interface_nccl.so"
