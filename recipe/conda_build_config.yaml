@@ -11,3 +11,7 @@ mpi:
 # 1 unique upload would be done by the CI.
 ignore_version:
   - mpi
+
+channel_sources:
+  - conda-forge/label/mpi-external
+  - conda-forge

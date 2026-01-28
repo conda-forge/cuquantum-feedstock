@@ -12,6 +12,3 @@ idle_timeout_minutes: 60
 provider:
   linux_aarch64: azure 
 test: native
-channel_sources:
-  - conda-forge/label/mpi-external
-  - conda-forge
