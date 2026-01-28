@@ -8,6 +8,7 @@ c_stdlib_version:
 - '2.28'
 channel_sources:
 - conda-forge
+- conda-forge/label/mpi-external
 channel_targets:
 - conda-forge main
 cuda_compiler:
