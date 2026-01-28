@@ -65,7 +65,15 @@ if [[ -n "${CUQUANTUM_VER}" ]] ; then
       fi
     done
 
-if [[ "${mpi}" != "nompi" ]] ; then
+    if [[ "${mpi}" != "nompi" ]] ; then
+      if [[ -z "${LINK_MPI}" ]] ; then
+        echo "error: mpi build without libmpi in prefix"
+        exit 1
+      fi
+      if [[ -z "${LINK_NCCL}" ]] ; then
+        echo "error: mpi build without nccl in prefix"
+        exit 1
+      fi
       declare example ; for example in "${examples[@]}" ; do
         if [[ "${example}" == *"mpi"* && "${example}" != *"nccl"* ]] ; then
           echo "${example}"
@@ -83,15 +91,13 @@ if [[ "${mpi}" != "nompi" ]] ; then
           compile_command=(
             "${NVCC:-"nvcc"}" "${NVCC_FLAGS:-"--verbose"}" "--std=c++17"
             "-I${PREFIX}/include" "-L${PREFIX}/lib"
-            "-lcudensitymat" "-lcutensornet" "-lcutensor" "${LINK_NCCL}"
+            "-lcudensitymat" "-lcutensornet" "-lcutensor" "${LINK_NCCL}" "${LINK_MPI}"
             "${example}" "-o" "${example}.out"
           )
           echo "${compile_command[@]}"
           "${compile_command[@]}"
         fi
       done
-elif [[ "${mpi}" != "nompi"]] ; then
-  echo "external mpi variant; skipping mpi examples"
     fi
   )}
 fi
