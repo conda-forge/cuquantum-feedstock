@@ -96,8 +96,6 @@ outputs:
         - {{ pin_subpackage("cupauliprop", max_pin="x.x.x") }}
         - {{ pin_subpackage("custabilizer", max_pin="x.x.x") }}
         - {{ pin_subpackage("custatevec", max_pin="x.x.x") }}
-      run_constrained:
-        - mpich   <0.a0
     test:
       commands:
         - echo "cuquantum metapackage {{ version }}"
@@ -149,7 +147,6 @@ outputs:
         # if users also wanna install mpi, we need to ensure the nompi version is not
         # picked by the solver, we do so by creating a conflict
         - openmpi <0.a0  # [mpi == "nompi"]
-        - mpich   <0.a0  # [mpi == "nompi"]
     test:
       requires:
         - git
@@ -337,7 +334,6 @@ outputs:
         # if users also want to install mpi, we need to ensure the nompi version is not
         # picked by the solver, we do so by creating a conflict
         - openmpi <0.a0  # [mpi == "nompi"]
-        - mpich   <0.a0  # [mpi == "nompi"]
     test:
       requires:
         - git
@@ -493,7 +489,6 @@ outputs:
         - pytorch >=1.10
         # mpi4py version constraint due to https://github.com/mpi4py/mpi4py/issues/609
         - mpi4py >=4.0.3
-        - mpich   <0.a0
         # we don't have to pin Qiskit or Cirq here because their versions are fairly recent on conda-forge
     test:
       requires:
