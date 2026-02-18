@@ -1,11 +1,9 @@
 mpi:
   - nompi
-  - mpich
   - openmpi
 
 mpi_type:
   - conda
-  - external
   - conda
 
 zip_keys:
