@@ -36,7 +36,7 @@ conda clean --all --yes
         "-L${PREFIX}/lib" "-lmpi"
         "-o" "${PREFIX}/lib/libcutensornet_distributed_interface_mpi.so"
       )
-    echo "compile_command[@]"
+    echo "${compile_command[@]}"
     "${compile_command[@]}"
     if ! [[ -f "${PREFIX}/lib/libcutensornet_distributed_interface_mpi.so" ]] ; then
       echo "error: cutensornet communication library not found in expected location"
