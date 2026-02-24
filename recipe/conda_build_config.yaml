@@ -1,9 +1,12 @@
+# Require glibc 2.28 for all variants (including CUDA 12.x where the global
+# pinning defaults to 2.17). Entries must mirror the global pinning selectors
 # exactly to preserve zip_keys alignment.
 # See: https://github.com/conda-forge/conda-smithy/issues/1950
 # Working pattern from: https://github.com/conda-forge/nccl-feedstock/pull/154
 c_stdlib_version:              # [linux]
   - 2.28                       # [linux]
   - 2.28                       # [linux and not ppc64le and os.environ.get("CF_CUDA_ENABLED", "False") == "True"]
+
 
 mpi:
   - nompi
