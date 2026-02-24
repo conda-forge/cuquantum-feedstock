@@ -1,3 +1,23 @@
+# Override the full zip_keys group to require glibc 2.28 for all CUDA variants.
+# c_stdlib_version is zipped with compiler and CUDA versions in the global pinning,
+# so all members must be overridden together with matching lengths.
+# See: https://github.com/conda-forge/conda-smithy/issues/1950
+c_compiler_version:            # [linux]
+  - 14                         # [linux]
+  - 14                         # [linux]
+
+cxx_compiler_version:          # [linux]
+  - 14                         # [linux]
+  - 14                         # [linux]
+
+c_stdlib_version:              # [linux]
+  - "2.28"                     # [linux]
+  - "2.28"                     # [linux]
+
+cuda_compiler_version:
+  - 12.9                       # [linux]
+  - 13.0                       # [linux]
+
 mpi:
   - nompi
   - mpich
