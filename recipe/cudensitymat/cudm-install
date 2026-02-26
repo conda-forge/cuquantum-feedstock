@@ -35,9 +35,9 @@ conda clean --all --yes
         "-L${PREFIX}/lib" "-lmpi"
         "-o" "${PREFIX}/lib/libcudensitymat_distributed_interface_mpi.so"
       )
-    echo "compile_command[@]"
+    echo "${compile_command[@]}"
     "${compile_command[@]}"
-    
+
     check-glibc ${PREFIX}/lib/libcudensitymat_distributed_interface_mpi.so
   
     if ! [[ -f "${PREFIX}/lib/libcudensitymat_distributed_interface_mpi.so" ]] ; then
@@ -64,7 +64,7 @@ conda clean --all --yes
         "-L${PREFIX}/lib" "-lnccl" "-lcudart"
         "-o" "${PREFIX}/lib/libcudensitymat_distributed_interface_nccl.so"
       )
-    echo "nccl_compile_command[@]"
+    echo "${nccl_compile_command[@]}"
     "${nccl_compile_command[@]}"
 
     check-glibc ${PREFIX}/lib/libcudensitymat_distributed_interface_nccl.so

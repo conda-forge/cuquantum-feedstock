@@ -36,6 +36,7 @@ if [[ -n "${CUQUANTUM_VER}" ]] ; then
       find . -name "*.cu" -type f -print
     )
     declare -a compile_command
+    export LD_LIBRARY_PATH="${PREFIX}/lib"
 
     declare example ; for example in "${examples[@]}" ; do
       if [[ "${example}" != *"mpi"* ]] ; then
