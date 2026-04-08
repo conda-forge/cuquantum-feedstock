@@ -383,8 +383,6 @@ outputs:
         - {{ compiler("cuda") }}
         - libcublas
       post-link: post-link
-      missing_dso_whitelist:
-        - libnvidia-ml.so
     requirements:
       build:
         - {{ stdlib('c') }}
