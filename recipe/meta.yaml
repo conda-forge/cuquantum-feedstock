@@ -1,11 +1,11 @@
 {% set package = "cuquantum" %}
 # Make sure the component versions are consistent with the SDK version!
-{% set version = "26.01.0.4" %}
-{% set cudm_version = "0.4.0" %}
-{% set cusv_version = "1.12.0" %}
-{% set cutn_version = "2.11.0" %}
-{% set cupp_version = "0.2.0" %}
-{% set cust_version = "0.2.0" %}
+{% set version = "26.03.0.5" %}
+{% set cudm_version = "0.5.0" %}
+{% set cusv_version = "1.13.0" %}
+{% set cutn_version = "2.12.0" %}
+{% set cupp_version = "0.3.0" %}
+{% set cust_version = "0.3.0" %}
 
 {% set sdk_version = version.split(".") %}
 {% set sdk_year  = sdk_version[0] | int %}
@@ -61,13 +61,13 @@ package:
 
 source:
   - url: {{ devzone }}  # [((cuda_compiler_version or "").startswith("12") or (cuda_compiler_version or "").startswith("13")) and (linux64 or aarch64)]
-    sha256: a6120312154f51bddfa50edc9a11d239ed8a2630b893fccf953a73780d656134  # [(cuda_compiler_version or "").startswith("12") and linux64]
-    sha256: 64781007659513442344f9c9e4e04ead717c991798ccec716808699b99a95d93  # [(cuda_compiler_version or "").startswith("13") and linux64]
-    sha256: 1ec3b95b4788a5e7e7d935d25e0cb7f28db8085ecdf851371581bca66be01576  # [(cuda_compiler_version or "").startswith("12") and aarch64]
-    sha256: 43dc4eee6c7dc2564dc36396bc7cb0775e631c28052c470ebb20fdbf1dd426c1  # [(cuda_compiler_version or "").startswith("13") and aarch64]
+    sha256: f66e97cef65700c4a6c93bb4dc312cf8f9c2abbedf7a7731faa8e28062c9adec  # [(cuda_compiler_version or "").startswith("12") and linux64]
+    sha256: cdb873e69fc16c51a09e23b3a3b04cb9028f1141715764437cda3eaa9f27dd56  # [(cuda_compiler_version or "").startswith("13") and linux64]
+    sha256: 2220ce633963b4c1dd8606cf2ac4529ccef1fca52bfbdb9708ecacf963cca35e  # [(cuda_compiler_version or "").startswith("12") and aarch64]
+    sha256: d0f6e0eee9a9de2241af051a4c4c2884cbf20d7ad6758ad07757dc12395b5528  # [(cuda_compiler_version or "").startswith("13") and aarch64]
 
   - url: {{ github }}  # [linux64 or aarch64]
-    sha256: 3cba5b907af9ba2609b813087254fa8f4f7cad8a39c8ab4a49cff90d6f458b04  # [linux64 or aarch64]
+    sha256: 85c36c6c896db98b268cfcd18bd97659cc2f567de461ff86e71f30e4c79a68de  # [linux64 or aarch64]
 
 build:
   number: {{ build_num }}
