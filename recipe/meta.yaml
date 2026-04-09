@@ -453,8 +453,6 @@ outputs:
         - {{ compiler('cuda') }}
         - cuda-bindings
         - cuda-python
-      missing_dso_whitelist:
-        - libnvidia-ml.so
     requirements:
       build:
         - {{ stdlib('c') }}
