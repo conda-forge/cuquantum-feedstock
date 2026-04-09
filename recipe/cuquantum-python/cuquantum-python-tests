@@ -54,9 +54,8 @@ LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum.bindings.cudensity
 
 echo "cuQuantum Python and submodules are importable."
 
-# TODO: uncomment this out when missing libnvidia-ml.so is fixed
-# LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -m cuquantum --includes --libs --target custatevec || exit 1
-# echo "cuQuantum Python custatevec module is functional"
+LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -m cuquantum --includes --libs --target custatevec || exit 1
+echo "cuQuantum Python custatevec module is functional"
 
 LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -m cuquantum --includes --libs --target cutensornet || exit 1
 echo "cuQuantum Python cutensornet module is functional"
