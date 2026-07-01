@@ -4,7 +4,7 @@
 {% set cudm_version = "0.6.0" %}
 {% set cusv_version = "1.14.0" %}
 {% set cutn_version = "2.13.0" %}
-{% set cupp_version = "0.3.2" %}
+{% set cupp_version = "0.4.0" %}
 {% set cust_version = "0.4.0" %}
 
 {% set sdk_version = version.split(".") %}
