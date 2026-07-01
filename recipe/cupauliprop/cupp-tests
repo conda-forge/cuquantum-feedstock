@@ -33,7 +33,7 @@ if [[ -n "${CUQUANTUM_VER}" ]] ; then
     cd "cuquantum-cupauliprop/samples/cupauliprop" || exit 1
     declare -agx examples
     mapfile -t examples < <(
-      find . -name "*.cpp" -type f -print
+      find . -name "*.cpp" -type f ! -name "example_utils.cpp" -print
     )
     declare -a compile_command
 
@@ -43,7 +43,7 @@ if [[ -n "${CUQUANTUM_VER}" ]] ; then
         compile_command=(
           "${NVCC:-"nvcc"}" "${NVCC_FLAGS:-"--verbose"}" "--std=c++17"
           "-I${PREFIX}/include" "-L${PREFIX}/lib" "-L${PREFIX}/lib/stubs"
-          "-lcupauliprop" "${example}" "-o" "${example}.out"
+          "-lcupauliprop" "${example}" "example_utils.cpp" "-o" "${example}.out"
         )  
         echo "${compile_command[@]}"
         "${compile_command[@]}"
