@@ -29,6 +29,11 @@ if [[ -f "${PREFIX}/lib/libmpi.so" ]] ; then
   LINK_MPI="-lmpi"
 fi
 
+if [[ "${mpi}" != "nompi" && -z "${LINK_MPI}" ]] ; then
+  echo "error: MPI build but ${PREFIX}/lib/libmpi.so is not available"
+  exit 1
+fi
+
 
 declare -gx CUQUANTUM_VER="${1}"
 if [[ -n "${CUQUANTUM_VER}" ]] ; then
@@ -54,11 +59,30 @@ if [[ -n "${CUQUANTUM_VER}" ]] ; then
           "-I${PREFIX}/include" "-L${PREFIX}/lib"
           "-lcutensornet" "-lcutensor" "-lcublas"
           "${example}" "-o" "${example}.out"
-        ) 
+        )
         echo "${compile_command[@]}"
         "${compile_command[@]}"
       fi
     done
+
+    # distributed examples only link MPI on top of the regular libraries; this includes
+    # approxTN/decompose_example_mpi_nccl.cu, which does not link NCCL itself because
+    # libcutensornet dlopens NCCL and cuSOLVERMp lazily at runtime
+    if [[ "${mpi}" != "nompi" ]] ; then
+      declare example ; for example in "${examples[@]}" ; do
+        if [[ "${example}" == *"mpi"* ]] ; then
+          echo "${example}"
+          compile_command=(
+            "${NVCC:-"nvcc"}" "${NVCC_FLAGS:-"--verbose"}" "--std=c++17"
+            "-I${PREFIX}/include" "-L${PREFIX}/lib"
+            "-lcutensornet" "-lcutensor" "-lcublas" "${LINK_MPI}"
+            "${example}" "-o" "${example}.out"
+          )
+          echo "${compile_command[@]}"
+          "${compile_command[@]}"
+        fi
+      done
+    fi
   )}
 fi
 
@@ -66,6 +90,18 @@ fi
 if [[ "${mpi}" != "nompi" ]] ; then
   if ! [[ -f "${CUTENSORNET_COMM_LIB}" ]]; then
     echo "error: cutensornet distributed interface not set in an MPI build"
+    exit 1
+  fi
+
+  # libcutensornet dlopens these lazily for distributed tensor decomposition
+  # (decompose_example_mpi_nccl); make sure the run dependencies deliver them
+  declare -agx lazy_libs=(
+    "${PREFIX}/lib/libnccl.so.2"
+    "${PREFIX}/lib/libcusolverMp.so.0"
+    "${PREFIX}/lib/libcutensorMp.so.2"
+  )
+  if ! files exist "${lazy_libs[@]}" ; then
+    echo "error: runtime libraries for distributed tensor decomposition are missing in an MPI build"
     exit 1
   fi
 fi

@@ -9,6 +9,7 @@
 # Major versions used to spell out the run_exports upper bounds below.
 {% set cudm_major = cudm_version.split(".")[0] | int %}
 {% set cutn_major = cutn_version.split(".")[0] | int %}
+{% set cupp_major = cupp_version.split(".")[0] | int %}
 
 {% set sdk_version = version.split(".") %}
 {% set sdk_year  = sdk_version[0] | int %}
@@ -32,7 +33,7 @@
 # prioritize nompi variant via build number
 {% set build_num_nompi_increment = 100 %}
 
-# encode mpi dependency in the build string for cutensornet and cudensitymat
+# encode mpi dependency in the build string for cutensornet, cudensitymat and cupauliprop
 {% if mpi != "nompi" %}
   {% set mpi_prefix = "mpi_" + mpi %}
   {% set mpi_build_num = build_num %}
@@ -192,11 +193,12 @@ outputs:
   - name: cupauliprop
     version: {{ cupp_version }}
     build:
-      number: {{ build_num }}
-      string: "h{{ PKG_HASH }}_{{ build_num }}"
+      number: {{ mpi_build_num }}
+      string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ mpi_build_num }}"
       script: "${RECIPE_DIR}/cupauliprop/cupp-install"
       run_exports:
-        - {{ pin_subpackage("cupauliprop", max_pin="x") }}
+        # Same reasoning as the cudensitymat run_exports above.
+        - cupauliprop >={{ cupp_version }},<{{ cupp_major + 1 }}.0a0 {{ mpi_prefix }}_*
       ignore_run_exports_from:
         - {{ compiler("cuda") }}
       post-link: post-link
@@ -206,11 +208,21 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - {{ compiler("cuda") }}
+        - {{ mpi }}  # [mpi != "nompi"]
         - cf-nvidia-tools 1  # [linux]
       host:
         - cuda-version {{ cuda_compiler_version }}
+        - {{ mpi }}  # [mpi != "nompi"]
+        - nccl  # [mpi != "nompi"]
       run:
         - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}
+        - mpi 1.0.* {{ mpi }}  # [mpi != "nompi"]
+        - {{ mpi }}  # [mpi != "nompi"]
+        - nccl  # [mpi != "nompi"]
+      run_constrained:
+        # if users also want to install mpi, we need to ensure the nompi version is not
+        # picked by the solver, we do so by creating a conflict
+        - openmpi <0.a0  # [mpi == "nompi"]
     test:
       requires:
         - git
@@ -227,6 +239,7 @@ outputs:
         - ./common/*
         - ./cupauliprop/*
       commands:
+        - export mpi={{ mpi }}
         - ./cupauliprop/cupp-tests {{ version }}
     about:
       home: https://developer.nvidia.com/cuquantum-sdk
@@ -331,6 +344,7 @@ outputs:
         - libcusolver
         - libcublas
         - {{ mpi }}  # [mpi != "nompi"]
+        - nccl  # [mpi != "nompi"]
       run:
         - {{ pin_compatible("cuda-version", max_pin="x", min_pin="x") }}
         - {{ pin_compatible("cutensor", max_pin="x") }}
@@ -338,6 +352,12 @@ outputs:
         - libcusolver
         - mpi 1.0.* {{ mpi }}  # [mpi != "nompi"]
         - {{ mpi }}  # [mpi != "nompi"]
+        # Distributed tensor decomposition (samples/cutensornet/approxTN/decompose_example_mpi_nccl.cu)
+        # makes libcutensornet dlopen NCCL (>=2.29,<3), cuSOLVERMp (>=0.9.1,<0.10) and cuTENSORMp at
+        # runtime; none of them are linked. cuTENSORMp ships inside cutensor >=2.8, which the cutensor
+        # pin above already delivers.
+        - nccl  # [mpi != "nompi"]
+        - libcusolvermp0 >=0.9.1,<0.10.0a0  # [mpi != "nompi"]
       run_constrained:
         # if users also want to install mpi, we need to ensure the nompi version is not
         # picked by the solver, we do so by creating a conflict
