@@ -6,6 +6,9 @@
 {% set cutn_version = "2.14.0" %}
 {% set cupp_version = "0.5.0" %}
 {% set cust_version = "0.5.0" %}
+# Major versions used to spell out the run_exports upper bounds below.
+{% set cudm_major = cudm_version.split(".")[0] | int %}
+{% set cutn_major = cutn_version.split(".")[0] | int %}
 
 {% set sdk_version = version.split(".") %}
 {% set sdk_year  = sdk_version[0] | int %}
@@ -109,7 +112,11 @@ outputs:
       string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ mpi_build_num }}"
       script: "${RECIPE_DIR}/cudensitymat/cudm-install"
       run_exports:
-        - {{ pin_subpackage("cudensitymat", max_pin="x") }} {{ mpi_prefix }}_*
+        # Equivalent to pin_subpackage("cudensitymat", max_pin="x") plus the MPI build
+        # string. Spelled out literally because conda-smithy (since #2659) treats
+        # everything after pin_subpackage(...) as part of the package name and
+        # then fails to match it against the recipe outputs.
+        - cudensitymat >={{ cudm_version }},<{{ cudm_major + 1 }}.0a0 {{ mpi_prefix }}_*
       ignore_run_exports_from:
         - {{ compiler("cuda") }}
         - libcublas
@@ -303,7 +310,8 @@ outputs:
       string: "{{ mpi_prefix }}_h{{ PKG_HASH }}_{{ mpi_build_num }}"
       script: "${RECIPE_DIR}/cutensornet/cutn-install"
       run_exports:
-        - {{ pin_subpackage("cutensornet", max_pin="x") }} {{ mpi_prefix }}_*
+        # Same reasoning as the cudensitymat run_exports above.
+        - cutensornet >={{ cutn_version }},<{{ cutn_major + 1 }}.0a0 {{ mpi_prefix }}_*
       ignore_run_exports_from:
         - {{ compiler("cuda") }}
         - libcublas
