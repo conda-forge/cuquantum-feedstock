@@ -13,6 +13,8 @@ fi
 
 declare -agx filepaths=(
   "${PREFIX}/include/custatevec.h"
+  "${PREFIX}/include/custatevecEx.h"
+  "${PREFIX}/include/custatevecEx_ext.h"
   "${PREFIX}/lib/libcustatevec.so"
 )
 

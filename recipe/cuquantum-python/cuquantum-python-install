@@ -27,6 +27,7 @@ conda clean --all --yes
     fi
   fi
   echo "CUDA_PATH: ${CUDA_PATH}"
-  cd python &&
+  # the public GitHub tree is unpacked into the "github" source folder (see meta.yaml)
+  cd github/python &&
   "${PREFIX}/bin/python3" -m pip install --no-deps --no-build-isolation -vvv .
 )}

@@ -12,11 +12,11 @@ mpi:
   - nompi
   - openmpi
 
-# This is to make sure "mpi" above is *NOT* used to compute the package hash. For "cutensornet"
-# the non-colliding hashes are acceptable (though not preferred if avoidable) because we
-# wanted 2 flavors of "cutensornet" generated. But, for the "cuquantum" metapackage if the
-# hashes are not colliding we'd also generate 3 packages (one for each "mpi" flavor), despite
-# it has nothing to do with MPI. We better make sure we have colliding hashes, so that only
-# 1 unique upload would be done by the CI.
+# This is to make sure "mpi" above is *NOT* used to compute the package hash. For the outputs
+# with distributed interfaces ("cutensornet", "cudensitymat", "cupauliprop") the build string
+# carries the MPI flavor explicitly because we want both flavors generated. But, for the
+# "cuquantum" metapackage (and the other outputs) if the hashes were not colliding we'd also
+# generate one package per "mpi" flavor, despite them having nothing to do with MPI. We better
+# make sure we have colliding hashes, so that only 1 unique upload would be done by the CI.
 ignore_version:
   - mpi

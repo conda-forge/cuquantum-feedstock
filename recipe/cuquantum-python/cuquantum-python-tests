@@ -13,13 +13,20 @@ fi
 
 declare -agx filepaths=(
   "${PREFIX}/include/cudensitymat.h"
+  "${PREFIX}/include/cupauliprop.h"
+  "${PREFIX}/include/custabilizer.h"
+  "${PREFIX}/include/custabilizer.hpp"
+  "${PREFIX}/include/custatevec.h"
+  "${PREFIX}/include/custatevecEx.h"
+  "${PREFIX}/include/custatevecEx_ext.h"
   "${PREFIX}/include/cutensornet.h"
   "${PREFIX}/include/cutensornet/types.h"
   "${PREFIX}/include/cutensornet/typesDistributed.h"
-  "${PREFIX}/include/custatevec.h"
   "${PREFIX}/lib/libcudensitymat.so"
-  "${PREFIX}/lib/libcutensornet.so"
+  "${PREFIX}/lib/libcupauliprop.so"
+  "${PREFIX}/lib/libcustabilizer.so"
   "${PREFIX}/lib/libcustatevec.so"
+  "${PREFIX}/lib/libcutensornet.so"
 )
 
 if ! files exist "${filepaths[@]}" ; then
@@ -47,18 +54,30 @@ declare platform ; for platform in "${supported_platforms[@]}" ; do
 done
 
 
-LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum"
-LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum.bindings.custatevec"
-LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum.bindings.cutensornet"
-LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import cuquantum.bindings.cudensitymat"
-
+# every binding module shipped by cuQuantum Python must be importable
+declare -agx modules=(
+  "cuquantum"
+  "cuquantum.bindings.custatevec"
+  "cuquantum.bindings.custatevecEx"
+  "cuquantum.bindings.cutensornet"
+  "cuquantum.bindings.cudensitymat"
+  "cuquantum.bindings.cupauliprop"
+  "cuquantum.bindings.custabilizer"
+)
+declare module ; for module in "${modules[@]}" ; do
+  LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -c "import ${module}"
+done
 echo "cuQuantum Python and submodules are importable."
 
-LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -m cuquantum --includes --libs --target custatevec || exit 1
-echo "cuQuantum Python custatevec module is functional"
-
-LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -m cuquantum --includes --libs --target cutensornet || exit 1
-echo "cuQuantum Python cutensornet module is functional"
-
-LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -m cuquantum --includes --libs --target cudensitymat || exit 1
-echo "cuQuantum Python cudensitymat module is functional"
+# every component library must be discoverable through the CLI helper
+declare -agx targets=(
+  "custatevec"
+  "cutensornet"
+  "cudensitymat"
+  "cupauliprop"
+  "custabilizer"
+)
+declare target ; for target in "${targets[@]}" ; do
+  LD_PRELOAD="${CUDA_STUB_LIBRARY}" python -m cuquantum --includes --libs --target "${target}"
+  echo "cuQuantum Python ${target} module is functional"
+done
