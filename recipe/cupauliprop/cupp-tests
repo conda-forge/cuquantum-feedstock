@@ -21,6 +21,32 @@ if ! files exist "${filepaths[@]}" ; then
   exit 1
 fi
 
+declare -gx LINK_MPI=""
+declare -gx MPI_LIBRARY EXTRA_LIBS=""
+if [[ -f "${PREFIX}/lib/libmpi.so" ]] ; then
+  MPI_LIBRARY="${PREFIX}/lib/libmpi.so"
+  EXTRA_LIBS="${PREFIX}/lib/libmpi.so"
+  LINK_MPI="-lmpi"
+fi
+
+declare -gx LINK_NCCL=""
+if ls "${PREFIX}/lib/libnccl.so"* >/dev/null 2>&1 ; then
+  LINK_NCCL="-lnccl"
+fi
+
+# MPI builds ship both the MPI and the NCCL distributed interfaces, so both libraries must be
+# present in the test environment (they are run dependencies)
+if [[ "${mpi}" != "nompi" ]] ; then
+  if [[ -z "${LINK_MPI}" ]] ; then
+    echo "error: MPI build but ${PREFIX}/lib/libmpi.so is not available"
+    exit 1
+  fi
+  if [[ -z "${LINK_NCCL}" ]] ; then
+    echo "error: MPI build but ${PREFIX}/lib/libnccl.so is not available"
+    exit 1
+  fi
+fi
+
 declare -gx CUQUANTUM_VER="${1}"
 if [[ -n "${CUQUANTUM_VER}" ]] ; then
   declare -agx CUQUANTUM_VERSION
@@ -37,6 +63,8 @@ if [[ -n "${CUQUANTUM_VER}" ]] ; then
     )
     declare -a compile_command
 
+    # every example builds single-process; the multiprocess example only enables
+    # its MPI/NCCL providers when the corresponding macros are defined
     declare example ; for example in "${examples[@]}" ; do
       if [[ "${example}" != *"mpi"* ]] ; then
         echo "${example}"
@@ -49,5 +77,40 @@ if [[ -n "${CUQUANTUM_VER}" ]] ; then
         "${compile_command[@]}"
       fi
     done
+
+    if [[ "${mpi}" != "nompi" ]] ; then
+      declare example ; for example in "${examples[@]}" ; do
+        if [[ "${example}" == *"multiprocess"* ]] ; then
+          echo "${example} (MPI provider)"
+          compile_command=(
+            "${NVCC:-"nvcc"}" "${NVCC_FLAGS:-"--verbose"}" "--std=c++17" "-DMPI_ENABLED"
+            "-I${PREFIX}/include" "-L${PREFIX}/lib" "-L${PREFIX}/lib/stubs"
+            "-lcupauliprop" "${LINK_MPI}" "${example}" "example_utils.cpp" "-o" "${example}.mpi.out"
+          )
+          echo "${compile_command[@]}"
+          "${compile_command[@]}"
+          echo "${example} (NCCL provider)"
+          compile_command=(
+            "${NVCC:-"nvcc"}" "${NVCC_FLAGS:-"--verbose"}" "--std=c++17" "-DMPI_ENABLED" "-DNCCL_ENABLED"
+            "-I${PREFIX}/include" "-L${PREFIX}/lib" "-L${PREFIX}/lib/stubs"
+            "-lcupauliprop" "${LINK_MPI}" "${LINK_NCCL}" "${example}" "example_utils.cpp" "-o" "${example}.nccl.out"
+          )
+          echo "${compile_command[@]}"
+          "${compile_command[@]}"
+        fi
+      done
+    fi
   )}
+fi
+
+# check for existence of distributed interface libraries if this is an MPI build
+if [[ "${mpi}" != "nompi" ]] ; then
+  if ! [[ -f "${CUPAULIPROP_COMM_LIB}" ]]; then
+    echo "error: cupauliprop distributed interface not set in an MPI build"
+    exit 1
+  fi
+  if ! [[ -f "${PREFIX}/lib/libcupauliprop_distributed_interface_nccl.so" ]]; then
+    echo "error: cupauliprop nccl distributed interface not found in an MPI build"
+    exit 1
+  fi
 fi

@@ -1,5 +1,4 @@
 azure:
-  free_disk_space: true
   settings_linux:
     swapfile_size: 10GiB
 conda_build:
@@ -12,3 +11,5 @@ idle_timeout_minutes: 60
 provider:
   linux_aarch64: azure 
 test: native
+workflow_settings:
+  free_disk_space: quick

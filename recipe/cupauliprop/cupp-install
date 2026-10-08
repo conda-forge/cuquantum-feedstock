@@ -19,4 +19,66 @@ conda clean --all --yes
   from="lib" named="*cupauliprop.so*" files move "${PREFIX}/lib"
   
   check-glibc ${PREFIX}/lib/*cupauliprop.so*
+  
+  if [[ "${mpi}" != "nompi" ]]; then
+    echo " mpi lib detected, building distributed interfaces" 
+    # build the mpi wrapper lib  
+    if ! [[ -f "distributed_interfaces/cupauliprop_distributed_interface_mpi.c" ]] ; then
+      echo " error: distributed interface source not found in expected location "
+      exit 1
+    fi
+    declare -a compile_command
+    compile_command=(
+        "${GCC}" "-shared" "-std=c99" "-fPIC" ${CFLAGS} "-I${PREFIX}/include"
+        "distributed_interfaces/cupauliprop_distributed_interface_mpi.c"
+        "-L${PREFIX}/lib" "-lmpi"
+        "-o" "${PREFIX}/lib/libcupauliprop_distributed_interface_mpi.so"
+      )
+    echo "${compile_command[@]}"
+    "${compile_command[@]}"
+
+    check-glibc ${PREFIX}/lib/libcupauliprop_distributed_interface_mpi.so
+  
+    if ! [[ -f "${PREFIX}/lib/libcupauliprop_distributed_interface_mpi.so" ]] ; then
+      echo "error: cupauliprop comm lib not in expected place"
+      exit 1
+    fi
+    # build the nccl wrapper lib
+    if ! [[ -f "distributed_interfaces/cupauliprop_distributed_interface_nccl.c" ]] ; then
+      echo " error: nccl distributed interface source not found in expected location "
+      exit 1
+    fi
+    if ! [[ -f "${PREFIX}/include/nccl.h" ]] ; then
+      echo " error: nccl headers not found in ${PREFIX}/include "
+      exit 1
+    fi
+    if ! ls "${PREFIX}/lib/libnccl.so"* >/dev/null 2>&1 ; then
+      echo " error: nccl library not found in ${PREFIX}/lib "
+      exit 1
+    fi
+    declare -a nccl_compile_command
+    nccl_compile_command=(
+        "${NVCC:-"nvcc"}" "-shared" "-Xcompiler" "-fPIC" ${NVCC_FLAGS:-} "-I${PREFIX}/include"
+        "distributed_interfaces/cupauliprop_distributed_interface_nccl.c"
+        "-L${PREFIX}/lib" "-lnccl" "-lcudart"
+        "-o" "${PREFIX}/lib/libcupauliprop_distributed_interface_nccl.so"
+      )
+    echo "${nccl_compile_command[@]}"
+    "${nccl_compile_command[@]}"
+
+    check-glibc ${PREFIX}/lib/libcupauliprop_distributed_interface_nccl.so
+
+    if ! [[ -f "${PREFIX}/lib/libcupauliprop_distributed_interface_nccl.so" ]] ; then
+      echo "error: cupauliprop nccl comm lib not in expected place"
+      exit 1
+    fi
+    # copy activate/deactivate scripts
+    mkdir -p "${PREFIX}/etc/conda/activate.d"
+    cp "${RECIPE_DIR}/cupauliprop/cupp-activate.sh" "${PREFIX}/etc/conda/activate.d/cupp-activate.sh" 
+    mkdir -p "${PREFIX}/etc/conda/deactivate.d"
+    cp "${RECIPE_DIR}/cupauliprop/cupp-deactivate.sh" "${PREFIX}/etc/conda/deactivate.d/cupp-deactivate.sh"
+  else
+    echo " No mpi lib detected in prefix, not building distributed interfaces."
+  fi
+  
 )}

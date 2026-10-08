@@ -15,7 +15,8 @@ conda clean --all --yes
 {(
 
   declare -gx from named
-  from="include" named="*custatevec.h*" files move "${PREFIX}/include"
+  # custatevec.h plus the cuStateVec Ex API headers (custatevecEx.h, custatevecEx_ext.h)
+  from="include" named="*custatevec*.h*" files move "${PREFIX}/include"
   from="lib" named="*custatevec.so*" files move "${PREFIX}/lib"
   
   check-glibc ${PREFIX}/lib/*custatevec.so*

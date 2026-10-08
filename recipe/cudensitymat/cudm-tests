@@ -35,6 +35,19 @@ if ls "${PREFIX}/lib/libnccl.so"* >/dev/null 2>&1 ; then
   LINK_NCCL="-lnccl"
 fi
 
+# MPI builds ship both the MPI and the NCCL distributed interfaces, so both libraries must be
+# present in the test environment (they are run dependencies)
+if [[ "${mpi}" != "nompi" ]] ; then
+  if [[ -z "${LINK_MPI}" ]] ; then
+    echo "error: MPI build but ${PREFIX}/lib/libmpi.so is not available"
+    exit 1
+  fi
+  if [[ -z "${LINK_NCCL}" ]] ; then
+    echo "error: MPI build but ${PREFIX}/lib/libnccl.so is not available"
+    exit 1
+  fi
+fi
+
 declare -gx CUQUANTUM_VER="${1}"
 if [[ -n "${CUQUANTUM_VER}" ]] ; then
   declare -agx CUQUANTUM_VERSION
@@ -65,12 +78,15 @@ if [[ -n "${CUQUANTUM_VER}" ]] ; then
       fi
     done
 
-if [[ "${mpi}" != "nompi" && -n "${LINK_MPI}" ]] ; then
+    # the distributed samples only enable their MPI/NCCL code paths when the corresponding
+    # macros are defined (see samples/cudensitymat/Makefile); without them they compile to a
+    # stub that exercises nothing. The NCCL sample bootstraps NCCL with MPI, so it needs both.
+    if [[ "${mpi}" != "nompi" ]] ; then
       declare example ; for example in "${examples[@]}" ; do
         if [[ "${example}" == *"mpi"* && "${example}" != *"nccl"* ]] ; then
-          echo "${example}"
+          echo "${example} (MPI)"
           compile_command=(
-            "${NVCC:-"nvcc"}" "${NVCC_FLAGS:-"--verbose"}" "--std=c++17"
+            "${NVCC:-"nvcc"}" "${NVCC_FLAGS:-"--verbose"}" "--std=c++17" "-DMPI_ENABLED"
             "-I${PREFIX}/include" "-L${PREFIX}/lib"
             "-lcudensitymat" "-lcutensornet" "-lcutensor" "${LINK_MPI}"
             "${example}" "-o" "${example}.out"
@@ -79,11 +95,11 @@ if [[ "${mpi}" != "nompi" && -n "${LINK_MPI}" ]] ; then
           "${compile_command[@]}"
         fi
         if [[ "${example}" == *"nccl"* ]] ; then
-          echo "${example}"
+          echo "${example} (NCCL + MPI)"
           compile_command=(
-            "${NVCC:-"nvcc"}" "${NVCC_FLAGS:-"--verbose"}" "--std=c++17"
+            "${NVCC:-"nvcc"}" "${NVCC_FLAGS:-"--verbose"}" "--std=c++17" "-DNCCL_ENABLED" "-DMPI_ENABLED"
             "-I${PREFIX}/include" "-L${PREFIX}/lib"
-            "-lcudensitymat" "-lcutensornet" "-lcutensor" "${LINK_NCCL}"
+            "-lcudensitymat" "-lcutensornet" "-lcutensor" "${LINK_NCCL}" "${LINK_MPI}"
             "${example}" "-o" "${example}.out"
           )
           echo "${compile_command[@]}"
@@ -95,7 +111,7 @@ if [[ "${mpi}" != "nompi" && -n "${LINK_MPI}" ]] ; then
 fi
 
 # check for existence of distributed interface library if this is an MPI build
-if [[ "${mpi}" != "nompi" && -f "${PREFIX}/lib/libmpi.so" ]] ; then
+if [[ "${mpi}" != "nompi" ]] ; then
   if ! [[ -f "${CUDENSITYMAT_COMM_LIB}" ]]; then
     echo "error: cudensitymat distributed interface not set in an MPI build"
     exit 1
