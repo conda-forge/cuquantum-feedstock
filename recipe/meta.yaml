@@ -1,6 +1,6 @@
 {% set package = "cuquantum" %}
 # Make sure the component versions are consistent with the SDK version!
-{% set version = "26.09.0.8" %}
+{% set version = "26.11.0.4" %}
 {% set cudm_version = "0.7.0" %}
 {% set cusv_version = "1.15.0" %}
 {% set cutn_version = "2.14.0" %}
@@ -65,15 +65,15 @@ package:
 
 source:
   - url: {{ devzone }}  # [((cuda_compiler_version or "").startswith("12") or (cuda_compiler_version or "").startswith("13")) and (linux64 or aarch64)]
-    sha256: b908cc21b032a83cf3c157a00e5fb230efa54035920d20a73c16568e6ee17ad7  # [(cuda_compiler_version or "").startswith("12") and linux64]
-    sha256: 92ecbba2b5783db20a966aa67e24206501eef3907ec09dd51cfb4753aea65731  # [(cuda_compiler_version or "").startswith("13") and linux64]
-    sha256: 23089657fd50470cdcfbccb48acc36e501ec3b927fa58279b8729a85e99078cb  # [(cuda_compiler_version or "").startswith("12") and aarch64]
-    sha256: 5698f5a97572e35653d55d87fc15428ea4a10911e711b82e0d5162efc152db67  # [(cuda_compiler_version or "").startswith("13") and aarch64]
+    sha256: adcbdc26e6407d799e484a0a6690bf6835737df41a9a8fd5e6d58dda970903a1  # [(cuda_compiler_version or "").startswith("12") and linux64]
+    sha256: ba3fad12993c9dc2725b41b10d9794885920e520c8486564ffe664423e1c7256  # [(cuda_compiler_version or "").startswith("13") and linux64]
+    sha256: c7bc76516898188bb1867669b50fee9cff674c6ec324551d14fec654665c4193  # [(cuda_compiler_version or "").startswith("12") and aarch64]
+    sha256: be1a540fd0870ea3bc7e8f69f6f35d0cf404c8ae4c6cc67211504ae2e930c0f6  # [(cuda_compiler_version or "").startswith("13") and aarch64]
 
   # The public GitHub tree is kept in its own folder: its BSD-3-Clause LICENSE would otherwise
   # overwrite the SDK EULA (also named LICENSE) that the library outputs ship as license_file.
   - url: {{ github }}  # [linux64 or aarch64]
-    sha256: 6355e68f72a30907877e329588ad42ed51dd558d9541c1807a950f0cd5527af5  # [linux64 or aarch64]
+    sha256: a062ba0d3e101de5b8e352bcd46096b22d1eb0d0c2c4abcd777405416a8c0179  # [linux64 or aarch64]
     folder: github  # [linux64 or aarch64]
 
 build:
