@@ -1,10 +1,10 @@
 {% set package = "cuquantum" %}
 # Make sure the component versions are consistent with the SDK version!
 {% set version = "26.11.0.4" %}
-{% set cudm_version = "0.7.0" %}
-{% set cusv_version = "1.15.0" %}
+{% set cudm_version = "0.7.1" %}
+{% set cusv_version = "1.15.1" %}
 {% set cutn_version = "2.14.0" %}
-{% set cupp_version = "0.5.0" %}
+{% set cupp_version = "0.5.1" %}
 {% set cust_version = "0.5.0" %}
 # Major versions used to spell out the run_exports upper bounds below.
 {% set cudm_major = cudm_version.split(".")[0] | int %}
