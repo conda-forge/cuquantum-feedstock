@@ -1,3 +1,5 @@
+DOCKER_PLATFORM:
+- linux/aarch64
 c_compiler:
 - gcc
 c_compiler_version:
@@ -13,7 +15,7 @@ channel_targets:
 cuda_compiler:
 - cuda-nvcc
 cuda_compiler_version:
-- '13.0'
+- '12.9'
 cutensor:
 - '2'
 cxx_compiler:
@@ -21,9 +23,9 @@ cxx_compiler:
 cxx_compiler_version:
 - '14'
 docker_image:
-- quay.io/condaforge/linux-anvil-aarch64:alma9
+- quay.io/condaforge/linux-anvil-aarch64:alma10
 mpi:
-- openmpi
+- nompi
 mpich:
 - '4'
 nccl:
@@ -35,10 +37,10 @@ pin_run_as_build:
     min_pin: x.x
     max_pin: x.x
 python:
-- 3.10.* *_cpython
 - 3.11.* *_cpython
 - 3.12.* *_cpython
 - 3.13.* *_cp313
+- 3.14.* *_cp314
 target_platform:
 - linux-aarch64
 zip_keys:
