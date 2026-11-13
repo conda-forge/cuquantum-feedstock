@@ -1,7 +1,7 @@
 About cuquantum-sdk-feedstock
 =============================
 
-Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/cuquantum-feedstock/blob/main/LICENSE.txt)
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/cq-branch-feedstock/blob/main/LICENSE.txt)
 
 
 About cuquantum-sdk
@@ -173,55 +173,9 @@ Current build status
 <table><tr>
     <td>GitHub Actions</td>
     <td>
-      <a href="https://github.com/conda-forge/cuquantum-feedstock/actions/workflows/conda-build.yml">
-        <img src="https://github.com/conda-forge/cuquantum-feedstock/actions/workflows/conda-build.yml/badge.svg?event=push&branch=main">
+      <a href="https://github.com/conda-forge/cq-branch-feedstock/actions/workflows/conda-build.yml">
+        <img src="https://github.com/conda-forge/cq-branch-feedstock/actions/workflows/conda-build.yml/badge.svg?event=push&branch=main">
       </a>
-    </td>
-  </tr>
-    
-  <tr>
-    <td>Azure</td>
-    <td>
-      <details>
-        <summary>
-          <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-            <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main">
-          </a>
-        </summary>
-        <table>
-          <thead><tr><th>Variant</th><th>Status</th></tr></thead>
-          <tbody><tr>
-              <td>linux_aarch64_cuda_compiler_version12.9mpinompi</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compiler_version12.9mpinompi" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_aarch64_cuda_compiler_version12.9mpiopenmpi</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compiler_version12.9mpiopenmpi" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_aarch64_cuda_compiler_version13.0mpinompi</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compiler_version13.0mpinompi" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_aarch64_cuda_compiler_version13.0mpiopenmpi</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=14821&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/cuquantum-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_cuda_compiler_version13.0mpiopenmpi" alt="variant">
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </details>
     </td>
   </tr>
 </table>
@@ -249,31 +203,73 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `cudensitymat, cupauliprop, cuquantum, cuquantum-python, custabilizer, custatevec, cutensornet` can be installed with `conda`:
+How to use
+----------
+
+<details>
+<summary>With conda</summary>
 
 ```
 conda install cudensitymat cupauliprop cuquantum cuquantum-python custabilizer custatevec cutensornet
 ```
 
-or with `mamba`:
+</details>
+
+<details>
+<summary>With mamba</summary>
 
 ```
 mamba install cudensitymat cupauliprop cuquantum cuquantum-python custabilizer custatevec cutensornet
 ```
 
-It is possible to list all of the versions of `cudensitymat` available on your platform with `conda`:
+</details>
+
+<details>
+<summary>With pixi</summary>
+
+```
+# for adding to your local project
+pixi add cudensitymat cupauliprop cuquantum cuquantum-python custabilizer custatevec cutensornet
+# for installing globally
+pixi global install cudensitymat cupauliprop cuquantum cuquantum-python custabilizer custatevec cutensornet
+```
+
+</details>
+
+Search package versions
+-----------------------
+
+It is possible to list all of the versions of `cudensitymat` available on your platform:
+
+<details>
+<summary>With conda</summary>
 
 ```
 conda search cudensitymat --channel conda-forge
 ```
 
-or with `mamba`:
+</details>
+
+<details>
+<summary>With mamba</summary>
 
 ```
 mamba search cudensitymat --channel conda-forge
 ```
 
-Alternatively, `mamba repoquery` may provide more information:
+</details>
+
+<details>
+<summary>With pixi</summary>
+
+```
+pixi search cudensitymat --channel conda-forge
+```
+
+</details>
+
+<details>
+<summary>With mamba repoquery, which may provide more information</summary>
 
 ```
 # Search all versions available on your platform:
@@ -285,6 +281,9 @@ mamba repoquery whoneeds cudensitymat --channel conda-forge
 # List dependencies of `cudensitymat`:
 mamba repoquery depends cudensitymat --channel conda-forge
 ```
+
+</details>
+
 
 
 About conda-forge
@@ -301,9 +300,7 @@ for each of the installable packages. Such a repository is known as a *feedstock
 A feedstock is made up of a conda recipe (the instructions on what and how to build
 the package) and the necessary configurations for automatic building using freely
 available continuous integration services. Thanks to the awesome service provided by
-[Azure](https://azure.microsoft.com/en-us/services/devops/), [GitHub](https://github.com/),
-[CircleCI](https://circleci.com/), [AppVeyor](https://www.appveyor.com/),
-[Drone](https://cloud.drone.io/welcome), and [TravisCI](https://travis-ci.com/)
+[Azure](https://azure.microsoft.com/en-us/services/devops/) and [GitHub](https://github.com/)
 it is possible to build and upload installable packages to the
 [conda-forge](https://anaconda.org/conda-forge) [anaconda.org](https://anaconda.org/)
 channel for Linux, Windows and OSX respectively.
@@ -359,7 +356,4 @@ Feedstock Maintainers
 * [@leofang](https://github.com/leofang/)
 * [@mtjrider](https://github.com/mtjrider/)
 * [@yangcal](https://github.com/yangcal/)
-
-
-<!-- dummy commit to enable rerendering -->
 
