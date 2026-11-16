@@ -1,15 +1,12 @@
-azure:
-  settings_linux:
-    swapfile_size: 10GiB
 conda_build:
   pkg_format: '2'
 conda_forge_output_validation: true
 github:
   branch_name: main
   tooling_branch_name: main
-idle_timeout_minutes: 60
 provider:
-  linux_aarch64: azure 
+  linux_64: github_actions
+  linux_aarch64: github_actions
 test: native
 workflow_settings:
   free_disk_space: quick
