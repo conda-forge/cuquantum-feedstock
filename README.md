@@ -1,7 +1,7 @@
 About cuquantum-sdk-feedstock
 =============================
 
-Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/cuquantum-feedstock/blob/main/LICENSE.txt)
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/cq-maint-feedstock/blob/main/LICENSE.txt)
 
 
 About cuquantum-sdk
@@ -173,8 +173,8 @@ Current build status
 <table><tr>
     <td>GitHub Actions</td>
     <td>
-      <a href="https://github.com/conda-forge/cuquantum-feedstock/actions/workflows/conda-build.yml">
-        <img src="https://github.com/conda-forge/cuquantum-feedstock/actions/workflows/conda-build.yml/badge.svg?event=push&branch=main">
+      <a href="https://github.com/conda-forge/cq-maint-feedstock/actions/workflows/conda-build.yml">
+        <img src="https://github.com/conda-forge/cq-maint-feedstock/actions/workflows/conda-build.yml/badge.svg?event=push&branch=main">
       </a>
     </td>
   </tr>
@@ -353,6 +353,7 @@ Feedstock Maintainers
 * [@DmitryLyakh](https://github.com/DmitryLyakh/)
 * [@JeremyWangNVDA](https://github.com/JeremyWangNVDA/)
 * [@b-kloss](https://github.com/b-kloss/)
+* [@conda-forge/cuda](https://github.com/orgs/conda-forge/teams/cuda/)
 * [@leofang](https://github.com/leofang/)
 * [@mtjrider](https://github.com/mtjrider/)
 * [@yangcal](https://github.com/yangcal/)
