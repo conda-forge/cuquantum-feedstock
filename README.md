@@ -353,6 +353,7 @@ Feedstock Maintainers
 * [@DmitryLyakh](https://github.com/DmitryLyakh/)
 * [@JeremyWangNVDA](https://github.com/JeremyWangNVDA/)
 * [@b-kloss](https://github.com/b-kloss/)
+* [@conda-forge/cuda](https://github.com/orgs/conda-forge/teams/cuda/)
 * [@leofang](https://github.com/leofang/)
 * [@mtjrider](https://github.com/mtjrider/)
 * [@yangcal](https://github.com/yangcal/)

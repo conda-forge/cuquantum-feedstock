@@ -598,3 +598,4 @@ extra:
     - mtjrider
     - yangcal
     - DmitryLyakh
+    - conda-forge/cuda
